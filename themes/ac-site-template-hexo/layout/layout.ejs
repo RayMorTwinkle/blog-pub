@@ -55,7 +55,7 @@
             <strong><%= theme.sidebar.title || config.title %></strong>
             <p><%= theme.sidebar.subtitle || config.description || '' %></p>
           </div>
-          <p>Powered by Hexo · Styled after ac-site-template</p>
+          <p>&copy; <%= new Date().getFullYear() %> Ray · Powered by Hexo · Styled after ac-site-template</p>
         </footer>
         <%- partial('partial/footer-banner', { theme: theme, url_for: url_for }) %>
       </div>

@@ -113,6 +113,17 @@ samp {
   padding: 0 0.75rem;
 }
 
+.ac-sidebar-badge {
+  display: inline-flex;
+  margin-top: 0.85rem;
+  padding: 0.35rem 0.8rem;
+  border-radius: var(--ac-radius-full);
+  background: rgba(42, 186, 170, 0.1);
+  color: var(--ac-primary-dark);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
 .ac-sidebar-title {
   margin: 0;
   font-size: 1.4rem;
@@ -170,6 +181,14 @@ samp {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+}
+
+.ac-sidebar-fade {
+  height: 2.6rem;
+  margin-bottom: 0.25rem;
+  border-radius: var(--ac-radius-md);
+  background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.5));
+  pointer-events: none;
 }
 
 .ac-theme-button {
@@ -343,6 +362,7 @@ samp {
   display: flex;
   flex-direction: column;
   gap: 0.9rem;
+  border-top: 4px solid var(--ac-primary);
 }
 
 .ac-post-card:hover,
@@ -403,6 +423,10 @@ samp {
 .ac-card-link {
   color: var(--ac-primary-dark);
   font-weight: 800;
+}
+
+.ac-card-link::after {
+  content: " →";
 }
 
 .ac-post-shell,
@@ -620,7 +644,13 @@ samp {
 
   .ac-mobile-header {
     display: block;
-    padding: 4rem 1.25rem 1.25rem;
+    position: sticky;
+    top: 0;
+    z-index: 15;
+    padding: 4.2rem 1.25rem 1rem;
+    backdrop-filter: blur(16px);
+    background: color-mix(in srgb, var(--ac-surface) 82%, transparent);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
   }
 
   .ac-mobile-header h1,
@@ -630,6 +660,10 @@ samp {
 
   .ac-main-shell {
     border-top-left-radius: 0;
+  }
+
+  .ac-sidebar-fade {
+    display: none;
   }
 
   .ac-site-footer,

@@ -21,6 +21,7 @@
     <div class="ac-sidebar-copy">
       <p class="ac-sidebar-title"><%= theme.sidebar.title || config.title %></p>
       <p class="ac-sidebar-subtitle"><%= theme.sidebar.subtitle || config.description || '' %></p>
+      <span class="ac-sidebar-badge">Obsidian 自动同步</span>
     </div>
 
     <nav class="ac-sidebar-menu" aria-label="站点导航">
@@ -33,6 +34,7 @@
     </nav>
 
     <div class="ac-sidebar-actions">
+      <div class="ac-sidebar-fade"></div>
       <% if (theme.appearance.enable_theme_toggle) { %>
         <button class="ac-theme-button" type="button" data-theme-toggle>
           <img
