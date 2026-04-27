@@ -263,18 +263,29 @@ samp {
 .ac-content-shell {
   width: min(100%, var(--ac-content-width));
   margin: 0 auto;
-  padding: 2rem 1.25rem 3.5rem;
+  padding: 2rem 1.25rem 4rem;
 }
 
 .ac-site-footer {
   width: min(100%, var(--ac-content-width));
   margin: auto auto 0;
-  padding: 1rem 1.25rem 0;
+  padding: 1.5rem 1.25rem 0.75rem;
   display: flex;
   justify-content: space-between;
   gap: 1rem;
   color: var(--ac-text-muted);
   align-items: end;
+  position: relative;
+}
+
+.ac-site-footer::before {
+  content: "";
+  position: absolute;
+  left: 1.25rem;
+  right: 1.25rem;
+  top: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--ac-border), transparent);
 }
 
 .ac-site-footer p,
@@ -385,13 +396,26 @@ samp {
 }
 
 .ac-post-card {
-  padding: 1.3rem;
+  padding: 1.35rem;
   display: flex;
   flex-direction: column;
   gap: 0.9rem;
   border-top: 4px solid var(--ac-primary);
   box-shadow: var(--ac-shadow-card);
   min-height: 15.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.ac-post-card::after {
+  content: "";
+  position: absolute;
+  inset: auto -2rem -2rem auto;
+  width: 7rem;
+  height: 7rem;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(42, 186, 170, 0.12), transparent 68%);
+  pointer-events: none;
 }
 
 .ac-post-card:hover,
@@ -441,11 +465,13 @@ samp {
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  text-wrap: pretty;
 }
 
 .ac-post-card-head time {
   font-weight: 800;
   letter-spacing: 0.02em;
+  color: var(--ac-text-strong);
 }
 
 .ac-post-card-tags a,
@@ -465,6 +491,8 @@ samp {
 .ac-card-link {
   color: var(--ac-primary-dark);
   font-weight: 800;
+  position: relative;
+  z-index: 1;
 }
 
 .ac-card-link::after {
@@ -483,6 +511,15 @@ samp {
   gap: 1rem;
 }
 
+.ac-post-intro {
+  margin: 0;
+  max-width: 42rem;
+  font-size: 1.02rem;
+  line-height: 1.9;
+  color: var(--ac-text-muted);
+  text-wrap: pretty;
+}
+
 .ac-divider {
   height: 1.8rem;
   margin: 1rem 0 1.5rem;
@@ -493,6 +530,8 @@ samp {
   font-size: 1.04rem;
   line-height: 1.95;
   color: var(--ac-text-strong);
+  display: grid;
+  gap: 1rem;
 }
 
 .ac-prose h2,
@@ -516,6 +555,8 @@ samp {
   color: var(--ac-primary-dark);
   text-decoration: underline;
   text-decoration-thickness: 2px;
+  text-underline-offset: 0.2rem;
+  word-break: break-word;
 }
 
 .ac-prose img {
@@ -529,12 +570,27 @@ samp {
   border-radius: var(--ac-radius-sm);
 }
 
+.ac-prose :not(pre) > code {
+  padding: 0.16rem 0.42rem;
+  background: rgba(42, 186, 170, 0.12);
+  color: var(--ac-primary-dark);
+}
+
 .ac-prose pre {
   padding: 1rem;
   background: rgba(31, 148, 137, 0.08);
   overflow-x: auto;
   border: 1px solid rgba(31, 148, 137, 0.12);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.ac-prose p,
+.ac-prose ul,
+.ac-prose ol,
+.ac-prose pre,
+.ac-prose blockquote,
+.ac-prose table {
+  margin: 0;
 }
 
 .ac-prose blockquote {
@@ -583,6 +639,8 @@ samp {
   flex-direction: column;
   gap: 0.45rem;
   padding: 1.1rem 1.2rem;
+  min-height: 5.5rem;
+  justify-content: center;
 }
 
 .ac-nav-card span {
