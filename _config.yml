@@ -3,12 +3,12 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Hexo
-subtitle: ""
-description: ""
+title: Ray's Garden
+subtitle: "Obsidian × Hexo"
+description: "从 Obsidian 自动同步到 GitHub Pages 的中文博客，记录教程、工具、自动化与独立开发。"
 keywords:
-author: John Doe
-language: en
+author: Ray
+language: zh-CN
 timezone: ""
 
 # URL

@@ -210,6 +210,16 @@ samp {
   display: none;
 }
 
+.ac-sidebar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.35), transparent 35%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.12), transparent 18%);
+  pointer-events: none;
+}
+
 .ac-banner img {
   width: 100%;
   pointer-events: none;
@@ -238,6 +248,10 @@ samp {
   margin: 0;
 }
 
+.ac-site-footer > p:last-child {
+  text-align: right;
+}
+
 .ac-hero-card,
 .ac-post-card,
 .ac-post-shell,
@@ -255,6 +269,9 @@ samp {
   position: relative;
   overflow: hidden;
   margin-bottom: 2rem;
+  background:
+    radial-gradient(circle at top right, rgba(42, 186, 170, 0.16), transparent 28%),
+    var(--ac-surface);
 }
 
 .ac-hero-mark {
@@ -363,6 +380,10 @@ samp {
   margin: 0;
   color: var(--ac-text-muted);
   flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .ac-post-card-tags a,

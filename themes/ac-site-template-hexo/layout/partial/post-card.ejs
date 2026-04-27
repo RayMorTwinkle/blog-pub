@@ -1,5 +1,9 @@
 <%
-  var rawContent = strip_html(post.excerpt || post.content || '').replace(/\s+/g, ' ').trim();
+  var rawContent = strip_html(post.excerpt || post.content || '')
+    .replace(/https?:\/\/\S+/g, ' ')
+    .replace(/&[a-z0-9#]+;/gi, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
   var summary = truncate(rawContent, { length: 120 });
 %>
 <article class="ac-post-card">
