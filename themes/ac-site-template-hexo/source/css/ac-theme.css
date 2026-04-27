@@ -1,3 +1,6 @@
+@import url("https://cdn.jsdelivr.net/npm/@fontsource-variable/nunito@5.2.5/index.min.css");
+@import url("https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css");
+
 :root {
   --ac-primary: #2abaaa;
   --ac-primary-light: #6dd5c8;
@@ -12,6 +15,7 @@
   --ac-text-strong: #6b5c48;
   --ac-shadow: 0 2px 8px rgba(135, 115, 88, 0.12);
   --ac-shadow-hover: 0 12px 24px rgba(135, 115, 88, 0.16);
+  --ac-shadow-card: 0 16px 32px rgba(135, 115, 88, 0.08);
   --ac-radius-sm: 10px;
   --ac-radius-md: 18px;
   --ac-radius-lg: 28px;
@@ -49,10 +53,17 @@ body {
   background: var(--ac-bg);
   color: var(--ac-text);
   font-family: var(--ac-font-sans);
+  min-height: 100%;
 }
 
 body[data-nav-open="true"] {
   overflow: hidden;
+}
+
+body {
+  background-image:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.5), transparent 28%),
+    radial-gradient(circle at bottom right, rgba(42, 186, 170, 0.1), transparent 24%);
 }
 
 a {
@@ -79,6 +90,7 @@ samp {
 .ac-app-shell {
   min-height: 100vh;
   display: flex;
+  align-items: stretch;
 }
 
 .ac-sidebar {
@@ -90,6 +102,7 @@ samp {
   height: 100vh;
   border-right: 1px solid rgba(0, 0, 0, 0.04);
   z-index: 20;
+  overflow: hidden;
 }
 
 .ac-sidebar-inner {
@@ -216,9 +229,11 @@ samp {
   min-width: 0;
   background: var(--ac-surface);
   border-top-left-radius: var(--ac-radius-xl);
+  border-bottom-left-radius: var(--ac-radius-xl);
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  box-shadow: -16px 0 40px rgba(135, 115, 88, 0.08);
 }
 
 .ac-mobile-toggle {
@@ -248,7 +263,7 @@ samp {
 .ac-content-shell {
   width: min(100%, var(--ac-content-width));
   margin: 0 auto;
-  padding: 2rem 1.25rem 3rem;
+  padding: 2rem 1.25rem 3.5rem;
 }
 
 .ac-site-footer {
@@ -291,6 +306,18 @@ samp {
   background:
     radial-gradient(circle at top right, rgba(42, 186, 170, 0.16), transparent 28%),
     var(--ac-surface);
+  box-shadow: var(--ac-shadow-card);
+}
+
+.ac-hero-card::after {
+  content: "";
+  position: absolute;
+  width: 11rem;
+  height: 11rem;
+  right: -3rem;
+  top: -3rem;
+  background: radial-gradient(circle, rgba(42, 186, 170, 0.16), transparent 66%);
+  pointer-events: none;
 }
 
 .ac-hero-mark {
@@ -353,8 +380,8 @@ samp {
 
 .ac-card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  gap: 1.15rem;
 }
 
 .ac-post-card {
@@ -363,6 +390,8 @@ samp {
   flex-direction: column;
   gap: 0.9rem;
   border-top: 4px solid var(--ac-primary);
+  box-shadow: var(--ac-shadow-card);
+  min-height: 15.5rem;
 }
 
 .ac-post-card:hover,
@@ -371,6 +400,13 @@ samp {
 .ac-timeline-item:hover {
   transform: translateY(-2px);
   box-shadow: var(--ac-shadow-hover);
+}
+
+.ac-post-card h3 a:hover,
+.ac-menu-link:hover span,
+.ac-nav-card:hover strong,
+.ac-timeline-item:hover strong {
+  color: var(--ac-primary-dark);
 }
 
 .ac-post-card-head,
@@ -387,6 +423,7 @@ samp {
   margin: 0;
   font-size: 1.25rem;
   color: var(--ac-text-strong);
+  line-height: 1.35;
 }
 
 .ac-post-card p,
@@ -404,6 +441,11 @@ samp {
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+.ac-post-card-head time {
+  font-weight: 800;
+  letter-spacing: 0.02em;
 }
 
 .ac-post-card-tags a,
@@ -432,6 +474,7 @@ samp {
 .ac-post-shell,
 .ac-page-shell {
   padding: 2rem;
+  box-shadow: var(--ac-shadow-card);
 }
 
 .ac-post-header {
@@ -449,6 +492,7 @@ samp {
 .ac-prose {
   font-size: 1.04rem;
   line-height: 1.95;
+  color: var(--ac-text-strong);
 }
 
 .ac-prose h2,
@@ -456,6 +500,16 @@ samp {
 .ac-prose h4 {
   margin-top: 2.2rem;
   color: var(--ac-text-strong);
+  line-height: 1.4;
+}
+
+.ac-prose ul,
+.ac-prose ol {
+  padding-left: 1.4rem;
+}
+
+.ac-prose li {
+  margin: 0.5rem 0;
 }
 
 .ac-prose a {
@@ -479,6 +533,8 @@ samp {
   padding: 1rem;
   background: rgba(31, 148, 137, 0.08);
   overflow-x: auto;
+  border: 1px solid rgba(31, 148, 137, 0.12);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
 .ac-prose blockquote {
@@ -487,6 +543,22 @@ samp {
   border-left: 4px solid var(--ac-primary);
   background: rgba(42, 186, 170, 0.08);
   border-radius: 0 var(--ac-radius-md) var(--ac-radius-md) 0;
+}
+
+.ac-prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  background: rgba(255, 255, 255, 0.45);
+  border-radius: var(--ac-radius-md);
+  overflow: hidden;
+}
+
+.ac-prose th,
+.ac-prose td {
+  border: 1px solid var(--ac-border);
+  padding: 0.8rem 1rem;
+  text-align: left;
 }
 
 .ac-post-nav {
@@ -573,6 +645,7 @@ samp {
 .ac-empty-state,
 .ac-placeholder-card {
   padding: 1.6rem;
+  box-shadow: var(--ac-shadow-card);
 }
 
 .ac-empty-state {
@@ -660,6 +733,7 @@ samp {
 
   .ac-main-shell {
     border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
   }
 
   .ac-sidebar-fade {
@@ -686,6 +760,10 @@ samp {
   .ac-post-shell,
   .ac-page-shell {
     padding: 1.3rem;
+  }
+
+  .ac-card-grid {
+    grid-template-columns: 1fr;
   }
 
   .ac-timeline-item {
