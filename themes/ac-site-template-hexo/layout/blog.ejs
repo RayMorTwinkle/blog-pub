@@ -1,0 +1,17 @@
+<section class="ac-section-heading">
+  <div>
+    <p class="ac-eyebrow">Blog archive</p>
+    <h1>全部文章</h1>
+  </div>
+  <p class="ac-section-meta">共 <%= site.posts.length %> 篇文章</p>
+</section>
+
+<section class="ac-card-grid">
+  <% if (site.posts.length) { %>
+    <% site.posts.sort('date', -1).each(function(post){ %>
+      <%- partial('partial/post-card', { post: post, theme: theme, url_for: url_for, date: date, strip_html: strip_html }) %>
+    <% }) %>
+  <% } else { %>
+    <div class="ac-empty-state">这里暂时还是空的。</div>
+  <% } %>
+</section>

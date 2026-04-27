@@ -1,0 +1,46 @@
+menu:
+  home:
+    label: Home
+    path: /
+    icon: ac-assets/nookmiles.png
+  blog:
+    label: Blog
+    path: /blog/
+    icon: ac-assets/photos.png
+  tags:
+    label: Tags
+    path: /tags/
+    icon: ac-assets/drawing.png
+  archives:
+    label: Archives
+    path: /archives/
+    icon: ac-assets/news.png
+  about:
+    label: About
+    path: /about/
+    icon: ac-assets/nookwallet.png
+
+sidebar:
+  title: Ray's Garden
+  subtitle: Obsidian 笔记、教程与独立开发记录
+  profile: ac-assets/profile.jpg
+  social:
+    github:
+      label: GitHub
+      url: https://github.com/RayMorTwinkle
+
+appearance:
+  default_mode: nord
+  enable_theme_toggle: true
+
+banners:
+  header_light: ac-assets/header_banner_light.png
+  header_dark: ac-assets/header_banner_dark.png
+  footer_light: ac-assets/banner_light.png
+  footer_dark: ac-assets/banner_dark.png
+  divider: ac-assets/divider_line.png
+
+assets:
+  theme_icon_light: ac-assets/leaf_light.png
+  theme_icon_dark: ac-assets/leaf_dark.png
+  favicon: ac-assets/favicon.svg

@@ -1,0 +1,23 @@
+<% if (page && page.total && page.total > 1) { %>
+  <nav class="ac-paginator" aria-label="分页导航">
+    <% if (page.prev) { %>
+      <a class="ac-page-link" href="<%- url_for(page.prev_link) %>">上一页</a>
+    <% } else { %>
+      <span class="ac-page-link is-disabled">上一页</span>
+    <% } %>
+
+    <% for (var i = 1; i <= page.total; i++) { %>
+      <% if (i === page.current) { %>
+        <span class="ac-page-link is-current"><%= i %></span>
+      <% } else { %>
+        <a class="ac-page-link" href="<%- url_for(i === 1 ? page.base : page.base + i + '/') %>"><%= i %></a>
+      <% } %>
+    <% } %>
+
+    <% if (page.next) { %>
+      <a class="ac-page-link" href="<%- url_for(page.next_link) %>">下一页</a>
+    <% } else { %>
+      <span class="ac-page-link is-disabled">下一页</span>
+    <% } %>
+  </nav>
+<% } %>

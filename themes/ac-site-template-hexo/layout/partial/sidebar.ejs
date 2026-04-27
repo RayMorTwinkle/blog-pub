@@ -1,0 +1,56 @@
+<%
+  var currentPath = page.path || '';
+  var menu = theme.menu || {};
+  var menuKeys = Object.keys(menu);
+  function isActive(item) {
+    if (!item || !item.path) return false;
+    var normalized = item.path.replace(/^\//, '');
+    if (!normalized) return is_home();
+    if (normalized === 'blog/') return currentPath.indexOf('blog/') === 0 || is_post();
+    if (normalized === 'tags/') return currentPath.indexOf('tags/') === 0 || page.layout === 'tags' || is_tag();
+    if (normalized === 'archives/') return currentPath.indexOf('archives/') === 0 || is_archive();
+    return currentPath.indexOf(normalized) === 0;
+  }
+%>
+<aside class="ac-sidebar" data-sidebar>
+  <div class="ac-sidebar-inner">
+    <a class="ac-sidebar-avatar" href="<%- url_for('/') %>">
+      <img src="<%- url_for(theme.sidebar.profile) %>" alt="<%= theme.sidebar.title || config.title %>">
+    </a>
+
+    <div class="ac-sidebar-copy">
+      <p class="ac-sidebar-title"><%= theme.sidebar.title || config.title %></p>
+      <p class="ac-sidebar-subtitle"><%= theme.sidebar.subtitle || config.description || '' %></p>
+    </div>
+
+    <nav class="ac-sidebar-menu" aria-label="站点导航">
+      <% menuKeys.forEach(function(key){ var item = menu[key]; %>
+        <a class="ac-menu-link <%= isActive(item) ? 'is-active' : '' %>" href="<%- url_for(item.path) %>">
+          <img src="<%- url_for(item.icon) %>" alt="">
+          <span><%= item.label %></span>
+        </a>
+      <% }) %>
+    </nav>
+
+    <div class="ac-sidebar-actions">
+      <% if (theme.appearance.enable_theme_toggle) { %>
+        <button class="ac-theme-button" type="button" data-theme-toggle>
+          <img
+            id="theme-icon"
+            src="<%- url_for(theme.assets.theme_icon_dark) %>"
+            alt=""
+            data-light-src="<%- url_for(theme.assets.theme_icon_light) %>"
+            data-dark-src="<%- url_for(theme.assets.theme_icon_dark) %>"
+          >
+          <span id="theme-label">切换主题</span>
+        </button>
+      <% } %>
+
+      <% if (theme.sidebar.social && theme.sidebar.social.github) { %>
+        <a class="ac-social-link" href="<%= theme.sidebar.social.github.url %>" target="_blank" rel="noopener noreferrer">
+          GitHub
+        </a>
+      <% } %>
+    </div>
+  </div>
+</aside>

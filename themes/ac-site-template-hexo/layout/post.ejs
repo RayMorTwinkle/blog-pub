@@ -1,0 +1,48 @@
+<article class="ac-post-shell">
+  <header class="ac-post-header">
+    <p class="ac-eyebrow">Blog post</p>
+    <h1><%= page.title %></h1>
+    <div class="ac-post-meta">
+      <time datetime="<%= full_date(page.date, 'YYYY-MM-DD HH:mm:ss') %>"><%= date(page.date, 'YYYY-MM-DD') %></time>
+      <% if (page.tags && page.tags.length) { %>
+        <div class="ac-tag-row">
+          <% page.tags.each(function(tag){ %>
+            <a class="ac-tag-chip" href="<%- url_for(tag.path) %>"><%= tag.name %></a>
+          <% }) %>
+        </div>
+      <% } %>
+    </div>
+  </header>
+
+  <div class="ac-divider"></div>
+
+  <div class="ac-prose">
+    <%- page.content %>
+  </div>
+
+  <div class="ac-post-nav">
+    <% if (page.prev) { %>
+      <a class="ac-nav-card" href="<%- url_for(page.prev.path) %>">
+        <span>上一篇</span>
+        <strong><%= page.prev.title %></strong>
+      </a>
+    <% } else { %>
+      <div class="ac-nav-card ac-nav-card-empty">
+        <span>上一篇</span>
+        <strong>已经是第一篇了</strong>
+      </div>
+    <% } %>
+
+    <% if (page.next) { %>
+      <a class="ac-nav-card" href="<%- url_for(page.next.path) %>">
+        <span>下一篇</span>
+        <strong><%= page.next.title %></strong>
+      </a>
+    <% } else { %>
+      <div class="ac-nav-card ac-nav-card-empty">
+        <span>下一篇</span>
+        <strong>已经是最后一篇了</strong>
+      </div>
+    <% } %>
+  </div>
+</article>

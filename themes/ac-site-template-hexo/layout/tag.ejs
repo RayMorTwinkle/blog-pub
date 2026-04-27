@@ -1,0 +1,17 @@
+<section class="ac-section-heading">
+  <div>
+    <p class="ac-eyebrow">Tagged posts</p>
+    <h1>#<%= page.tag ? page.tag : (page.title || '标签') %></h1>
+  </div>
+  <p class="ac-section-meta">这个标签下共有 <%= page.posts ? page.posts.length : 0 %> 篇文章</p>
+</section>
+
+<section class="ac-card-grid">
+  <% if (page.posts && page.posts.length) { %>
+    <% page.posts.each(function(post){ %>
+      <%- partial('partial/post-card', { post: post, theme: theme, url_for: url_for, date: date, strip_html: strip_html }) %>
+    <% }) %>
+  <% } else { %>
+    <div class="ac-empty-state">这个标签下暂时没有文章。</div>
+  <% } %>
+</section>

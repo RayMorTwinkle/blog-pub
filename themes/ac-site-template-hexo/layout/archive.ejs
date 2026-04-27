@@ -1,0 +1,28 @@
+<section class="ac-section-heading">
+  <div>
+    <p class="ac-eyebrow">Timeline</p>
+    <h1>归档</h1>
+  </div>
+  <p class="ac-section-meta">按时间查看所有文章</p>
+</section>
+
+<section class="ac-timeline">
+  <% if (page.posts && page.posts.length) { %>
+    <% var currentMonth = ''; %>
+    <% page.posts.each(function(post){ %>
+      <% var monthLabel = date(post.date, 'YYYY 年 MM 月'); %>
+      <% if (monthLabel !== currentMonth) { currentMonth = monthLabel; %>
+        <h2 class="ac-timeline-heading"><%= monthLabel %></h2>
+      <% } %>
+      <a class="ac-timeline-item" href="<%- url_for(post.path) %>">
+        <time><%= date(post.date, 'MM-DD') %></time>
+        <div>
+          <strong><%= post.title %></strong>
+          <p><%= truncate(strip_html(post.content).replace(/\s+/g, ' ').trim(), { length: 100 }) %></p>
+        </div>
+      </a>
+    <% }) %>
+  <% } else { %>
+    <div class="ac-empty-state">暂时还没有可归档的内容。</div>
+  <% } %>
+</section>

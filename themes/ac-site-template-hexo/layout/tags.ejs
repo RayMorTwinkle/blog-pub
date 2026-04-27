@@ -1,0 +1,20 @@
+<section class="ac-section-heading">
+  <div>
+    <p class="ac-eyebrow">Tag index</p>
+    <h1>标签索引</h1>
+  </div>
+  <p class="ac-section-meta">用主题风格浏览所有标签</p>
+</section>
+
+<section class="ac-tag-index">
+  <% if (site.tags && site.tags.length) { %>
+    <% site.tags.each(function(tag){ %>
+      <a class="ac-tag-cloud" href="<%- url_for(tag.path) %>">
+        <span>#<%= tag.name %></span>
+        <strong><%= tag.length %> 篇</strong>
+      </a>
+    <% }) %>
+  <% } else { %>
+    <div class="ac-empty-state">还没有标签。</div>
+  <% } %>
+</section>

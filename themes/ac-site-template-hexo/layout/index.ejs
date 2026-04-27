@@ -1,0 +1,28 @@
+<section class="ac-hero-card">
+  <img class="ac-hero-mark" src="<%- url_for(theme.assets.favicon) %>" alt="">
+  <p class="ac-eyebrow">Hey there</p>
+  <h1>欢迎来到 <%= theme.sidebar.title || config.title %></h1>
+  <p class="ac-hero-copy">
+    <%= theme.sidebar.subtitle || config.description || '这里是从 Obsidian 同步而来的博客文章、笔记和一些独立开发记录。' %>
+  </p>
+</section>
+
+<section class="ac-section-heading">
+  <div>
+    <p class="ac-eyebrow">Latest posts</p>
+    <h2>最近发布</h2>
+  </div>
+  <a class="ac-pill-link" href="<%- url_for('/blog/') %>">查看全部</a>
+</section>
+
+<section class="ac-card-grid">
+  <% if (page.posts && page.posts.length) { %>
+    <% page.posts.each(function(post){ %>
+      <%- partial('partial/post-card', { post: post, theme: theme, url_for: url_for, date: date, strip_html: strip_html }) %>
+    <% }) %>
+  <% } else { %>
+    <div class="ac-empty-state">还没有文章，等下一篇从 Obsidian 同步过来。</div>
+  <% } %>
+</section>
+
+<%- partial('partial/paginator', { page: page, url_for: url_for }) %>

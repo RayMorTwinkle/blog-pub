@@ -1,0 +1,19 @@
+<%
+  var rawContent = strip_html(post.excerpt || post.content || '').replace(/\s+/g, ' ').trim();
+  var summary = truncate(rawContent, { length: 120 });
+%>
+<article class="ac-post-card">
+  <div class="ac-post-card-head">
+    <time datetime="<%= full_date(post.date, 'YYYY-MM-DD HH:mm:ss') %>"><%= date(post.date, 'YYYY-MM-DD') %></time>
+    <% if (post.tags && post.tags.length) { %>
+      <div class="ac-post-card-tags">
+        <% post.tags.each(function(tag){ %>
+          <a href="<%- url_for(tag.path) %>"><%= tag.name %></a>
+        <% }) %>
+      </div>
+    <% } %>
+  </div>
+  <h3><a href="<%- url_for(post.path) %>"><%= post.title %></a></h3>
+  <p><%= summary %></p>
+  <a class="ac-card-link" href="<%- url_for(post.path) %>">继续阅读</a>
+</article>

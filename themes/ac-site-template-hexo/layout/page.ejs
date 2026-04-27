@@ -1,0 +1,19 @@
+<article class="ac-page-shell">
+  <header class="ac-section-heading ac-section-heading-page">
+    <div>
+      <p class="ac-eyebrow">Static page</p>
+      <h1><%= page.title || '页面' %></h1>
+    </div>
+  </header>
+
+  <% if (page.content && page.content.trim()) { %>
+    <div class="ac-prose">
+      <%- page.content %>
+    </div>
+  <% } else { %>
+    <section class="ac-placeholder-card">
+      <h2>这里还在布置中</h2>
+      <p>这个页面已经接入新的 Hexo 主题视觉系统，后续可以继续补充更多固定内容。</p>
+    </section>
+  <% } %>
+</article>

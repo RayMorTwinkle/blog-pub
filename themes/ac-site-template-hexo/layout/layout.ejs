@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="<%= config.language || 'zh-CN' %>" data-theme="<%= theme.appearance.default_mode || 'nord' %>">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+      <% if (page.title) { %>
+        <%= page.title %> | <%= config.title %>
+      <% } else { %>
+        <%= config.title %>
+      <% } %>
+    </title>
+    <meta name="description" content="<%= page.description || config.description || theme.sidebar.subtitle %>">
+    <link rel="icon" href="<%- url_for(theme.assets.favicon) %>">
+    <script>
+      (function () {
+        var preferred = localStorage.getItem('ac-theme');
+        var fallback = '<%= theme.appearance.default_mode || "nord" %>';
+        if (!preferred) {
+          preferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'night' : fallback;
+        }
+        document.documentElement.setAttribute('data-theme', preferred);
+      })();
+    </script>
+    <%- css('css/ac-theme.css') %>
+    <% if (page.layout === 'post' || page.layout === 'page') { %>
+      <link rel="preconnect" href="https://cdn.jsdelivr.net">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+    <% } %>
+  </head>
+  <body class="ac-body ac-page-<%= page.layout || 'index' %>">
+    <div class="ac-app-shell">
+      <%- partial('partial/sidebar', { page: page, theme: theme, config: config, url_for: url_for, is_home: is_home, is_post: is_post, is_archive: is_archive, is_tag: is_tag }) %>
+      <div class="ac-main-shell">
+        <button
+          class="ac-mobile-toggle"
+          type="button"
+          aria-label="打开导航"
+          data-nav-toggle
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <%- partial('partial/header-banner', { theme: theme, url_for: url_for }) %>
+        <header class="ac-mobile-header">
+          <p class="ac-mobile-kicker">Animal Crossing style Hexo</p>
+          <h1><%= config.title %></h1>
+        </header>
+        <main class="ac-content-shell">
+          <%- body %>
+        </main>
+        <footer class="ac-site-footer">
+          <div>
+            <strong><%= theme.sidebar.title || config.title %></strong>
+            <p><%= theme.sidebar.subtitle || config.description || '' %></p>
+          </div>
+          <p>Powered by Hexo · Styled after ac-site-template</p>
+        </footer>
+        <%- partial('partial/footer-banner', { theme: theme, url_for: url_for }) %>
+      </div>
+    </div>
+    <%- js('js/theme.js') %>
+  </body>
+</html>
