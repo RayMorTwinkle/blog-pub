@@ -694,6 +694,47 @@ samp {
   gap: 0.85rem;
 }
 
+.ac-info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.ac-info-grid-compact {
+  margin: 0 0 1.2rem;
+}
+
+.ac-info-card {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.04));
+  border: 1px solid var(--ac-border);
+  box-shadow: var(--ac-shadow);
+  border-radius: var(--ac-radius-md);
+  padding: 1.15rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ac-info-card span {
+  color: var(--ac-primary-dark);
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.ac-info-card strong {
+  color: var(--ac-text-strong);
+  font-size: 1.05rem;
+}
+
+.ac-info-card p {
+  margin: 0;
+  color: var(--ac-text-muted);
+  line-height: 1.8;
+}
+
 .ac-tag-cloud {
   padding: 1rem 1.1rem;
   min-width: 10rem;
@@ -804,6 +845,10 @@ samp {
     grid-template-columns: 1fr;
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .ac-info-grid {
+    grid-template-columns: 1fr;
   }
 }
 

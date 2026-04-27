@@ -6,6 +6,24 @@
   <p class="ac-section-meta">用主题风格浏览所有标签</p>
 </section>
 
+<section class="ac-info-grid ac-info-grid-compact">
+  <article class="ac-info-card">
+    <span>标签总数</span>
+    <strong><%= site.tags ? site.tags.length : 0 %></strong>
+    <p>把主题、教程和项目笔记按关键词归档。</p>
+  </article>
+  <article class="ac-info-card">
+    <span>文章总数</span>
+    <strong><%= site.posts ? site.posts.length : 0 %></strong>
+    <p>从 Obsidian 发布后，这里会自动汇总全部文章。</p>
+  </article>
+  <article class="ac-info-card">
+    <span>浏览方式</span>
+    <strong>按主题探索</strong>
+    <p>适合先从感兴趣的方向切进去，再看对应文章。</p>
+  </article>
+</section>
+
 <section class="ac-tag-index">
   <% if (site.tags && site.tags.length) { %>
     <% site.tags.each(function(tag){ %>
