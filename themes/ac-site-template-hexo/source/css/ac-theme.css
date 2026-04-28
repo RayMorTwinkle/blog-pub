@@ -54,6 +54,7 @@ body {
   color: var(--ac-text);
   font-family: var(--ac-font-sans);
   min-height: 100%;
+  overflow-x: hidden;
 }
 
 body[data-nav-open="true"] {
@@ -91,6 +92,7 @@ samp {
   min-height: 100vh;
   display: flex;
   align-items: stretch;
+  overflow-x: clip;
 }
 
 .ac-sidebar {
@@ -234,6 +236,7 @@ samp {
   flex-direction: column;
   min-height: 100vh;
   box-shadow: -16px 0 40px rgba(135, 115, 88, 0.08);
+  overflow-x: clip;
 }
 
 .ac-mobile-toggle {
@@ -264,6 +267,7 @@ samp {
   width: min(100%, var(--ac-content-width));
   margin: 0 auto;
   padding: 2rem 1.25rem 4rem;
+  overflow-x: clip;
 }
 
 .ac-site-footer {
