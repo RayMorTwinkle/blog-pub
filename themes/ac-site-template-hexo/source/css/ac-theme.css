@@ -307,6 +307,7 @@ samp {
   border: 1px solid var(--ac-border);
   box-shadow: var(--ac-shadow);
   border-radius: var(--ac-radius-lg);
+  min-width: 0;
 }
 
 .ac-hero-card {
@@ -503,6 +504,7 @@ samp {
 .ac-page-shell {
   padding: 2rem;
   box-shadow: var(--ac-shadow-card);
+  min-width: 0;
 }
 
 .ac-post-header {
@@ -532,6 +534,7 @@ samp {
   color: var(--ac-text-strong);
   display: grid;
   gap: 1rem;
+  min-width: 0;
 }
 
 .ac-prose h2,
@@ -557,12 +560,15 @@ samp {
   text-decoration-thickness: 2px;
   text-underline-offset: 0.2rem;
   word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .ac-prose img {
   margin: 1.5rem auto;
   border-radius: var(--ac-radius-md);
   box-shadow: var(--ac-shadow);
+  max-width: 100%;
+  height: auto;
 }
 
 .ac-prose pre,
@@ -570,10 +576,16 @@ samp {
   border-radius: var(--ac-radius-sm);
 }
 
+.ac-prose > * {
+  min-width: 0;
+  max-width: 100%;
+}
+
 .ac-prose :not(pre) > code {
   padding: 0.16rem 0.42rem;
   background: rgba(42, 186, 170, 0.12);
   color: var(--ac-primary-dark);
+  overflow-wrap: anywhere;
 }
 
 .ac-prose pre {
@@ -582,6 +594,17 @@ samp {
   overflow-x: auto;
   border: 1px solid rgba(31, 148, 137, 0.12);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  width: 100%;
+  max-width: 100%;
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.ac-prose pre code {
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 
 .ac-prose p,
@@ -591,6 +614,8 @@ samp {
 .ac-prose blockquote,
 .ac-prose table {
   margin: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .ac-prose blockquote {
@@ -608,6 +633,8 @@ samp {
   background: rgba(255, 255, 255, 0.45);
   border-radius: var(--ac-radius-md);
   overflow: hidden;
+  display: block;
+  overflow-x: auto;
 }
 
 .ac-prose th,
@@ -615,6 +642,7 @@ samp {
   border: 1px solid var(--ac-border);
   padding: 0.8rem 1rem;
   text-align: left;
+  white-space: normal;
 }
 
 .ac-post-nav {
