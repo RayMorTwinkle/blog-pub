@@ -600,15 +600,15 @@ samp {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
   width: 100%;
   max-width: 100%;
-  white-space: pre-wrap;
-  word-break: break-word;
-  overflow-wrap: anywhere;
+  white-space: pre;
+  word-break: normal;
+  overflow-wrap: normal;
 }
 
 .ac-prose pre code {
-  white-space: pre-wrap;
-  word-break: break-word;
-  overflow-wrap: anywhere;
+  white-space: pre;
+  word-break: normal;
+  overflow-wrap: normal;
 }
 
 .ac-prose p,
@@ -632,21 +632,104 @@ samp {
 
 .ac-prose table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   margin: 1.5rem 0;
   background: rgba(255, 255, 255, 0.45);
   border-radius: var(--ac-radius-md);
   overflow: hidden;
   display: block;
   overflow-x: auto;
+  border: 1px solid var(--ac-border);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.25) inset;
 }
 
 .ac-prose th,
 .ac-prose td {
-  border: 1px solid var(--ac-border);
+  border-right: 1px solid var(--ac-border);
+  border-bottom: 1px solid var(--ac-border);
   padding: 0.8rem 1rem;
   text-align: left;
   white-space: normal;
+}
+
+.ac-prose th:last-child,
+.ac-prose td:last-child {
+  border-right: 0;
+}
+
+.ac-prose tr:last-child td,
+.ac-prose tr:last-child th {
+  border-bottom: 0;
+}
+
+.ac-prose figure.highlight {
+  margin: 1.5rem 0;
+  border-radius: var(--ac-radius-md);
+  background: rgba(31, 148, 137, 0.08);
+  border: 1px solid rgba(31, 148, 137, 0.12);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  overflow: hidden;
+}
+
+.ac-prose figure.highlight pre {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  width: auto;
+  max-width: none;
+  white-space: pre;
+  overflow: visible;
+}
+
+.ac-prose figure.highlight table {
+  width: 100%;
+  margin: 0;
+  border: 0;
+  border-collapse: collapse;
+  background: transparent;
+  border-radius: 0;
+  display: table;
+  overflow: visible;
+}
+
+.ac-prose figure.highlight td,
+.ac-prose figure.highlight th {
+  border: 0;
+  padding: 0;
+  vertical-align: top;
+}
+
+.ac-prose figure.highlight .gutter {
+  width: 3.4rem;
+  min-width: 3.4rem;
+  padding: 1rem 0.75rem 1rem 0;
+  background: rgba(255, 255, 255, 0.34);
+  color: var(--ac-text-muted);
+  text-align: right;
+  user-select: none;
+  border-right: 1px solid rgba(31, 148, 137, 0.14);
+}
+
+.ac-prose figure.highlight .code {
+  padding: 1rem 1.15rem;
+  overflow-x: auto;
+}
+
+.ac-prose figure.highlight .line {
+  display: block;
+  min-height: 1.7em;
+  line-height: 1.7;
+  white-space: pre;
+}
+
+.ac-prose figure.highlight code {
+  display: block;
+  white-space: pre;
+  word-break: normal;
+  overflow-wrap: normal;
 }
 
 .ac-post-nav {
