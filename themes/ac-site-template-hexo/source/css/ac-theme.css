@@ -702,11 +702,11 @@ samp {
   width: 3rem;
   min-width: 3rem;
   padding: 0.85rem 0.6rem;
-  background: var(--ac-bg-soft);
+  background: rgba(42, 186, 170, 0.08);
   color: var(--ac-text-muted);
   text-align: right;
   user-select: none;
-  border-right: 1px solid var(--ac-border);
+  border-right: 1px solid rgba(42, 186, 170, 0.2);
 }
 
 .ac-prose figure.highlight .code {
