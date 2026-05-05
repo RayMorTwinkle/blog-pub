@@ -1,0 +1,85 @@
+<section class="ac-section-heading">
+  <div>
+    <p class="ac-eyebrow">Curriculum Vitae</p>
+    <h1>简历</h1>
+  </div>
+</section>
+
+<% var cv = theme.cv || {}; %>
+
+<% if (cv.intro) { %>
+  <section class="ac-hero-card" style="margin-bottom: 2rem;">
+    <p class="ac-hero-copy"><%= cv.intro %></p>
+  </section>
+<% } %>
+
+<% if (cv.experience && cv.experience.length) { %>
+  <section class="ac-cv-section">
+    <h2 class="ac-cv-section-title">工作经历</h2>
+    <div class="ac-timeline">
+      <% cv.experience.forEach(function(item){ %>
+        <div class="ac-timeline-item">
+          <time><%= item.period %></time>
+          <div>
+            <strong><%= item.title %></strong>
+            <p><%= item.company %> · <%= item.location || '' %></p>
+            <% if (item.description) { %>
+              <p class="ac-timeline-detail"><%= item.description %></p>
+            <% } %>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  </section>
+<% } %>
+
+<% if (cv.education && cv.education.length) { %>
+  <section class="ac-cv-section">
+    <h2 class="ac-cv-section-title">教育背景</h2>
+    <div class="ac-timeline">
+      <% cv.education.forEach(function(item){ %>
+        <div class="ac-timeline-item">
+          <time><%= item.period %></time>
+          <div>
+            <strong><%= item.title %></strong>
+            <p><%= item.school %> · <%= item.location || '' %></p>
+            <% if (item.description) { %>
+              <p class="ac-timeline-detail"><%= item.description %></p>
+            <% } %>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  </section>
+<% } %>
+
+<% if (cv.skills && cv.skills.length) { %>
+  <section class="ac-cv-section">
+    <h2 class="ac-cv-section-title">技能</h2>
+    <div class="ac-tag-index">
+      <% cv.skills.forEach(function(skill){ %>
+        <span class="ac-tag-cloud"><%= skill %></span>
+      <% }) %>
+    </div>
+  </section>
+<% } %>
+
+<% if (cv.certifications && cv.certifications.length) { %>
+  <section class="ac-cv-section">
+    <h2 class="ac-cv-section-title">证书</h2>
+    <ul class="ac-cv-list">
+      <% cv.certifications.forEach(function(cert){ %>
+        <li>
+          <% if (cert.url) { %>
+            <a href="<%= cert.url %>" target="_blank" rel="noopener noreferrer"><%= cert.name %></a>
+          <% } else { %>
+            <%= cert.name %>
+          <% } %>
+          <% if (cert.date) { %>
+            <span class="ac-cv-meta"><%= cert.date %></span>
+          <% } %>
+        </li>
+      <% }) %>
+    </ul>
+  </section>
+<% } %>

@@ -1,0 +1,56 @@
+<section class="ac-section-heading">
+  <div>
+    <p class="ac-eyebrow">Projects</p>
+    <h1>项目作品</h1>
+  </div>
+</section>
+
+<% var projects = theme.projects || []; %>
+<% if (projects.length) { %>
+  <section class="ac-project-list">
+    <% projects.forEach(function(project){ %>
+      <article class="ac-project-card">
+        <% if (project.heroImage) { %>
+          <div class="ac-project-media">
+            <img src="<%- url_for(project.heroImage) %>" alt="<%= project.title %>">
+          </div>
+        <% } %>
+        <div class="ac-project-body">
+          <div class="ac-project-head">
+            <h3>
+              <% if (project.liveUrl) { %>
+                <a href="<%= project.liveUrl %>" target="_blank" rel="noopener noreferrer"><%= project.title %></a>
+              <% } else { %>
+                <%= project.title %>
+              <% } %>
+            </h3>
+            <% if (project.badge) { %>
+              <span class="ac-tag-chip"><%= project.badge %></span>
+            <% } %>
+          </div>
+          <% if (project.date) { %>
+            <time><%= project.date %></time>
+          <% } %>
+          <p><%= project.description || '' %></p>
+          <% if (project.tags && project.tags.length) { %>
+            <div class="ac-project-tags">
+              <% project.tags.forEach(function(tag){ %>
+                <span class="ac-tag-chip"><%= tag %></span>
+              <% }) %>
+            </div>
+          <% } %>
+          <div class="ac-project-actions">
+            <% if (project.github) { %>
+              <a class="ac-card-link" href="<%= project.github %>" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <% } %>
+            <% if (project.liveUrl) { %>
+              <a class="ac-card-link" href="<%= project.liveUrl %>" target="_blank" rel="noopener noreferrer">访问站点</a>
+            <% } %>
+          </div>
+        </div>
+      </article>
+    <% }) %>
+  </section>
+<% } else { %>
+  <div class="ac-empty-state">还没有添加项目，请在主题配置中补充。</div>
+<% } %>

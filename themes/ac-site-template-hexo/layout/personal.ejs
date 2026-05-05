@@ -1,0 +1,64 @@
+<section class="ac-section-heading">
+  <div>
+    <p class="ac-eyebrow">Personal</p>
+    <h1>关于我</h1>
+  </div>
+</section>
+
+<% var personal = theme.personal || {}; %>
+
+<% if (personal.avatar) { %>
+  <div class="ac-personal-avatar">
+    <img src="<%- url_for(personal.avatar) %>" alt="<%= theme.sidebar.title || config.title %>">
+  </div>
+<% } %>
+
+<% if (personal.about) { %>
+  <section class="ac-hero-card" style="margin-bottom: 2rem;">
+    <p class="ac-eyebrow">About Me</p>
+    <p class="ac-hero-copy"><%= personal.about %></p>
+  </section>
+<% } %>
+
+<% if (page.content && page.content.trim()) { %>
+  <div class="ac-prose" style="margin-bottom: 2rem;">
+    <%- page.content %>
+  </div>
+<% } %>
+
+<% if (personal.skills && personal.skills.length) { %>
+  <section class="ac-cv-section">
+    <h2 class="ac-cv-section-title">技能</h2>
+    <div class="ac-tag-index">
+      <% personal.skills.forEach(function(skill){ %>
+        <span class="ac-tag-cloud"><%= skill %></span>
+      <% }) %>
+    </div>
+  </section>
+<% } %>
+
+<% if (personal.interests && personal.interests.length) { %>
+  <section class="ac-cv-section">
+    <h2 class="ac-cv-section-title">兴趣</h2>
+    <div class="ac-tag-index">
+      <% personal.interests.forEach(function(item){ %>
+        <span class="ac-tag-cloud"><%= item %></span>
+      <% }) %>
+    </div>
+  </section>
+<% } %>
+
+<% if (personal.links && personal.links.length) { %>
+  <section class="ac-cv-section">
+    <h2 class="ac-cv-section-title">链接</h2>
+    <div class="ac-info-grid">
+      <% personal.links.forEach(function(link){ %>
+        <a class="ac-info-card" href="<%= link.url %>" target="_blank" rel="noopener noreferrer">
+          <span><%= link.label %></span>
+          <strong><%= link.name %></strong>
+          <p><%= link.description || '' %></p>
+        </a>
+      <% }) %>
+    </div>
+  </section>
+<% } %>

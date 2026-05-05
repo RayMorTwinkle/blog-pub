@@ -3,6 +3,10 @@ menu:
     label: Home
     path: /
     icon: ac-assets/nookmiles.png
+  projects:
+    label: Projects
+    path: /projects/
+    icon: ac-assets/brush.png
   blog:
     label: Blog
     path: /blog/
@@ -44,3 +48,72 @@ assets:
   theme_icon_light: ac-assets/leaf_light.png
   theme_icon_dark: ac-assets/leaf_dark.png
   favicon: ac-assets/favicon.svg
+
+projects:
+  - title: "Demo Project"
+    description: "这是一个示例项目，展示 Hexo 主题中的项目卡片布局。"
+    date: "2026-05-28"
+    heroImage: "ac-assets/itemPreview.png"
+    badge: "示例"
+    github: "https://github.com/yourusername"
+    liveUrl: "https://yourusername.github.io"
+    tags:
+      - Hexo
+      - 主题
+
+cv:
+  intro: "全栈开发者，热爱开源与自动化工具。专注于现代 Web 技术、DevOps 和独立开发。"
+  experience:
+    - title: "高级前端工程师"
+      company: "某科技公司"
+      location: "上海"
+      period: "2022 - 至今"
+      description: "负责前端架构设计与组件库开发，推动团队工程化建设。"
+    - title: "Web 开发工程师"
+      company: "某互联网公司"
+      location: "北京"
+      period: "2019 - 2022"
+      description: "参与电商平台前后端开发，负责性能优化与用户体验改进。"
+  education:
+    - title: "计算机科学与技术"
+      school: "某大学"
+      location: "上海"
+      period: "2015 - 2019"
+      description: "主修软件工程，参与多个开源项目。"
+  skills:
+    - JavaScript
+    - TypeScript
+    - React
+    - Vue
+    - Node.js
+    - Python
+    - Docker
+    - Git
+  certifications:
+    - name: "AWS Certified Solutions Architect"
+      url: "https://aws.amazon.com/certification"
+      date: "2023"
+
+personal:
+  avatar: "ac-assets/profile.jpg"
+  about: "热爱技术、设计与动森风格的开发者。喜欢折腾工具链，记录学习过程，分享实用教程。"
+  skills:
+    - 前端开发
+    - 后端架构
+    - DevOps
+    - 自动化脚本
+    - UI 设计
+  interests:
+    - 独立开发
+    - 开源贡献
+    - 游戏设计
+    - 音乐制作
+  links:
+    - label: "GitHub"
+      name: "@RayMorTwinkle"
+      url: "https://github.com/RayMorTwinkle"
+      description: "开源项目与代码仓库"
+    - label: "Blog"
+      name: "Ray's Garden"
+      url: "/blog/"
+      description: "技术博客与教程"
