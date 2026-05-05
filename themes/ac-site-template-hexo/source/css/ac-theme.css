@@ -506,7 +506,7 @@ samp {
   border-radius: var(--ac-radius-full);
   border: 1px solid var(--ac-border);
   padding: 0.38rem 0.75rem;
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(42, 186, 170, 0.1);
   color: var(--ac-text-muted);
 }
 
