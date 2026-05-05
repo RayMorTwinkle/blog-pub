@@ -621,14 +621,14 @@ samp {
 .ac-prose figure.highlight {
   margin: 1.5rem 0;
   border-radius: var(--ac-radius-md);
-  background: var(--ac-bg-soft);
+  background: rgba(42, 186, 170, 0.08);
+  border: 1px solid rgba(42, 186, 170, 0.2);
   overflow: hidden;
 }
 
 .ac-prose pre {
   padding: 1rem 1.15rem;
   overflow-x: auto;
-  border: 1px solid var(--ac-border);
 }
 
 .ac-prose pre code {
@@ -650,21 +650,21 @@ samp {
   width: 100%;
   border-collapse: collapse;
   margin: 1.5rem 0;
-  background: var(--ac-surface);
+  background: rgba(42, 186, 170, 0.04);
   border-radius: var(--ac-radius-md);
   overflow: hidden;
-  border: 1px solid var(--ac-border);
+  border: 1px solid rgba(42, 186, 170, 0.2);
 }
 
 .ac-prose th,
 .ac-prose td {
-  border-bottom: 1px solid var(--ac-border);
+  border-bottom: 1px solid rgba(42, 186, 170, 0.15);
   padding: 0.75rem 1rem;
   text-align: left;
 }
 
 .ac-prose th {
-  background: var(--ac-bg-soft);
+  background: rgba(42, 186, 170, 0.08);
   font-weight: 700;
   color: var(--ac-text-strong);
 }
