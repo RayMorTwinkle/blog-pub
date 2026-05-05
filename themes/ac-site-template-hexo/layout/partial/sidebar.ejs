@@ -10,6 +10,8 @@
     if (normalized === 'tags/') return currentPath.indexOf('tags/') === 0 || page.layout === 'tags' || is_tag();
     if (normalized === 'archives/') return currentPath.indexOf('archives/') === 0 || is_archive();
     if (normalized === 'projects/') return page.layout === 'projects' || currentPath.indexOf('projects/') === 0;
+    if (normalized === 'cv/') return page.layout === 'cv' || currentPath.indexOf('cv/') === 0;
+    if (normalized === 'personal/') return page.layout === 'personal' || currentPath.indexOf('personal/') === 0;
     if (normalized === 'about/') return page.layout === 'page' && currentPath.indexOf('about/') === 0;
     return currentPath.indexOf(normalized) === 0;
   }

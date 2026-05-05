@@ -7,10 +7,18 @@ menu:
     label: Projects
     path: /projects/
     icon: ac-assets/brush.png
+  cv:
+    label: CV
+    path: /cv/
+    icon: ac-assets/nookwallet.png
   blog:
     label: Blog
     path: /blog/
     icon: ac-assets/photos.png
+  personal:
+    label: Personal
+    path: /personal/
+    icon: ac-assets/nookcritters.png
   tags:
     label: Tags
     path: /tags/
