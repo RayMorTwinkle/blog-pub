@@ -113,15 +113,35 @@ samp {
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--ac-border) transparent;
+}
+
+.ac-sidebar-inner::-webkit-scrollbar {
+  width: 4px;
+}
+
+.ac-sidebar-inner::-webkit-scrollbar-thumb {
+  background: var(--ac-border);
+  border-radius: var(--ac-radius-full);
 }
 
 .ac-sidebar-avatar {
   width: 8.5rem;
+  height: 8.5rem;
   margin: 1rem auto 0;
   border-radius: 50%;
   overflow: hidden;
   border: 6px solid rgba(255, 255, 255, 0.45);
   box-shadow: var(--ac-shadow);
+  flex-shrink: 0;
+}
+
+.ac-sidebar-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .ac-sidebar-copy {
@@ -200,11 +220,7 @@ samp {
 }
 
 .ac-sidebar-fade {
-  height: 2.6rem;
-  margin-bottom: 0.25rem;
-  border-radius: var(--ac-radius-md);
-  background: linear-gradient(180deg, transparent, rgba(255, 255, 255, 0.5));
-  pointer-events: none;
+  display: none;
 }
 
 .ac-theme-button {
