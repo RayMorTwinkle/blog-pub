@@ -2,6 +2,22 @@
   var currentPath = page.path || '';
   var menu = theme.menu || {};
   var menuKeys = Object.keys(menu);
+  var socialConfig = theme.sidebar.social || {};
+  var socials = Array.isArray(socialConfig)
+    ? socialConfig
+    : Object.keys(socialConfig).map(function(key) {
+        var item = socialConfig[key] || {};
+        item.key = key;
+        return item;
+      });
+  function socialHref(item) {
+    var href = item.url || item.path || '#';
+    if (/^(https?:)?\/\//i.test(href) || /^(mailto:|tel:|#)/i.test(href)) return href;
+    return url_for(href);
+  }
+  function isExternalHref(href) {
+    return /^(https?:)?\/\//i.test(href);
+  }
   function isActive(item) {
     if (!item || !item.path) return false;
     var normalized = item.path.replace(/^\//, '');
@@ -52,10 +68,21 @@
         </button>
       <% } %>
 
-      <% if (theme.sidebar.social && theme.sidebar.social.github) { %>
-        <a class="ac-social-link" href="<%= theme.sidebar.social.github.url %>" target="_blank" rel="noopener noreferrer">
-          GitHub
-        </a>
+      <% if (socials.length) { %>
+        <div class="ac-social-list" aria-label="社交链接">
+          <% socials.forEach(function(item){ var href = socialHref(item); %>
+            <a
+              class="ac-social-link"
+              href="<%- href %>"
+              <% if (isExternalHref(href)) { %>target="_blank" rel="noopener noreferrer"<% } %>
+            >
+              <% if (item.icon) { %>
+                <img src="<%- url_for(item.icon) %>" alt="">
+              <% } %>
+              <span><%= item.label || item.name || item.key %></span>
+            </a>
+          <% }) %>
+        </div>
       <% } %>
     </div>
   </div>

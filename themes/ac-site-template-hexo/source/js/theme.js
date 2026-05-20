@@ -123,6 +123,54 @@
     });
   }
 
+  function calloutType(type) {
+    var normalized = String(type || 'note').toLowerCase();
+    if (/^(tip|hint|important)$/.test(normalized)) return 'tip';
+    if (/^(warning|caution|attention)$/.test(normalized)) return 'warning';
+    if (/^(danger|error|bug|failure|fail|missing)$/.test(normalized)) return 'danger';
+    if (/^(success|check|done)$/.test(normalized)) return 'success';
+    if (/^(question|help|faq)$/.test(normalized)) return 'question';
+    return 'note';
+  }
+
+  function enhanceCallouts() {
+    var labels = {
+      note: 'Note',
+      tip: 'Tip',
+      warning: 'Warning',
+      danger: 'Danger',
+      success: 'Success',
+      question: 'Question'
+    };
+
+    document.querySelectorAll('.ac-prose blockquote').forEach(function (quote) {
+      if (quote.classList.contains('ac-callout')) return;
+
+      var first = quote.firstElementChild;
+      if (!first || !/^(P|DIV)$/i.test(first.tagName)) return;
+
+      var firstLine = first.textContent.trim().split(/\r?\n/)[0];
+      var match = firstLine.match(/^\[!([a-z-]+)\][+-]?\s*(.*)$/i);
+      if (!match) return;
+
+      var type = calloutType(match[1]);
+      var title = match[2].trim() || labels[type] || 'Note';
+      var titleElement = document.createElement('div');
+      titleElement.className = 'ac-callout-title';
+      titleElement.textContent = title;
+
+      quote.classList.add('ac-callout', 'ac-callout-' + type);
+      first.innerHTML = first.innerHTML
+        .replace(/^\s*\[![^\]]+\][+-]?\s*[^\n<]*(\n|<br\s*\/?>)?/i, '')
+        .trim();
+      if (!first.textContent.trim()) {
+        first.remove();
+      }
+
+      quote.insertBefore(titleElement, quote.firstChild);
+    });
+  }
+
   function enhanceTables() {
     document.querySelectorAll('.ac-prose table').forEach(function (table) {
       if (table.closest('figure.highlight') || table.parentElement.classList.contains('ac-table-wrap')) return;
@@ -166,6 +214,7 @@
     });
 
     enhanceCodeBlocks();
+    enhanceCallouts();
     enhanceTables();
   });
 })();

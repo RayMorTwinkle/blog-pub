@@ -40,6 +40,11 @@ sidebar:
     github:
       label: GitHub
       url: https://github.com/RayMorTwinkle
+      icon: ac-assets/news.png
+    contact:
+      label: Contact
+      url: /about/
+      icon: ac-assets/messages.png
 
 appearance:
   default_mode: nord

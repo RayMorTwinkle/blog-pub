@@ -32,21 +32,23 @@
     <div class="ac-app-shell">
       <%- partial('partial/sidebar', { page: page, theme: theme, config: config, url_for: url_for, is_home: is_home, is_post: is_post, is_archive: is_archive, is_tag: is_tag }) %>
       <div class="ac-main-shell">
-        <button
-          class="ac-mobile-toggle"
-          type="button"
-          aria-label="打开导航"
-          data-nav-toggle
-        >
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-        <%- partial('partial/header-banner', { theme: theme, url_for: url_for }) %>
         <header class="ac-mobile-header">
-          <p class="ac-mobile-kicker">Animal Crossing style Hexo</p>
-          <h1><%= config.title %></h1>
+          <button
+            class="ac-mobile-toggle"
+            type="button"
+            aria-label="打开导航"
+            data-nav-toggle
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          <a class="ac-mobile-brand" href="<%- url_for('/') %>">
+            <span><%= config.title %></span>
+            <small>Animal Crossing style Hexo</small>
+          </a>
         </header>
+        <%- partial('partial/header-banner', { theme: theme, url_for: url_for }) %>
         <main class="ac-content-shell">
           <%- body %>
         </main>
