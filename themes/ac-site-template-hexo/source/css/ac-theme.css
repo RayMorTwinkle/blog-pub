@@ -646,6 +646,19 @@ samp {
   border-radius: 0 var(--ac-radius-md) var(--ac-radius-md) 0;
 }
 
+.ac-prose blockquote:has(> figure.highlight:only-child),
+.ac-prose blockquote:has(> table:only-child) {
+  padding: 0;
+  border-left: 0;
+  background: transparent;
+  border-radius: 0;
+}
+
+.ac-prose blockquote:has(> figure.highlight:only-child) > figure.highlight,
+.ac-prose blockquote:has(> table:only-child) > table {
+  margin: 0;
+}
+
 .ac-prose table {
   width: 100%;
   border-collapse: collapse;
@@ -730,6 +743,48 @@ samp {
   white-space: pre;
   word-break: normal;
   overflow-wrap: normal;
+}
+
+.ac-prose figure.highlight {
+  position: relative;
+  box-shadow: 0 12px 28px rgba(31, 148, 137, 0.08);
+}
+
+.ac-prose figure.highlight::before {
+  content: "code";
+  display: flex;
+  align-items: center;
+  min-height: 2.25rem;
+  padding: 0 1rem 0 3.75rem;
+  border-bottom: 1px solid rgba(42, 186, 170, 0.18);
+  background: rgba(255, 255, 255, 0.38);
+  color: var(--ac-text-muted);
+  font-family: var(--ac-font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.ac-prose figure.highlight::after {
+  content: "";
+  position: absolute;
+  top: 0.88rem;
+  left: 1rem;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 999px;
+  background: #ff7a7a;
+  box-shadow: 0.9rem 0 #f7c948, 1.8rem 0 var(--ac-primary);
+}
+
+.ac-prose figure.highlight.bash::before,
+.ac-prose figure.highlight.zsh::before,
+.ac-prose figure.highlight.shell::before {
+  content: "shell";
+}
+
+html[data-theme="night"] .ac-prose figure.highlight::before {
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .ac-post-nav {

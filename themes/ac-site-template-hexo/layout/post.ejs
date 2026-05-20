@@ -1,8 +1,10 @@
 <%
-  var introSource = (page.excerpt || page.content || '')
+  var introSource = (page.description || page.excerpt || page.content || '')
     .replace(/<pre[\s\S]*?<\/pre>/gi, ' ')
     .replace(/<figure[\s\S]*?<\/figure>/gi, ' ')
-    .replace(/<blockquote[\s\S]*?<\/blockquote>/gi, ' ');
+    .replace(/<table[\s\S]*?<\/table>/gi, ' ')
+    .replace(/<aside[\s\S]*?<\/aside>/gi, ' ')
+    .replace(/<h[1-6][\s\S]*?<\/h[1-6]>/gi, ' ');
   var plainContent = strip_html(introSource)
     .replace(/!\[[^\]]*\]\([^)]+\)/g, ' ')
     .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$1 ')
@@ -14,7 +16,7 @@
   var introCommandLikeCount = (plainContent.match(/\b(sudo|npm|pnpm|yarn|brew|git|pmset|hexo)\b/gi) || []).length;
   var introCjkCount = (plainContent.match(/[\u4e00-\u9fff]/g) || []).length;
   var intro = plainContent.length >= 24 && !(introCommandLikeCount >= 2 && introCjkCount < 18)
-    ? truncate(plainContent, { length: 140 })
+    ? truncate(plainContent, { length: 96 })
     : '';
 %>
 <article class="ac-post-shell">

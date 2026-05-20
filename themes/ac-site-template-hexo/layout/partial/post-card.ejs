@@ -1,8 +1,10 @@
 <%
-  var contentSource = (post.excerpt || post.content || '')
+  var contentSource = (post.description || post.excerpt || post.content || '')
     .replace(/<pre[\s\S]*?<\/pre>/gi, ' ')
     .replace(/<figure[\s\S]*?<\/figure>/gi, ' ')
-    .replace(/<blockquote[\s\S]*?<\/blockquote>/gi, ' ');
+    .replace(/<table[\s\S]*?<\/table>/gi, ' ')
+    .replace(/<aside[\s\S]*?<\/aside>/gi, ' ')
+    .replace(/<h[1-6][\s\S]*?<\/h[1-6]>/gi, ' ');
   var rawContent = strip_html(contentSource)
     .replace(/!\[[^\]]*\]\([^)]+\)/g, ' ')
     .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '$1 ')
@@ -16,7 +18,7 @@
   var commandLikeCount = (rawContent.match(/\b(sudo|npm|pnpm|yarn|brew|git|pmset|hexo)\b/gi) || []).length;
   var cjkCount = (rawContent.match(/[\u4e00-\u9fff]/g) || []).length;
   var summary = rawContent.length >= 18 && !(commandLikeCount >= 2 && cjkCount < 14)
-    ? truncate(rawContent, { length: 110 })
+    ? truncate(rawContent, { length: 96 })
     : '';
 %>
 <article class="ac-post-card">
