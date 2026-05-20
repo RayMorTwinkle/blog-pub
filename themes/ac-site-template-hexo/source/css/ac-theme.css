@@ -640,10 +640,33 @@ samp {
 
 .ac-prose blockquote {
   margin: 1.5rem 0;
-  padding: 1rem 1.25rem;
-  border-left: 4px solid var(--ac-primary);
-  background: rgba(42, 186, 170, 0.08);
-  border-radius: 0 var(--ac-radius-md) var(--ac-radius-md) 0;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding: 1.15rem 1.35rem 1.15rem 1.65rem;
+  border: 1px solid rgba(42, 186, 170, 0.22);
+  border-radius: var(--ac-radius-md);
+  background:
+    linear-gradient(135deg, rgba(42, 186, 170, 0.13), rgba(255, 253, 248, 0.62) 55%),
+    rgba(42, 186, 170, 0.06);
+  box-shadow: 0 12px 28px rgba(31, 148, 137, 0.08);
+}
+
+.ac-prose blockquote::before {
+  content: none;
+}
+
+.ac-prose blockquote::after {
+  content: "";
+  position: absolute;
+  inset: 1rem auto 1rem 0.75rem;
+  width: 0.25rem;
+  border-radius: var(--ac-radius-full);
+  background: linear-gradient(180deg, var(--ac-primary-light), var(--ac-primary));
+}
+
+.ac-prose blockquote > * + * {
+  margin-top: 0.75rem;
 }
 
 .ac-prose blockquote:has(> figure.highlight:only-child),
@@ -653,6 +676,18 @@ samp {
   border-left: 0;
   background: transparent;
   border-radius: 0;
+  box-shadow: none;
+  overflow: visible;
+  isolation: auto;
+}
+
+.ac-prose blockquote:has(> figure.highlight:only-child)::before,
+.ac-prose blockquote:has(> figure.highlight:only-child)::after,
+.ac-prose blockquote:has(> table:only-child)::before,
+.ac-prose blockquote:has(> table:only-child)::after,
+.ac-prose blockquote.ac-quote-table-only::before,
+.ac-prose blockquote.ac-quote-table-only::after {
+  content: none;
 }
 
 .ac-prose blockquote:has(> figure.highlight:only-child) > figure.highlight,
@@ -665,14 +700,52 @@ samp {
   width: 100%;
   max-width: 100%;
   margin: 1.5rem 0;
+  position: relative;
+  padding-top: 2.25rem;
   overflow-x: auto;
   overflow-y: hidden;
-  border: 1px solid rgba(42, 186, 170, 0.2);
+  border: 1px solid rgba(42, 186, 170, 0.24);
   border-radius: var(--ac-radius-md);
-  background: rgba(42, 186, 170, 0.04);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.48), transparent 2.25rem),
+    rgba(42, 186, 170, 0.045);
+  box-shadow:
+    0 12px 28px rgba(31, 148, 137, 0.08),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.18);
   scrollbar-width: thin;
   scrollbar-color: rgba(42, 186, 170, 0.45) transparent;
+}
+
+.ac-table-wrap::before {
+  content: "table";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  min-height: 2.25rem;
+  padding: 0 1rem 0 3.75rem;
+  border-bottom: 1px solid rgba(42, 186, 170, 0.18);
+  color: var(--ac-text-muted);
+  font-family: var(--ac-font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
+.ac-table-wrap::after {
+  content: "";
+  position: absolute;
+  top: 0.88rem;
+  left: 1rem;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 999px;
+  background: #ff7a7a;
+  box-shadow: 0.9rem 0 #f7c948, 1.8rem 0 var(--ac-primary);
+  pointer-events: none;
 }
 
 .ac-table-wrap::-webkit-scrollbar {
@@ -709,15 +782,29 @@ samp {
 .ac-prose th,
 .ac-prose td {
   border-bottom: 1px solid rgba(42, 186, 170, 0.15);
+  border-right: 1px solid rgba(42, 186, 170, 0.12);
   padding: 0.75rem 1rem;
   text-align: left;
   vertical-align: top;
 }
 
+.ac-prose th:last-child,
+.ac-prose td:last-child {
+  border-right: 0;
+}
+
 .ac-prose th {
-  background: rgba(42, 186, 170, 0.08);
+  background: rgba(42, 186, 170, 0.12);
   font-weight: 700;
   color: var(--ac-text-strong);
+}
+
+.ac-prose tr {
+  transition: background 0.15s ease;
+}
+
+.ac-prose tbody tr:hover {
+  background: rgba(42, 186, 170, 0.07);
 }
 
 .ac-prose tr:last-child td {
@@ -892,6 +979,24 @@ samp {
 
 html[data-theme="night"] .ac-prose figure.highlight::before {
   background: rgba(255, 255, 255, 0.08);
+}
+
+html[data-theme="night"] .ac-prose blockquote {
+  background:
+    linear-gradient(135deg, rgba(42, 186, 170, 0.16), rgba(45, 53, 84, 0.72) 55%),
+    rgba(42, 186, 170, 0.08);
+}
+
+html[data-theme="night"] .ac-prose blockquote:has(> figure.highlight:only-child),
+html[data-theme="night"] .ac-prose blockquote:has(> table:only-child),
+html[data-theme="night"] .ac-prose blockquote.ac-quote-table-only {
+  background: transparent;
+}
+
+html[data-theme="night"] .ac-table-wrap {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), transparent 2.25rem),
+    rgba(42, 186, 170, 0.065);
 }
 
 html[data-theme="night"] .ac-code-copy {
