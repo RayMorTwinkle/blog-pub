@@ -1,3 +1,7 @@
+# 内容编辑入口:
+# - Projects/CV/Personal: 修改本文件下方的 projects/cv/personal 区块。
+# - About: 修改 blog-pub/source/about/index.md。
+# - 更详细说明见 themes/ac-site-template-hexo/docs/content-editing.md。
 menu:
   home:
     label: Home

@@ -20,15 +20,23 @@
   var summary = rawContent.length >= 18 && !(commandLikeCount >= 2 && cjkCount < 14)
     ? truncate(rawContent, { length: 96 })
     : '';
-  var imageSource = post.cover || post.heroImage || post.image || post.thumbnail || post.banner || '';
-  if (!imageSource) {
+  var showMedia = typeof show_media === 'undefined' ? false : !!show_media;
+  var imageSource = showMedia ? (post.cover || post.heroImage || post.image || post.thumbnail || post.banner || '') : '';
+  if (showMedia && !imageSource) {
     var firstImageMatch = String(post.content || post.excerpt || '').match(/<img[^>]+src=["']([^"']+)["']/i);
     imageSource = firstImageMatch ? firstImageMatch[1] : '';
   }
   function cardAssetUrl(assetPath) {
-    if (!assetPath) return '';
-    if (/^(https?:)?\/\//i.test(assetPath) || /^data:/i.test(assetPath)) return assetPath;
-    return url_for(assetPath);
+    var rawPath = String(assetPath || '').trim();
+    if (!rawPath) return '';
+    if (/^(https?:)?\/\//i.test(rawPath) || /^(data|blob):/i.test(rawPath)) return rawPath;
+
+    var siteRoot = (typeof config !== 'undefined' && config.root ? String(config.root) : '/').replace(/\/+$/, '');
+    if (siteRoot && siteRoot !== '/' && rawPath.indexOf(siteRoot + '/') === 0) {
+      return rawPath;
+    }
+
+    return url_for(rawPath);
   }
   var badge = post.badge || post.type || '';
 %>

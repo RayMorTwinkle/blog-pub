@@ -187,6 +187,24 @@
     });
   }
 
+  function enhancePostCardMedia() {
+    document.querySelectorAll('.ac-post-card-media img').forEach(function (image) {
+      function hideBrokenImage() {
+        var media = image.closest('.ac-post-card-media');
+        var card = image.closest('.ac-post-card');
+        if (media) media.remove();
+        if (card) card.classList.remove('has-media');
+      }
+
+      if (image.complete && image.naturalWidth === 0) {
+        hideBrokenImage();
+        return;
+      }
+
+      image.addEventListener('error', hideBrokenImage, { once: true });
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     var current = localStorage.getItem('ac-theme') || document.documentElement.getAttribute('data-theme') || 'nord';
     applyTheme(current);
@@ -216,5 +234,6 @@
     enhanceCodeBlocks();
     enhanceCallouts();
     enhanceTables();
+    enhancePostCardMedia();
   });
 })();

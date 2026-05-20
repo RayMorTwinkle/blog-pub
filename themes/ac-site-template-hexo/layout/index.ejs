@@ -18,7 +18,7 @@
 <section class="ac-card-grid">
   <% if (page.posts && page.posts.length) { %>
     <% page.posts.each(function(post){ %>
-      <%- partial('partial/post-card', { post: post, theme: theme, url_for: url_for, date: date, strip_html: strip_html }) %>
+      <%- partial('partial/post-card', { post: post, theme: theme, url_for: url_for, date: date, strip_html: strip_html, show_media: false }) %>
     <% }) %>
   <% } else { %>
     <div class="ac-empty-state">还没有文章，等下一篇从 Obsidian 同步过来。</div>

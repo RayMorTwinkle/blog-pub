@@ -1,15 +1,16 @@
-<section class="ac-section-heading">
+<section class="ac-blog-board">
   <div>
     <p class="ac-eyebrow">Blog archive</p>
-    <h1>全部文章</h1>
+    <h1>文章相册</h1>
+    <p>把从 Obsidian 同步来的笔记铺成一面文章墙。这里会自动提取正文第一张图，适合教程、截图和开发记录。</p>
   </div>
-  <p class="ac-section-meta">共 <%= site.posts.length %> 篇文章</p>
+  <span class="ac-blog-count">共 <%= site.posts.length %> 篇</span>
 </section>
 
-<section class="ac-card-grid">
+<section class="ac-card-grid ac-blog-grid">
   <% if (site.posts.length) { %>
     <% site.posts.sort('date', -1).each(function(post){ %>
-      <%- partial('partial/post-card', { post: post, theme: theme, url_for: url_for, date: date, strip_html: strip_html }) %>
+      <%- partial('partial/post-card', { post: post, theme: theme, url_for: url_for, date: date, strip_html: strip_html, show_media: true }) %>
     <% }) %>
   <% } else { %>
     <div class="ac-empty-state">这里暂时还是空的。</div>
