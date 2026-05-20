@@ -27,6 +27,118 @@
     document.body.setAttribute('data-nav-open', open ? 'false' : 'true');
   }
 
+  function legacyCopyText(text) {
+    return new Promise(function (resolve, reject) {
+      var textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.setAttribute('readonly', '');
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+
+      try {
+        var copied = document.execCommand('copy');
+        copied ? resolve() : reject(new Error('Copy command was blocked'));
+      } catch (error) {
+        reject(error);
+      } finally {
+        document.body.removeChild(textarea);
+      }
+    });
+  }
+
+  function copyText(text) {
+    return legacyCopyText(text).catch(function (error) {
+      if (navigator.clipboard && window.isSecureContext) {
+        return navigator.clipboard.writeText(text);
+      }
+
+      throw error;
+    });
+  }
+
+  function getCodeText(block) {
+    var lines = block.querySelectorAll('.code .line');
+    if (lines.length) {
+      return Array.prototype.map.call(lines, function (line) {
+        return line.textContent;
+      }).join('\n').replace(/\n+$/, '');
+    }
+
+    var pre = block.matches('pre') ? block : block.querySelector('pre');
+    return pre ? pre.textContent.replace(/\n+$/, '') : '';
+  }
+
+  function selectCode(block) {
+    var code = block.querySelector('.code pre') || block.querySelector('.code') || block.querySelector('pre');
+    if (!code || !window.getSelection) return false;
+
+    var selection = window.getSelection();
+    var range = document.createRange();
+    range.selectNodeContents(code);
+    selection.removeAllRanges();
+    selection.addRange(range);
+    return true;
+  }
+
+  function enhanceCodeBlocks() {
+    document.querySelectorAll('.ac-prose figure.highlight').forEach(function (block) {
+      if (block.querySelector('.ac-code-copy')) return;
+
+      var button = document.createElement('button');
+      button.className = 'ac-code-copy';
+      button.type = 'button';
+      button.textContent = 'Copy';
+      button.setAttribute('aria-label', '复制代码');
+
+      button.addEventListener('click', function () {
+        var text = getCodeText(block);
+        if (!text) return;
+
+        copyText(text).then(function () {
+          button.textContent = 'Copied';
+          button.classList.add('is-copied');
+          window.setTimeout(function () {
+            button.textContent = 'Copy';
+            button.classList.remove('is-copied');
+          }, 1500);
+        }).catch(function () {
+          button.textContent = selectCode(block) ? 'Selected' : 'Failed';
+          button.classList.add('is-copied');
+          window.setTimeout(function () {
+            button.textContent = 'Copy';
+            button.classList.remove('is-copied');
+          }, 1500);
+        });
+      });
+
+      block.appendChild(button);
+    });
+  }
+
+  function hasOnlyElement(parent, element) {
+    return Array.prototype.every.call(parent.childNodes, function (node) {
+      return node === element || node.nodeType === Node.TEXT_NODE && !node.textContent.trim();
+    });
+  }
+
+  function enhanceTables() {
+    document.querySelectorAll('.ac-prose table').forEach(function (table) {
+      if (table.closest('figure.highlight') || table.parentElement.classList.contains('ac-table-wrap')) return;
+
+      var parent = table.parentElement;
+      if (parent && parent.tagName === 'BLOCKQUOTE' && hasOnlyElement(parent, table)) {
+        parent.classList.add('ac-quote-table-only');
+      }
+
+      var wrap = document.createElement('div');
+      wrap.className = 'ac-table-wrap';
+      table.parentNode.insertBefore(wrap, table);
+      wrap.appendChild(table);
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     var current = localStorage.getItem('ac-theme') || document.documentElement.getAttribute('data-theme') || 'nord';
     applyTheme(current);
@@ -52,5 +164,8 @@
         document.body.setAttribute('data-nav-open', 'false');
       }
     });
+
+    enhanceCodeBlocks();
+    enhanceTables();
   });
 })();

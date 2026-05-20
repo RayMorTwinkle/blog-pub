@@ -647,7 +647,8 @@ samp {
 }
 
 .ac-prose blockquote:has(> figure.highlight:only-child),
-.ac-prose blockquote:has(> table:only-child) {
+.ac-prose blockquote:has(> table:only-child),
+.ac-prose blockquote.ac-quote-table-only {
   padding: 0;
   border-left: 0;
   background: transparent;
@@ -655,8 +656,36 @@ samp {
 }
 
 .ac-prose blockquote:has(> figure.highlight:only-child) > figure.highlight,
-.ac-prose blockquote:has(> table:only-child) > table {
+.ac-prose blockquote:has(> table:only-child) > table,
+.ac-prose blockquote.ac-quote-table-only > .ac-table-wrap {
   margin: 0;
+}
+
+.ac-table-wrap {
+  width: 100%;
+  max-width: 100%;
+  margin: 1.5rem 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  border: 1px solid rgba(42, 186, 170, 0.2);
+  border-radius: var(--ac-radius-md);
+  background: rgba(42, 186, 170, 0.04);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(42, 186, 170, 0.45) transparent;
+}
+
+.ac-table-wrap::-webkit-scrollbar {
+  height: 0.55rem;
+}
+
+.ac-table-wrap::-webkit-scrollbar-thumb {
+  background: rgba(42, 186, 170, 0.45);
+  border-radius: var(--ac-radius-full);
+}
+
+.ac-table-wrap::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 .ac-prose table {
@@ -669,11 +698,20 @@ samp {
   border: 1px solid rgba(42, 186, 170, 0.2);
 }
 
+.ac-table-wrap > table {
+  min-width: 34rem;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
 .ac-prose th,
 .ac-prose td {
   border-bottom: 1px solid rgba(42, 186, 170, 0.15);
   padding: 0.75rem 1rem;
   text-align: left;
+  vertical-align: top;
 }
 
 .ac-prose th {
@@ -702,6 +740,7 @@ samp {
   background: transparent;
   border-radius: 0;
   display: table;
+  table-layout: fixed;
 }
 
 .ac-prose figure.highlight td,
@@ -723,8 +762,32 @@ samp {
 }
 
 .ac-prose figure.highlight .code {
+  width: calc(100% - 3rem);
+  max-width: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.ac-prose figure.highlight .code pre {
+  width: 100%;
+  max-width: 100%;
   padding: 0.85rem 1rem;
   overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(42, 186, 170, 0.4) transparent;
+}
+
+.ac-prose figure.highlight .code pre::-webkit-scrollbar {
+  height: 0.55rem;
+}
+
+.ac-prose figure.highlight .code pre::-webkit-scrollbar-thumb {
+  background: rgba(42, 186, 170, 0.4);
+  border-radius: var(--ac-radius-full);
+}
+
+.ac-prose figure.highlight .code pre::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 .ac-prose figure.highlight .line {
@@ -732,6 +795,11 @@ samp {
   min-height: 1.6em;
   line-height: 1.6;
   white-space: pre;
+}
+
+.ac-prose figure.highlight .code .line {
+  width: max-content;
+  min-width: 100%;
 }
 
 .ac-prose figure.highlight br {
@@ -755,7 +823,7 @@ samp {
   display: flex;
   align-items: center;
   min-height: 2.25rem;
-  padding: 0 1rem 0 3.75rem;
+  padding: 0 6.2rem 0 3.75rem;
   border-bottom: 1px solid rgba(42, 186, 170, 0.18);
   background: rgba(255, 255, 255, 0.38);
   color: var(--ac-text-muted);
@@ -777,6 +845,45 @@ samp {
   box-shadow: 0.9rem 0 #f7c948, 1.8rem 0 var(--ac-primary);
 }
 
+.ac-code-copy {
+  position: absolute;
+  top: 0.38rem;
+  right: 0.65rem;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 4.25rem;
+  min-height: 1.48rem;
+  padding: 0.18rem 0.65rem;
+  border: 1px solid rgba(42, 186, 170, 0.28);
+  border-radius: var(--ac-radius-full);
+  background: rgba(255, 253, 248, 0.72);
+  color: var(--ac-primary-dark);
+  box-shadow: 0 5px 14px rgba(31, 148, 137, 0.1);
+  cursor: pointer;
+  font-family: var(--ac-font-mono);
+  font-size: 0.72rem;
+  font-weight: 800;
+  line-height: 1;
+  transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.ac-code-copy:hover,
+.ac-code-copy:focus-visible {
+  border-color: rgba(42, 186, 170, 0.55);
+  background: rgba(42, 186, 170, 0.14);
+  color: var(--ac-text-strong);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.ac-code-copy.is-copied {
+  background: rgba(42, 186, 170, 0.18);
+  border-color: rgba(42, 186, 170, 0.6);
+  color: var(--ac-primary-dark);
+}
+
 .ac-prose figure.highlight.bash::before,
 .ac-prose figure.highlight.zsh::before,
 .ac-prose figure.highlight.shell::before {
@@ -785,6 +892,20 @@ samp {
 
 html[data-theme="night"] .ac-prose figure.highlight::before {
   background: rgba(255, 255, 255, 0.08);
+}
+
+html[data-theme="night"] .ac-code-copy {
+  background: rgba(45, 53, 84, 0.78);
+  border-color: rgba(88, 212, 194, 0.28);
+  color: var(--ac-primary-light);
+}
+
+html[data-theme="night"] .ac-code-copy:hover,
+html[data-theme="night"] .ac-code-copy:focus-visible,
+html[data-theme="night"] .ac-code-copy.is-copied {
+  background: rgba(42, 186, 170, 0.18);
+  border-color: rgba(88, 212, 194, 0.58);
+  color: var(--ac-text-strong);
 }
 
 .ac-post-nav {
