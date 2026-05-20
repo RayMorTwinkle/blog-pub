@@ -1,7 +1,9 @@
 <%
   var currentPath = page.path || '';
   var menu = theme.menu || {};
-  var menuKeys = Object.keys(menu);
+  var menuKeys = Object.keys(menu).filter(function(key) {
+    return !menu[key].hidden;
+  });
   var socialConfig = theme.sidebar.social || {};
   var socials = Array.isArray(socialConfig)
     ? socialConfig

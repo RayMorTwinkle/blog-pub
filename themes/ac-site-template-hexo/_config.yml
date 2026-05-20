@@ -15,6 +15,7 @@ menu:
     label: CV
     path: /cv/
     icon: ac-assets/nookwallet.png
+    hidden: true
   blog:
     label: Blog
     path: /blog/

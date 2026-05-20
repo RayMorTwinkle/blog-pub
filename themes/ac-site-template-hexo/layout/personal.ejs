@@ -5,7 +5,10 @@
   </div>
 </section>
 
-<% var personal = theme.personal || {}; %>
+<%
+  var personal = theme.personal || {};
+  var cv = theme.cv || {};
+%>
 
 <% if (personal.avatar) { %>
   <div class="ac-personal-avatar">
@@ -26,9 +29,83 @@
   </div>
 <% } %>
 
+<% if (cv.intro || (cv.experience && cv.experience.length) || (cv.education && cv.education.length) || (cv.certifications && cv.certifications.length)) { %>
+  <section class="ac-cv-section ac-personal-resume">
+    <h2 class="ac-cv-section-title">履历速览</h2>
+    <% if (cv.intro) { %>
+      <p class="ac-resume-intro"><%= cv.intro %></p>
+    <% } %>
+
+    <% if (cv.experience && cv.experience.length) { %>
+      <h3 class="ac-resume-subtitle">经历</h3>
+      <div class="ac-timeline">
+        <% cv.experience.forEach(function(item){ %>
+          <div class="ac-timeline-item">
+            <time><%= item.period %></time>
+            <div>
+              <strong><%= item.title %></strong>
+              <p><%= item.company %><% if (item.location) { %> · <%= item.location %><% } %></p>
+              <% if (item.description) { %>
+                <p class="ac-timeline-detail"><%= item.description %></p>
+              <% } %>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
+
+    <% if (cv.education && cv.education.length) { %>
+      <h3 class="ac-resume-subtitle">教育</h3>
+      <div class="ac-timeline">
+        <% cv.education.forEach(function(item){ %>
+          <div class="ac-timeline-item">
+            <time><%= item.period %></time>
+            <div>
+              <strong><%= item.title %></strong>
+              <p><%= item.school %><% if (item.location) { %> · <%= item.location %><% } %></p>
+              <% if (item.description) { %>
+                <p class="ac-timeline-detail"><%= item.description %></p>
+              <% } %>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    <% } %>
+
+    <% if (cv.certifications && cv.certifications.length) { %>
+      <h3 class="ac-resume-subtitle">证书</h3>
+      <ul class="ac-cv-list">
+        <% cv.certifications.forEach(function(cert){ %>
+          <li>
+            <% if (cert.url) { %>
+              <a href="<%= cert.url %>" target="_blank" rel="noopener noreferrer"><%= cert.name %></a>
+            <% } else { %>
+              <%= cert.name %>
+            <% } %>
+            <% if (cert.date) { %>
+              <span class="ac-cv-meta"><%= cert.date %></span>
+            <% } %>
+          </li>
+        <% }) %>
+      </ul>
+    <% } %>
+  </section>
+<% } %>
+
+<% if (cv.skills && cv.skills.length) { %>
+  <section class="ac-cv-section">
+    <h2 class="ac-cv-section-title">技术栈</h2>
+    <div class="ac-tag-index">
+      <% cv.skills.forEach(function(skill){ %>
+        <span class="ac-tag-cloud"><%= skill %></span>
+      <% }) %>
+    </div>
+  </section>
+<% } %>
+
 <% if (personal.skills && personal.skills.length) { %>
   <section class="ac-cv-section">
-    <h2 class="ac-cv-section-title">技能</h2>
+    <h2 class="ac-cv-section-title">擅长方向</h2>
     <div class="ac-tag-index">
       <% personal.skills.forEach(function(skill){ %>
         <span class="ac-tag-cloud"><%= skill %></span>
