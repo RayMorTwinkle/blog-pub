@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=700, initial-scale=0.55, minimum-scale=0.35, maximum-scale=5, user-scalable=yes">
+  <title>03 选择填空题｜C++ 期末救命讲义</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="./index.html"><span class="brand-mark">C++</span><span>期末救命讲义 <small>按样题考点整理</small></span></a>
+      <nav class="nav" aria-label="主导航">
+        <a href="./index.html">首页</a>
+        <a href="./01-考前必背.html">01 考前必背</a>
+        <a href="./02-运行结果题.html">02 运行结果题</a>
+        <a href="./03-选择填空题.html" aria-current="page">03 选择填空</a>
+        <a href="./04-编程题模板.html">04 编程模板</a>
+        <a href="./05-易错陷阱.html">05 易错陷阱</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="site-shell">
+    <section class="chapter-hero">
+      <span class="eyebrow">🧠 第7-33题</span>
+      <h1>03 选择填空题：题干和选项都要看全</h1>
+      <p class="lead">这一页不再只给答案。每题保留题干、选项、正确答案、错项排除。做题时先圈关键词，再看选项。</p>
+    </section>
+
+    <section class="question-card">
+      <div class="question-title"><span class="pill blue">总方法</span><h2>选择题先做 3 件事</h2></div>
+      <div class="rule-list">
+        <div class="rule-item"><strong>1. 圈题干关键词：</strong>比如“不能”“不是”“运行时”“const函数”“纯虚函数”。</div>
+        <div class="rule-item"><strong>2. 先自己说一句人话：</strong>比如“this 是指针，所以用箭头”。</div>
+        <div class="rule-item"><strong>3. 再看选项：</strong>选项很会装，你先有判断，才不容易被带跑。</div>
+      </div>
+    </section>
+
+    <section class="question-bank">
+      <article class="qa-card" id="q7">
+        <h3>第7题 构造函数调用时机</h3>
+        <div class="question-stem">下列哪个叙述是正确的（）</div>
+        <div class="options">
+          <div class="choice correct"><span class="letter">A</span><span>构造函数在声明对象的时候被调用</span></div>
+          <div class="choice"><span class="letter">B</span><span>构造函数在使用对象的时候被调用</span></div>
+          <div class="choice"><span class="letter">C</span><span>构造函数在声明类的时候被调用</span></div>
+          <div class="choice"><span class="letter">D</span><span>构造函数在使用类的时候被调用</span></div>
+        </div>
+        <div class="answer-line"><span class="answer-chip">A</span><strong>对象一声明，就像“出生”，构造函数马上自动执行。</strong></div>
+        <ul class="wrong-list"><li>B 错：不是等你使用对象才构造。</li><li>C/D 错：声明类只是写图纸，不会造对象。</li></ul>
+      </article>
+
+      <article class="qa-card" id="q8">
+        <h3>第8题 const 成员函数</h3>
+        <div class="question-stem">下列正确声明 const 函数的是（）</div>
+        <div class="options">
+          <div class="choice"><span class="letter">A</span><span><code>const int ShowData(void) { /* statements */ }</code></span></div>
+          <div class="choice"><span class="letter">B</span><span><code>int const ShowData(void) { /* statements */ }</code></span></div>
+          <div class="choice correct"><span class="letter">C</span><span><code>int ShowData(void) const { /* statements */ }</code></span></div>
+          <div class="choice"><span class="letter">D</span><span>Both A and B</span></div>
+        </div>
+        <div class="answer-line"><span class="answer-chip">C</span><strong>成员函数后面的 <code>const</code> 才表示“这个函数不改对象”。</strong></div>
+        <ul class="wrong-list"><li>A/B 的 const 修饰返回值，不是 const 成员函数。</li></ul>
+      </article>
+
+      <article class="qa-card" id="q9">
+        <h3>第9题 this 指针</h3>
+        <div class="question-stem">下列使用 this 指针访问类的数据成员中，正确的是（）</div>
+        <div class="options">
+          <div class="choice correct"><span class="letter">A</span><span><code>this-&gt;x</code></span></div>
+          <div class="choice"><span class="letter">B</span><span><code>this.x</code></span></div>
+          <div class="choice"><span class="letter">C</span><span><code>*this.x</code></span></div>
+          <div class="choice"><span class="letter">D</span><span><code>*this-x</code></span></div>
+        </div>
+        <div class="answer-line"><span class="answer-chip">A</span><strong><code>this</code> 是指针，指针访问成员用箭头 <code>-&gt;</code>。</strong></div>
+      </article>
+
+      <article class="qa-card" id="q10">
+        <h3>第10题 不能重载的运算符</h3>
+        <div class="question-stem">下列哪个运算符不能被重载（）</div>
+        <div class="options">
+          <div class="choice"><span class="letter">A</span><span><code>[]</code></span></div>
+          <div class="choice"><span class="letter">B</span><span><code>-&gt;</code></span></div>
+          <div class="choice correct"><span class="letter">C</span><span><code>?:</code></span></div>
+          <div class="choice"><span class="letter">D</span><span><code>*</code></span></div>
+        </div>
+        <div class="answer-line"><span class="answer-chip">C</span><strong>三目运算符 <code>?:</code> 不能重载，属于 C++ 固定规则。</strong></div>
+      </article>
+
+      <article class="qa-card" id="q11">
+        <h3>第11题 new 运算符</h3>
+        <div class="question-stem">关于 new 运算符，下面说法正确的是（）</div>
+        <div class="options">
+          <div class="choice correct"><span class="letter">A</span><span>返回指向已创建的对象的指针</span></div>
+          <div class="choice"><span class="letter">B</span><span>创建名为 new 的对象</span></div>
+          <div class="choice"><span class="letter">C</span><span>获取一个新类的内存</span></div>
+          <div class="choice"><span class="letter">D</span><span>告知为对象分配了多少内存</span></div>
+        </div>
+        <div class="answer-line"><span class="answer-chip">A</span><strong><code>new</code> 创建对象，结果给你一个指针。</strong></div>
+      </article>
+
+      <article class="qa-card" id="q12">
+        <h3>第12题 拷贝构造调用时机</h3>
+        <div class="question-stem">以下哪种情况将执行拷贝构造函数（）</div>
+        <div class="options">
+          <div class="choice"><span class="letter">A</span><span>当用类的一个对象去初始化该类的另一个对象时</span></div>
+          <div class="choice"><span class="letter">B</span><span>将一个对象作为实参传递给一个非引用类型的形参</span></div>
+          <div class="choice"><span class="letter">C</span><span>从一个返回类为非引用的函数返回一个对象时</span></div>
+          <div class="choice correct"><span class="letter">D</span><span>以上都是</span></div>
+        </div>
+        <div class="answer-line"><span class="answer-chip">D</span><strong>新对象、按值传参、按值返回，都是拷贝构造高发点。</strong></div>
+      </article>
+
+      <article class="qa-card" id="q13">
+        <h3>第13题 友元函数</h3>
+        <div class="question-stem">下列哪种函数不是类的成员函数（）</div>
+        <div class="options">
+          <div class="choice"><span class="letter">A</span><span>构造函数</span></div>
+          <div class="choice"><span class="letter">B</span><span>析构函数</span></div>
+          <div class="choice correct"><span class="letter">C</span><span>友元函数</span></div>
+          <div class="choice"><span class="letter">D</span><span>拷贝构造函数</span></div>
+        </div>
+        <div class="answer-line"><span class="answer-chip">C</span><strong>友元函数能访问私有成员，但它不是成员函数。像“外人拿了通行证”。</strong></div>
+      </article>
+
+      <article class="qa-card" id="q14">
+        <h3>第14题 inline 函数</h3>
+        <div class="question-stem">下列关于 inline 函数叙述正确的是（）</div>
+        <div class="options">
+          <div class="choice"><span class="letter">A</span><span>提高运行速度</span></div>
+          <div class="choice"><span class="letter">B</span><span>降低运行速度</span></div>
+          <div class="choice"><span class="letter">C</span><span>增加代码大小</span></div>
+          <div class="choice correct"><span class="letter">D</span><span>Both A and C</span></div>
+        </div>
+        <div class="answer-line"><span class="answer-chip">D</span><strong>inline 像把小函数复制到调用处：可能少跳转更快，也可能复制多了代码变大。</strong></div>
+      </article>
+
+      <article class="qa-card" id="q15">
+        <h3>第15题 抽象类</h3>
+        <div class="question-stem">抽象类（）</div>
+        <div class="options">
+          <div class="choice"><span class="letter">A</span><span>最多包含一个纯虚函数</span></div>
+          <div class="choice"><span class="letter">B</span><span>可以实例化为对象</span></div>
+          <div class="choice"><span class="letter">C</span><span>不能有抽象派生类</span></div>
+          <div class="choice correct"><span class="letter">D</span><span>不能被实例化为对象</span></div>
+        </div>
+        <div class="answer-line"><span class="answer-chip">D</span><strong>抽象类是“半成品图纸”，不能直接造对象。</strong></div>
+      </article>
+
+      <article class="qa-card" id="q16">
+        <h3>第16题 纯虚函数声明</h3>
+        <div class="question-stem">下列声明纯虚函数的正确方式是（）</div>
+        <div class="options">
+          <div class="choice"><span class="letter">A</span><span><code>virtual void Display(void){0};</code></span></div>
+          <div class="choice"><span class="letter">B</span><span><code>virtual void Display = 0;</code></span></div>
+          <div class="choice correct"><span class="letter">C</span><span><code>virtual void Display(void) = 0;</code></span></div>
+          <div class="choice"><span class="letter">D</span><span><code>void Display(void) = 0;</code></span></div>
+        </div>
+        <div class="answer-line"><span class="answer-chip">C</span><strong>纯虚函数固定写法：有 <code>virtual</code>，函数后面 <code>= 0;</code>。</strong></div>
+      </article>
+
+      <article class="qa-card" id="q17">
+        <h3>第17题 构造函数特点</h3>
+        <div class="question-stem">下面关于类的构造函数的说法正确的是（）</div>
+        <div class="options">
+          <div class="choice"><span class="letter">A</span><span>一个类只能有一个构造函数</span></div>
+          <div class="choice correct"><span class="letter">B</span><span>不能有返回类型</span></div>
+          <div class="choice"><span class="letter">C</span><span>可以为 void 类型</span></div>
+          <div class="choice"><span class="letter">D</span><span>不能使用缺省参数</span></div>
+        </div>
+        <div class="answer-line"><span class="answer-chip">B</span><strong>构造函数没有返回类型，连 <code>void</code> 都不能写。</strong></div>
+      </article>
+
+      <article class="qa-card" id="q18">
+        <h3>第18题 拷贝构造参数</h3>
+        <div class="question-stem">拷贝构造函数如何接收参数（）</div>
+        <div class="options">
+          <div class="choice"><span class="letter">A</span><span>either pass-by-value or pass-by-reference</span></div>
+          <div class="choice"><span class="letter">B</span><span>only pass-by-value</span></div>
+          <div class="choice correct"><span class="letter">C</span><span>only pass-by-reference</span></div>
+          <div class="choice"><span class="letter">D</span><span>only pass by address</span></div>
+        </div>
+        <div class="answer-line"><span class="answer-chip">C</span><strong>必须引用传参。按值传参会为了传参再调用拷贝构造，变成无限套娃。</strong></div>
+      </article>
+
+      <article class="qa-card" id="q19">
+        <h3>第19题 动态绑定</h3>
+        <div class="question-stem">下列哪个概念意味着在运行时决定所调用的函数（）</div>
+        <div class="options">
+          <div class="choice"><span class="letter">A</span><span>Data hiding</span></div>
+          <div class="choice"><span class="letter">B</span><span>Dynamic Typing</span></div>
+          <div class="choice correct"><span class="letter">C</span><span>Dynamic binding</span></div>
+          <div class="choice"><span class="letter">D</span><span>Dynamic loading</span></div>
+        </div>
+        <div class="answer-line"><span class="answer-chip">C</span><strong>运行时决定调用谁，就是动态绑定 Dynamic binding。</strong></div>
+      </article>
+
+      <article class="qa-card" id="q20">
+        <h3>第20题 函数模板</h3>
+        <div class="question-stem">所有的函数模板定义都以（）关键词开头</div>
+        <div class="options">
+          <div class="choice"><span class="letter">A</span><span>class</span></div>
+          <div class="choice"><span class="letter">B</span><span>virtual</span></div>
+          <div class="choice correct"><span class="letter">C</span><span>template</span></div>
+          <div class="choice"><span class="letter">D</span><span>operator</span></div>
+        </div>
+        <div class="answer-line"><span class="answer-chip">C</span><strong>模板题先写 <code>template &lt;typename T&gt;</code>。</strong></div>
+      </article>
+
+      <article class="qa-card" id="q21">
+        <h3>第21题 基类和派生类指针</h3>
+        <div class="question-stem">下列哪种赋值会产生编译错误（）</div>
+        <div class="options">
+          <div class="choice"><span class="letter">A</span><span>将基类对象的地址赋值给基类指针</span></div>
+          <div class="choice correct"><span class="letter">B</span><span>将基类对象的地址赋值给派生类指针</span></div>
+          <div class="choice"><span class="letter">C</span><span>将派生类对象的地址赋值给基类指针</span></div>
+          <div class="choice"><span class="letter">D</span><span>将派生类对象的地址赋值给派生类指针</span></div>
+        </div>
+        <div class="answer-line"><span class="answer-chip">B</span><strong>子类对象可以当父类看；父类对象不能硬当子类看，因为它缺少子类那一部分。</strong></div>
+      </article>
+
+      <article class="qa-card" id="q22">
+        <h3>第22题 析构函数不能重载</h3>
+        <div class="question-stem">下列函数中，（）不能重载</div>
+        <div class="options">
+          <div class="choice"><span class="letter">A</span><span>成员函数</span></div>
+          <div class="choice"><span class="letter">B</span><span>非成员函数</span></div>
+          <div class="choice correct"><span class="letter">C</span><span>析构函数</span></div>
+          <div class="choice"><span class="letter">D</span><span>构造函数</span></div>
+        </div>
+        <div class="answer-line"><span class="answer-chip">C</span><strong>析构函数没有参数，没法靠参数列表区分，所以不能重载。</strong></div>
+      </article>
+
+      <article class="qa-card" id="q23">
+        <h3>第23题 析构函数定义</h3>
+        <div class="question-stem">下面（）选项是对类的析构函数的正确定义</div>
+        <div class="options">
+          <div class="choice correct"><span class="letter">A</span><span><code>A::~A()</code></span></div>
+          <div class="choice"><span class="letter">B</span><span><code>void A::~A(参数)</code></span></div>
+          <div class="choice"><span class="letter">C</span><span><code>A::~A(参数)</code></span></div>
+          <div class="choice"><span class="letter">D</span><span><code>void A::~A()</code></span></div>
+        </div>
+        <div class="answer-line"><span class="answer-chip">A</span><strong>析构函数没有返回类型，没有参数，名字是 <code>~类名</code>。</strong></div>
+      </article>
+
+      <article class="qa-card" id="q24">
+        <h3>第24题 catch 块</h3>
+        <div class="question-stem">（）封装捕获到异常时所执行的代码</div>
+        <div class="options">
+          <div class="choice"><span class="letter">A</span><span>try块</span></div>
+          <div class="choice correct"><span class="letter">B</span><span>catch块</span></div>
+          <div class="choice"><span class="letter">C</span><span>throw</span></div>
+          <div class="choice"><span class="letter">D</span><span>exception</span></div>
+        </div>
+        <div class="answer-line"><span class="answer-chip">B</span><strong><code>try</code> 是试一试，<code>throw</code> 是扔异常，<code>catch</code> 是接住以后处理。</strong></div>
+      </article>
+
+      <article class="qa-card" id="q25">
+        <h3>第25题 new 失败异常</h3>
+        <div class="question-stem">new 操作失败时抛出的特殊异常是（）</div>
+        <div class="options">
+          <div class="choice"><span class="letter">A</span><span>exception</span></div>
+          <div class="choice correct"><span class="letter">B</span><span>bad_alloc</span></div>
+          <div class="choice"><span class="letter">C</span><span>DivideByZero</span></div>
+          <div class="choice"><span class="letter">D</span><span>no_exception</span></div>
+        </div>
+        <div class="answer-line"><span class="answer-chip">B</span><strong>内存分配失败就是 allocation bad，记 <code>bad_alloc</code>。</strong></div>
+      </article>
+
+      <article class="qa-card" id="q26">
+        <h3>第26题 静态数据成员</h3>
+        <div class="question-stem">关于静态数据成员下列正确的是（）</div>
+        <div class="options">
+          <div class="choice correct"><span class="letter">A</span><span>说明静态数据成员时前边要加修饰符 static</span></div>
+          <div class="choice"><span class="letter">B</span><span>静态数据成员可以在类体内进行初始化</span></div>
+          <div class="choice correct"><span class="letter">C</span><span>在类外引用公有静态的数据成员时，必须在静态数据成员前加类名和作用域运算符</span></div>
+          <div class="choice"><span class="letter">D</span><span>静态数据成员不是所有对象所共享的</span></div>
+        </div>
+        <div class="answer-line"><span class="answer-chip">A/C</span><strong>这题按题面看像多选，A 和 C 都正确。若老师强制单选，以老师给的答案为准。</strong></div>
+        <ul class="wrong-list"><li>B 一般错：普通静态数据成员通常要在类外定义/初始化。</li><li>D 错：static 就是所有对象共享一份。</li></ul>
+      </article>
+
+      <article class="qa-card" id="q27">
+        <h3>第27题 引用参数</h3>
+        <div class="question-stem">已知：类A中一个成员函数说明如下：<code>void Set(A &amp;a);</code> 其中，<code>A &amp;a</code> 的含义是（）</div>
+        <div class="options">
+          <div class="choice"><span class="letter">A</span><span>定义指向类A的指针为a</span></div>
+          <div class="choice"><span class="letter">B</span><span>将a的地址值赋给变量Set</span></div>
+          <div class="choice correct"><span class="letter">C</span><span>a是类A的对象引用，用来做函数Set（）的参数</span></div>
+          <div class="choice"><span class="letter">D</span><span>变量A与a按位相与作为函数Set（）的参数</span></div>
+        </div>
+        <div class="answer-line"><span class="answer-chip">C</span><strong><code>&amp;</code> 放在类型后面是引用，不是取地址。</strong></div>
+      </article>
+
+      <article class="qa-card" id="q28">
+        <h3>第28题 默认构造函数</h3>
+        <div class="question-stem">默认构造函数是（）</div>
+        <div class="options">
+          <div class="choice"><span class="letter">A</span><span>构造函数的参数均为默认参数</span></div>
+          <div class="choice"><span class="letter">B</span><span>当没有提供构造函数时，编译器提供的构造函数</span></div>
+          <div class="choice"><span class="letter">C</span><span>不执行任何初始化操作</span></div>
+          <div class="choice correct"><span class="letter">D</span><span>A和B</span></div>
+        </div>
+        <div class="answer-line"><span class="answer-chip">D</span><strong>能不带参数调用的构造函数，都可以当默认构造函数用。</strong></div>
+      </article>
+
+      <article class="qa-card" id="q29">
+        <h3>第29题 引用和指针区别</h3>
+        <div class="question-stem">引用与指针的区别（）</div>
+        <div class="options">
+          <div class="choice"><span class="letter">A</span><span>引用不能为null</span></div>
+          <div class="choice"><span class="letter">B</span><span>引用一旦建立不能更改</span></div>
+          <div class="choice"><span class="letter">C</span><span>引用无需显式解引用</span></div>
+          <div class="choice correct"><span class="letter">D</span><span>以上全是</span></div>
+        </div>
+        <div class="answer-line"><span class="answer-chip">D</span><strong>引用像对象的别名：不能为空，绑上不换，用起来像原变量。</strong></div>
+      </article>
+
+      <article class="qa-card" id="q30">
+        <h3>第30题 显式调用基类函数</h3>
+        <div class="question-stem">应在下列程序划线处填入的正确语句是（）</div>
+        <pre><code>class Base {
+public:
+    void fun() { cout &lt;&lt; "Base::fun" &lt;&lt; endl; }
+};
+class Derived : public Base {
+    void fun() {
+        ____________ // 显式调用基类的函数 fun()
+        cout &lt;&lt; "Derived::fun" &lt;&lt; endl;
+    }
+};</code></pre>
+        <div class="options">
+          <div class="choice"><span class="letter">A</span><span><code>fun();</code></span></div>
+          <div class="choice"><span class="letter">B</span><span><code>Base.fun();</code></span></div>
+          <div class="choice correct"><span class="letter">C</span><span><code>Base::fun();</code></span></div>
+          <div class="choice"><span class="letter">D</span><span><code>Base-&gt;fun();</code></span></div>
+        </div>
+        <div class="answer-line"><span class="answer-chip">C</span><strong>类名加作用域运算符：<code>Base::fun();</code>，就是点名调用父类版本。</strong></div>
+      </article>
+
+      <article class="qa-card" id="q31">
+        <h3>第31题 static 输出</h3>
+        <div class="question-stem">以下程序输出为（）</div>
+        <pre><code>class abc {
+public:
+    static int w;
+    int i;
+    abc() { i = ++w; }
+};
+int abc::w = 1;
+
+int main() {
+    abc a, b, c;
+    cout &lt;&lt; a.w &lt;&lt; " " &lt;&lt; b.i &lt;&lt; endl;
+}</code></pre>
+        <div class="options">
+          <div class="choice"><span class="letter">A</span><span>3 1</span></div>
+          <div class="choice correct"><span class="letter">B</span><span>4 3</span></div>
+          <div class="choice"><span class="letter">C</span><span>4 1</span></div>
+          <div class="choice"><span class="letter">D</span><span>3 3</span></div>
+        </div>
+        <div class="answer-line"><span class="answer-chip">B</span><strong>w 是共享的，从 1 变 2、3、4；b.i 是 b 出生时的 3。</strong></div>
+      </article>
+
+      <article class="qa-card" id="q32">
+        <h3>第32题 引用返回值</h3>
+        <div class="question-stem">以下程序输出为（）</div>
+        <pre><code>int z = 15;
+int&amp; f() { return z; }
+int main() {
+    f() = 20;
+    cout &lt;&lt; z;
+}</code></pre>
+        <div class="options">
+          <div class="choice"><span class="letter">A</span><span>15</span></div>
+          <div class="choice"><span class="letter">B</span><span>z的地址</span></div>
+          <div class="choice"><span class="letter">C</span><span>编译错误</span></div>
+          <div class="choice correct"><span class="letter">D</span><span>20</span></div>
+        </div>
+        <div class="answer-line"><span class="answer-chip">D</span><strong><code>f()</code> 返回 z 本人，所以 <code>f() = 20</code> 就是在改 z。</strong></div>
+      </article>
+
+      <article class="qa-card" id="q33">
+        <h3>第33题 函数模板 maximum</h3>
+        <div class="question-stem">给定函数模板，函数调用 <code>maximum(2, 5);</code> 和 <code>maximum(2.3, 5.2);</code> 的返回值是什么？</div>
+        <pre><code>template &lt;class T&gt;
+T maximum(T value1, T value2) {
+    if (value1 &gt; value2)
+        return value1;
+    else
+        return value2;
+}</code></pre>
+        <div class="options">
+          <div class="choice"><span class="letter">A</span><span>5 和 类型不匹配错误</span></div>
+          <div class="choice correct"><span class="letter">B</span><span>5 和 5.2</span></div>
+          <div class="choice"><span class="letter">C</span><span>2 和 2.3</span></div>
+          <div class="choice"><span class="letter">D</span><span>两条错误信息</span></div>
+        </div>
+        <div class="answer-line"><span class="answer-chip">B</span><strong>第一次 T 推成 int，返回 5；第二次 T 推成 double，返回 5.2。</strong></div>
+      </article>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="site-shell">选择题页覆盖第7-33题。遇到变形题，先找关键词，不要被选项牵着走。</div>
+  </footer>
+</body>
+</html>

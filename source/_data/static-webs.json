@@ -1,8 +1,8 @@
 [
   {
     "slug": "cpp-final-crash-course",
-    "title": "C++ 期末速成教材",
-    "description": "围绕继承、多态、三大函数和编程实战整理的静态速查教程。",
+    "title": "C++ 期末速成教材 v2",
+    "description": "围绕继承、多态、三大函数和编程实战整理的静态速查教程重置版。",
     "tags": [
       "C++",
       "教程",

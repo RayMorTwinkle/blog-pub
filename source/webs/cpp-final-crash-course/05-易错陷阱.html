@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=700, initial-scale=0.55, minimum-scale=0.35, maximum-scale=5, user-scalable=yes">
+  <title>05 易错陷阱｜C++ 期末救命讲义</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="./index.html"><span class="brand-mark">C++</span><span>期末救命讲义 <small>按样题考点整理</small></span></a>
+      <nav class="nav" aria-label="主导航">
+        <a href="./index.html">首页</a>
+        <a href="./01-考前必背.html">01 考前必背</a>
+        <a href="./02-运行结果题.html">02 运行结果题</a>
+        <a href="./03-选择填空题.html">03 选择填空</a>
+        <a href="./04-编程题模板.html">04 编程模板</a>
+        <a href="./05-易错陷阱.html" aria-current="page">05 易错陷阱</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="site-shell">
+    <section class="chapter-hero">
+      <span class="eyebrow">⚠️ 第36、37、41题</span>
+      <h1>05 易错陷阱：代码看着没红，不代表它安全</h1>
+      <p class="lead">这页专门处理问答/改错题。答题套路固定：指出问题 → 说后果 → 给修改。</p>
+    </section>
+
+    <section class="question-card" id="q36">
+      <div class="question-title">
+        <span class="pill red">第36题</span>
+        <h2>野指针：free 以后，指针不会自动变 NULL</h2>
+      </div>
+      <pre><code>char *str = (char *)malloc(100);
+strcpy(str, "hello");
+free(str);
+if (str != NULL) {
+    strcpy(str, "world");
+    printf(str);
+}</code></pre>
+      <div class="callout red">
+        <strong>标准说法</strong>
+        <code>free(str)</code> 只释放 str 指向的内存，不会把 str 变量本身改成 NULL。str 还保存着旧地址，但那块内存已经不归你管了，所以 str 成为野指针。
+      </div>
+      <table>
+        <thead><tr><th>代码</th><th>真实发生的事</th><th>考场怎么说</th></tr></thead>
+        <tbody>
+          <tr><td><code>free(str);</code></td><td>内存被还回去</td><td>释放后不能再用。</td></tr>
+          <tr><td><code>if (str != NULL)</code></td><td>大概率仍然成立</td><td>这个判断没用，因为 str 没自动变 NULL。</td></tr>
+          <tr><td><code>strcpy(str, "world")</code></td><td>往已释放内存写</td><td>结果不可预料，可能崩溃，可能看似正常。</td></tr>
+        </tbody>
+      </table>
+      <div class="answer-box">
+        <div class="label">✅ 修改</div>
+        <div class="content"><pre><code>free(str);
+str = NULL;</code></pre></div>
+      </div>
+    </section>
+
+    <section class="question-card" id="q37">
+      <div class="question-title">
+        <span class="pill red">第37题</span>
+        <h2>浅拷贝：两个对象指向同一块内存</h2>
+      </div>
+      <div class="question-stem">题目场景：类中有指针成员 <code>pFirstName</code>，执行 <code>Mike = John</code> 时，如果没有自己重载赋值运算符，就会调用默认赋值函数，逐个成员直接复制。</div>
+      <pre><code>// 重点不是完整类定义，而是这个危险动作：
+Person Mike("Mike", 25);
+Person John("John", 30);
+
+Mike = John;  // 默认赋值：只复制指针地址，不复制指针指向的内容</code></pre>
+      <div class="callout yellow">
+        <strong>人话翻译</strong>
+        默认赋值像“只复制快递单号”，不是重新买一份东西。结果 Mike 和 John 的指针都指向同一块姓名内存。
+      </div>
+      <div class="grid-2">
+        <div class="callout red"><strong>内存泄漏</strong>Mike 原来指向的内存没人释放了，像旧钥匙丢了，房子还占着。</div>
+        <div class="callout red"><strong>双重释放</strong>两个对象析构时释放同一块内存，像同一张票退两次，后果不可预料。</div>
+      </div>
+      <div class="answer-box">
+        <div class="label">✅ 解决</div>
+        <div class="content"><pre><code>Person&amp; Person::operator=(const Person&amp; rhs) {
+    if (this == &amp;rhs) return *this;
+    delete [] pFirstName;
+    pFirstName = new char[strlen(rhs.pFirstName) + 1];
+    strcpy(pFirstName, rhs.pFirstName);
+    return *this;
+}</code></pre></div>
+      </div>
+      <div class="callout green">
+        <strong>记法</strong>
+        类里有 <code>char*</code>、<code>int*</code> 这种自己管内存的指针，就想到：析构、拷贝构造、赋值运算符，三件套要一起管。
+      </div>
+    </section>
+
+    <section class="question-card" id="q41">
+      <div class="question-title">
+        <span class="pill yellow">第41题</span>
+        <h2>私有成员：外面不能直接碰</h2>
+      </div>
+      <pre><code>class Person {
+public:
+    double getHeight() { return this-&gt;height; }
+    void setHeight(double height) { this-&gt;height = height; }
+private:
+    double height;
+};
+
+int main() {
+    Person p;
+    p.height = 1.85;       // 错
+    cout &lt;&lt; p.getHeight();
+}</code></pre>
+      <div class="answer-box">
+        <div class="label">✅ 修正</div>
+        <div class="content"><pre><code>Person p;
+p.setHeight(1.85);
+cout &lt;&lt; p.getHeight() &lt;&lt; '\n';</code></pre></div>
+      </div>
+      <div class="callout blue">
+        <strong>考场说法</strong>
+        <code>height</code> 是 private 私有成员，只能在类内部直接访问。类外要通过 public 的 setter/getter 间接访问。
+      </div>
+    </section>
+
+    <section class="question-card">
+      <div class="question-title">
+        <span class="pill green">总背诵</span>
+        <h2>改错题固定回答格式</h2>
+      </div>
+      <div class="rule-list">
+        <div class="rule-item"><strong>第一句：</strong>这里有 bug，问题是……</div>
+        <div class="rule-item"><strong>第二句：</strong>原因是……，会导致……</div>
+        <div class="rule-item"><strong>第三句：</strong>修改方法是……</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="site-shell">易错陷阱页覆盖第36、37、41题，也服务于 String/Stack 里的内存管理理解。</div>
+  </footer>
+</body>
+</html>

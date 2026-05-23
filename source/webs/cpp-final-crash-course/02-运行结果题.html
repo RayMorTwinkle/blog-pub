@@ -1,0 +1,763 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=700, initial-scale=0.55, minimum-scale=0.35, maximum-scale=5, user-scalable=yes">
+  <title>02 运行结果题｜C++ 期末救命讲义</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="./index.html">
+        <span class="brand-mark">C++</span>
+        <span>期末救命讲义 <small>按样题考点整理</small></span>
+      </a>
+      <nav class="nav" aria-label="主导航">
+        <a href="./index.html">首页</a>
+        <a href="./01-考前必背.html">01 考前必背</a>
+        <a href="./02-运行结果题.html" aria-current="page">02 运行结果题</a>
+        <a href="./03-选择填空题.html">03 选择填空</a>
+        <a href="./04-编程题模板.html">04 编程模板</a>
+        <a href="./05-易错陷阱.html">05 易错陷阱</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="site-shell">
+    <section class="chapter-hero">
+      <span class="eyebrow">🧩 第2、5、6题样张</span>
+      <h1>02 运行结果题：把代码当成一条时间线</h1>
+      <p class="lead">
+        运行结果题最怕“盯着一大坨代码发呆”。新版做法：先看样题输出，再拆时间线，最后背做题方法。
+      </p>
+    </section>
+
+    <div class="study-layout">
+      <div>
+        <section class="question-card" id="q2">
+          <div class="question-title">
+            <span class="pill red">第2题</span>
+            <span class="pill blue">构造 + 拷贝 + 析构</span>
+            <h2>ClassA / ClassB 输出题</h2>
+          </div>
+
+          <div class="callout yellow">
+            <strong>先抓关键词</strong>
+            `ClassB deri;` 是出生；`ClassA base = deri;` 是切片拷贝；`find(deri);` 是引用传参，不拷贝。
+          </div>
+
+          <div class="two-col-code">
+            <aside class="translation">
+              <h4>人话翻译</h4>
+              <ul>
+                <li>`deri`：一个完整的 ClassB 对象。</li>
+                <li>`base = deri`：只拿 ClassA 那一层，ClassB 部分被切掉。</li>
+                <li>`find(const ClassA&amp;)`：引用传参，像给对象起外号，不复制。</li>
+                <li>`invoke` 没有 `virtual`，所以看声明类型：ClassA。</li>
+              </ul>
+            </aside>
+
+            <pre><code>#include &lt;iostream&gt;
+using namespace std;
+
+class ClassA {
+public:
+    ClassA() { cout &lt;&lt; "ClassA" &lt;&lt; endl; }
+    ClassA(int i) { cout &lt;&lt; "ClassA" &lt;&lt; i &lt;&lt; endl; }
+    ClassA(const ClassA&amp; src) { cout &lt;&lt; "ClassA copy" &lt;&lt; endl; }
+    virtual ~ClassA() { cout &lt;&lt; "Delete ClassA" &lt;&lt; endl; }
+    void invoke(int i = 7) const {
+        cout &lt;&lt; "invoke ClassA" &lt;&lt; i &lt;&lt; endl;
+    }
+};
+
+class ClassB: public ClassA {
+public:
+    ClassB() : ClassA(1) { cout &lt;&lt; "ClassB" &lt;&lt; endl; }
+    virtual ~ClassB() { cout &lt;&lt; "Delete ClassB" &lt;&lt; endl; }
+    void invoke(int i = 9) const {
+        cout &lt;&lt; "invoke ClassB" &lt;&lt; i &lt;&lt; endl;
+    }
+};
+
+void find(const ClassA&amp; inKlep) {
+    ClassA theClassA;
+    inKlep.invoke(2);
+}
+
+int main() {
+    ClassB deri;
+    ClassA base = deri;
+    find(deri);
+    cout &lt;&lt; "Done!" &lt;&lt; endl;
+    return 0;
+}</code></pre>
+          </div>
+
+          <div class="answer-box">
+            <div class="label">✅ 样题输出</div>
+            <div class="content">
+              <pre><code>ClassA1
+ClassB
+ClassA copy
+ClassA
+invoke ClassA2
+Delete ClassA
+Done!
+Delete ClassA
+Delete ClassB
+Delete ClassA</code></pre>
+            </div>
+          </div>
+
+          <h3>字幕版时间线：一行输出配一行原因</h3>
+          <table class="output-table">
+            <thead>
+              <tr>
+                <th>步</th>
+                <th>代码正在做什么</th>
+                <th>此刻输出</th>
+                <th>人话解释</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td><code>ClassB deri;</code></td>
+                <td><span class="output-line">ClassA1</span></td>
+                <td>要造 ClassB，得先造它身体里的 ClassA 父类部分。`ClassB()` 写了 <code>: ClassA(1)</code>，所以父类构造输出 `ClassA1`。</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td><code>ClassB deri;</code></td>
+                <td><span class="output-line">ClassB</span></td>
+                <td>父类部分造完了，才轮到 ClassB 自己出生。继承构造顺序就是：先父后子。</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td><code>ClassA base = deri;</code></td>
+                <td><span class="output-line">ClassA copy</span></td>
+                <td>用 ClassB 初始化 ClassA，新对象 `base` 只接住 ClassA 那一层，ClassB 那层被切掉，这叫对象切片。</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td><code>find(deri);</code></td>
+                <td><span class="output-line no-output">无输出</span></td>
+                <td>参数是 <code>const ClassA&amp;</code>，引用像“外号”，不会复制对象，所以这里没有 `copy`。</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td><code>ClassA theClassA;</code></td>
+                <td><span class="output-line">ClassA</span></td>
+                <td>进入 `find` 后，新建一个普通 ClassA 局部变量。它出生，就调用无参构造。</td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td><code>inKlep.invoke(2);</code></td>
+                <td><span class="output-line">invoke ClassA2</span></td>
+                <td>`invoke` 前面没有 `virtual`，所以不看真实对象是不是 ClassB，只看声明类型 <code>ClassA&amp;</code>。</td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td><code>find</code> 结束</td>
+                <td><span class="output-line">Delete ClassA</span></td>
+                <td>`theClassA` 是函数里的临时局部变量，函数结束它先退场。</td>
+              </tr>
+              <tr>
+                <td>8</td>
+                <td><code>cout &lt;&lt; "Done!"</code></td>
+                <td><span class="output-line">Done!</span></td>
+                <td>这行是明牌输出，没有陷阱。</td>
+              </tr>
+              <tr>
+                <td>9</td>
+                <td><code>main</code> 结束，先销毁 <code>base</code></td>
+                <td><span class="output-line">Delete ClassA</span></td>
+                <td>局部变量退场顺序和出生顺序相反。`base` 比 `deri` 后出生，所以先退场。</td>
+              </tr>
+              <tr>
+                <td>10</td>
+                <td><code>main</code> 结束，再销毁 <code>deri</code></td>
+                <td><span class="output-line">Delete ClassB</span><br><span class="output-line">Delete ClassA</span></td>
+                <td>`deri` 是 ClassB 对象。析构顺序和构造反过来：先子类 ClassB，再父类 ClassA。</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="callout green">
+            <strong>考场记法</strong>
+            这题就是“出生、切片、临时对象、倒着退场”。看到 `const ClassA&` 不要喊拷贝，它只是引用。
+          </div>
+        </section>
+
+        <section class="question-card" id="q5">
+          <div class="question-title">
+            <span class="pill green">第5题</span>
+            <span class="pill yellow">循环累加</span>
+            <h2>Add 类：while 循环输出题</h2>
+          </div>
+
+          <div class="two-col-code">
+            <aside class="translation">
+              <h4>人话翻译</h4>
+              <ul>
+                <li>`n = 50`，所以检查范围是 0 到 50。</li>
+                <li>只有 `i % 10 == 0` 才加，也就是 10 的倍数。</li>
+                <li>别漏掉 0。虽然加了也没变化，但它确实进了 if。</li>
+              </ul>
+            </aside>
+
+            <pre><code>class Add {
+private:
+    int n;
+public:
+    Add(int nn) {
+        n = nn;
+    }
+    int add() {
+        int sum = 0;
+        int i = 0;
+        while (true) {
+            if (i % 10 == 0) {
+                sum = sum + i;
+            }
+            ++i;
+            if (i &gt; n) break;
+        }
+        return sum;
+    }
+};
+
+int main() {
+    Add a(50);
+    cout &lt;&lt; a.add() &lt;&lt; endl;
+    return 0;
+}</code></pre>
+          </div>
+
+          <div class="answer-box">
+            <div class="label">✅ 输出</div>
+            <div class="content">
+              <pre><code>150</code></pre>
+            </div>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>会被加进去的 i</th>
+                <th>为什么</th>
+                <th>sum 变化</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>0</td><td>0 % 10 == 0</td><td>0</td></tr>
+              <tr><td>10</td><td>10 的倍数</td><td>10</td></tr>
+              <tr><td>20</td><td>10 的倍数</td><td>30</td></tr>
+              <tr><td>30</td><td>10 的倍数</td><td>60</td></tr>
+              <tr><td>40</td><td>10 的倍数</td><td>100</td></tr>
+              <tr><td>50</td><td>10 的倍数</td><td>150</td></tr>
+            </tbody>
+          </table>
+
+          <div class="callout blue">
+            <strong>考场记法</strong>
+            这题不用被 class 吓住。真正干活的是循环：`0 + 10 + 20 + 30 + 40 + 50 = 150`。
+          </div>
+        </section>
+
+        <section class="question-card" id="q6">
+          <div class="question-title">
+            <span class="pill red">第6题</span>
+            <span class="pill blue">多态综合</span>
+            <h2>Animal / Dog：虚函数、非虚函数、切片</h2>
+          </div>
+
+          <div class="callout red">
+            <strong>这题是样题里的大 boss</strong>
+            它把构造、拷贝、虚函数、非虚函数、析构都揉在一起。别硬背原题，按时间线拆，换名字也能做。
+          </div>
+
+          <aside class="translation">
+            <h4>人话翻译</h4>
+            <ul>
+              <li>`Dog d;`：创建 Dog，先造 Animal 父类部分，再造 Dog 自己。</li>
+              <li>`Animal a = d;`：用 Dog 初始化 Animal，会发生对象切片。</li>
+              <li>`bar(const Animal&amp; a)`：引用传参，不会额外拷贝。</li>
+              <li>`speak` 是虚函数，看真实对象；`breathe` 不是虚函数，看声明类型。</li>
+              <li>`delete p`：因为析构函数是 virtual，所以能先拆 Dog，再拆 Animal。</li>
+            </ul>
+          </aside>
+
+          <pre><code>class Animal {
+public:
+    Animal() { cout &lt;&lt; "A ctor" &lt;&lt; endl; }
+    Animal(int n) { cout &lt;&lt; "A ctor " &lt;&lt; n &lt;&lt; endl; }
+    Animal(const Animal&amp; src) { cout &lt;&lt; "A copy ctor" &lt;&lt; endl; }
+    virtual ~Animal() { cout &lt;&lt; "A dtor" &lt;&lt; endl; }
+    virtual void speak(int n = 5) const {
+        cout &lt;&lt; "A::speak " &lt;&lt; n &lt;&lt; endl;
+    }
+    void breathe() const {
+        cout &lt;&lt; "A::breathe" &lt;&lt; endl;
+    }
+};
+
+class Dog : public Animal {
+public:
+    Dog() : Animal(3) { cout &lt;&lt; "D ctor" &lt;&lt; endl; }
+    virtual ~Dog() { cout &lt;&lt; "D dtor" &lt;&lt; endl; }
+    void speak(int n = 9) const override {
+        cout &lt;&lt; "D::speak " &lt;&lt; n &lt;&lt; endl;
+    }
+    void breathe() const {
+        cout &lt;&lt; "D::breathe" &lt;&lt; endl;
+    }
+};
+
+void bar(const Animal&amp; a) {
+    Animal tmp;
+    a.speak(1);
+    a.breathe();
+}
+
+int main() {
+    Dog d;  Animal a = d;  bar(d);
+    cout &lt;&lt; "---" &lt;&lt; endl;
+    Animal* p = new Dog();
+    p-&gt;speak();  delete p;  return 0;
+}</code></pre>
+
+          <div class="answer-box">
+            <div class="label">✅ 样题输出</div>
+            <div class="content">
+              <pre><code>A ctor 3
+D ctor
+A copy ctor
+A ctor
+D::speak 1
+A::breathe
+A dtor
+---
+A ctor 3
+D ctor
+D::speak 9
+D dtor
+A dtor
+A dtor
+D dtor
+A dtor</code></pre>
+            </div>
+          </div>
+
+          <div class="callout purple">
+            <strong>小心：这里不能只背结果</strong>
+            样题里写的是 `D::speak 9`。但期末很可能改类名、改数字、改调用方式，所以真正要掌握的是：虚函数看真实对象，非虚函数看声明类型，构造析构按时间线。另：如果严格抠标准 C++ 的“虚函数默认参数静态绑定”，这个点可能有争议；考试时优先跟老师课件口径。
+          </div>
+
+          <h3>字幕版时间线：每一行输出从哪里来</h3>
+          <table class="output-table">
+            <thead>
+              <tr>
+                <th>步</th>
+                <th>代码正在做什么</th>
+                <th>此刻输出</th>
+                <th>为什么是它</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td><code>Dog d;</code></td>
+                <td><span class="output-line">A ctor 3</span></td>
+                <td>Dog 出生前，先造父类 Animal 部分。`Dog()` 写了 <code>: Animal(3)</code>，所以不是 `A ctor`，而是 `A ctor 3`。</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td><code>Dog d;</code></td>
+                <td><span class="output-line">D ctor</span></td>
+                <td>父类造完，Dog 自己再出生。口诀：构造先父后子。</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td><code>Animal a = d;</code></td>
+                <td><span class="output-line">A copy ctor</span></td>
+                <td>用 Dog 去初始化 Animal，只拷贝父类 Animal 那一片。Dog 的部分像被裁掉了，这就是对象切片。</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td><code>bar(d);</code></td>
+                <td><span class="output-line no-output">无输出</span></td>
+                <td>参数是 <code>const Animal&amp;</code>，引用传参不拷贝。要是这里不是引用，才可能多出拷贝构造。</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td><code>Animal tmp;</code></td>
+                <td><span class="output-line">A ctor</span></td>
+                <td>进入 `bar` 之后，函数里新建一个普通 Animal 临时对象，所以调用无参构造。</td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td><code>a.speak(1);</code></td>
+                <td><span class="output-line">D::speak 1</span></td>
+                <td>`speak` 是虚函数。虚函数像“看身份证”：真实对象是 Dog，所以用 Dog 的函数体；括号里明确传了 1，所以输出 1。</td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td><code>a.breathe();</code></td>
+                <td><span class="output-line">A::breathe</span></td>
+                <td>`breathe` 不是虚函数。非虚函数像“看工作牌”：参数声明是 Animal&，所以用 Animal 版本。</td>
+              </tr>
+              <tr>
+                <td>8</td>
+                <td><code>bar</code> 结束</td>
+                <td><span class="output-line">A dtor</span></td>
+                <td>`tmp` 是 `bar` 里面的局部变量，函数结束就退场。</td>
+              </tr>
+              <tr>
+                <td>9</td>
+                <td><code>cout &lt;&lt; "---"</code></td>
+                <td><span class="output-line">---</span></td>
+                <td>分隔线，明牌输出，别想复杂。</td>
+              </tr>
+              <tr>
+                <td>10</td>
+                <td><code>Animal* p = new Dog();</code></td>
+                <td><span class="output-line">A ctor 3</span></td>
+                <td>虽然左边是 Animal 指针，右边真实创建的是 Dog。Dog 出生依然先造 Animal(3)。</td>
+              </tr>
+              <tr>
+                <td>11</td>
+                <td><code>Animal* p = new Dog();</code></td>
+                <td><span class="output-line">D ctor</span></td>
+                <td>父类部分造完，再造 Dog 自己。</td>
+              </tr>
+              <tr>
+                <td>12</td>
+                <td><code>p-&gt;speak();</code></td>
+                <td><span class="output-line">D::speak 9</span></td>
+                <td>样题输出写 9。考试先按老师/样题思路：`speak` 是虚函数，看真实对象 Dog，走 Dog 版本，没有传参就用 Dog 里的默认值 9。</td>
+              </tr>
+              <tr>
+                <td>13</td>
+                <td><code>delete p;</code></td>
+                <td><span class="output-line">D dtor</span></td>
+                <td>Animal 的析构函数是 virtual，所以用父类指针删 Dog 时，能先调用 Dog 的析构。</td>
+              </tr>
+              <tr>
+                <td>14</td>
+                <td><code>delete p;</code></td>
+                <td><span class="output-line">A dtor</span></td>
+                <td>Dog 拆完，再拆它身体里的 Animal 父类部分。口诀：析构先子后父。</td>
+              </tr>
+              <tr>
+                <td>15</td>
+                <td><code>main</code> 结束，销毁 <code>a</code></td>
+                <td><span class="output-line">A dtor</span></td>
+                <td>`a` 是前面切片得到的 Animal 对象，不是 Dog，所以只输出 Animal 析构。</td>
+              </tr>
+              <tr>
+                <td>16</td>
+                <td><code>main</code> 结束，销毁 <code>d</code></td>
+                <td><span class="output-line">D dtor</span><br><span class="output-line">A dtor</span></td>
+                <td>`d` 是完整 Dog 对象，退场时先 Dog，再 Animal。局部变量是倒序销毁：`a` 后出生，所以比 `d` 先走。</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="callout green">
+            <strong>如果老师改题，盯这 4 个开关</strong>
+            <div class="change-note">1. 把 <code>Animal a = d</code> 改成 <code>Animal&amp; a = d</code>：切片没了。</div>
+            <div class="change-note">2. 给 <code>breathe</code> 加 <code>virtual</code>：它就从“看工作牌”变成“看身份证”。</div>
+            <div class="change-note">3. 把 <code>bar(const Animal&amp;)</code> 改成 <code>bar(Animal)</code>：值传递会多一次拷贝。</div>
+            <div class="change-note">4. 去掉 <code>virtual ~Animal()</code>：父类指针 delete 子类对象会变危险，析构顺序可能出问题。</div>
+          </div>
+
+          <table style="margin-top:16px;">
+            <thead>
+              <tr>
+                <th>代码现象</th>
+                <th>你要说的人话</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td><code>virtual void speak</code></td><td>说话看真实身份：真 Dog 就用 Dog 的 speak。</td></tr>
+              <tr><td><code>void breathe</code></td><td>呼吸不是 virtual，看牌面身份：Animal& 就用 Animal 的 breathe。</td></tr>
+              <tr><td><code>Animal a = d</code></td><td>大盒子装小盒子，只留下父类那一片，叫对象切片。</td></tr>
+              <tr><td><code>virtual ~Animal()</code></td><td>用父类指针 delete 子类对象时，能正确从子类开始拆。</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="question-card" id="q31">
+          <div class="question-title">
+            <span class="pill yellow">第31题</span>
+            <span class="pill blue">static 成员</span>
+            <h2>complex / abc：静态成员输出题</h2>
+          </div>
+          <div class="callout yellow">
+            <strong>先抓关键词</strong>
+            <code>static int w;</code> 是全班共享一份，不是每个对象一份。样题里类名有点混乱，按意图理解为同一个类。
+          </div>
+          <pre><code>class abc {
+public:
+    static int w;
+    int i;
+    abc() { i = ++w; }
+};
+int abc::w = 1;
+
+int main() {
+    abc a, b, c;
+    cout &lt;&lt; a.w &lt;&lt; " " &lt;&lt; b.i &lt;&lt; endl;
+}</code></pre>
+          <div class="answer-box">
+            <div class="label">✅ 输出</div>
+            <div class="content"><pre><code>4 3</code></pre></div>
+          </div>
+          <table class="output-table">
+            <thead><tr><th>步</th><th>代码正在做什么</th><th>此刻值</th><th>为什么</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td><code>int abc::w = 1;</code></td><td><span class="output-line">w = 1</span></td><td>static 成员先在类外初始化。它像班费，全班对象共用一份。</td></tr>
+              <tr><td>2</td><td><code>abc a;</code></td><td><span class="output-line">a.i = 2</span></td><td>构造里先 <code>++w</code>，w 从 1 变 2，再给 a.i。</td></tr>
+              <tr><td>3</td><td><code>abc b;</code></td><td><span class="output-line">b.i = 3</span></td><td>w 继续加，变成 3。</td></tr>
+              <tr><td>4</td><td><code>abc c;</code></td><td><span class="output-line">c.i = 4</span></td><td>w 再加，变成 4。注意 a.w、b.w、c.w 看到的都是同一个 w。</td></tr>
+              <tr><td>5</td><td><code>cout &lt;&lt; a.w &lt;&lt; " " &lt;&lt; b.i</code></td><td><span class="output-line">4 3</span></td><td>a.w 是共享的 w，最终为 4；b.i 是 b 出生时拿到的 3。</td></tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="question-card" id="q32">
+          <div class="question-title">
+            <span class="pill yellow">第32题</span>
+            <span class="pill green">引用返回</span>
+            <h2>函数调用放在等号左边</h2>
+          </div>
+          <pre><code>int z = 15;
+int&amp; f() { return z; }
+
+int main() {
+    f() = 20;
+    cout &lt;&lt; z;
+}</code></pre>
+          <div class="answer-box">
+            <div class="label">✅ 输出</div>
+            <div class="content"><pre><code>20</code></pre></div>
+          </div>
+          <div class="callout green">
+            <strong>人话翻译</strong>
+            <code>f()</code> 返回的不是 z 的复印件，而是 z 本人。<code>f() = 20;</code> 就像直接写 <code>z = 20;</code>。
+          </div>
+        </section>
+
+        <section class="question-card" id="q34">
+          <div class="question-title">
+            <span class="pill red">第34题</span>
+            <span class="pill blue">纯虚函数 + 多态</span>
+            <h2>Oyster / VirginiaOyster 输出题</h2>
+          </div>
+          <div class="callout yellow">
+            <strong>先抓关键词</strong>
+            <code>virtual void print() const = 0;</code> 说明 Oyster 是抽象类；但指针可以指向子类对象。<code>baseClassPtr-&gt;print()</code> 调用子类版本。
+          </div>
+          <pre><code>class Oyster {
+public:
+    Oyster(string genusString) {
+        genus = genusString;
+    }
+    string getPhylum() const {
+        return "Mollusca";
+    }
+    virtual string getName() const {
+        return "Oyster class";
+    }
+    string getGenus() const {
+        return genus;
+    }
+    virtual void print() const = 0;   // 纯虚函数：Oyster 是抽象类
+private:
+    string genus;
+};
+
+class VirginiaOyster : public Oyster {
+public:
+    VirginiaOyster() : Oyster("Crassostrea") {}
+    virtual string getName() const {
+        return "VirginiaOyster class";
+    }
+    virtual void print() const {
+        cout &lt;&lt; "Phylum:" &lt;&lt; getPhylum().c_str()
+             &lt;&lt; "\tGenus: " &lt;&lt; getGenus().c_str()
+             &lt;&lt; "\tName: " &lt;&lt; getName().c_str();
+    }
+};
+
+int main() {
+    VirginiaOyster oyster;
+    Oyster *baseClassPtr;
+    baseClassPtr = &amp;oyster;
+    baseClassPtr-&gt;print();
+    cout &lt;&lt; endl;
+    return 0;
+}</code></pre>
+          <div class="answer-box">
+            <div class="label">✅ 输出</div>
+            <div class="content"><pre><code>Phylum:Mollusca    Genus: Crassostrea    Name: VirginiaOyster class</code></pre></div>
+          </div>
+          <div class="callout blue">
+            <strong>先把这题翻译成人话</strong>
+            <code>Oyster</code> 是“牡蛎总类”，<code>VirginiaOyster</code> 是“弗吉尼亚牡蛎这个具体子类”。父类指针 <code>Oyster *baseClassPtr</code> 像一张通用标签：标签上写“牡蛎”，但它可以贴在真正的弗吉尼亚牡蛎对象上。调用 <code>print()</code> 时，因为 <code>print</code> 是虚函数，C++ 会看标签背后真正贴的是谁。
+          </div>
+          <table class="output-table">
+            <thead><tr><th>步</th><th>代码正在做什么</th><th>内部怎么变化</th><th>此刻输出</th><th>为什么</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td><code>VirginiaOyster oyster;</code></td>
+                <td>先创建一个子类对象。因为子类继承父类，所以对象身体里有两层：里面有一层 <code>Oyster</code>，外面再套一层 <code>VirginiaOyster</code>。</td>
+                <td><span class="output-line no-output">无输出</span></td>
+                <td>这行只是“出生”，还没执行 <code>cout</code>。</td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td><code>VirginiaOyster() : Oyster("Crassostrea") {}</code></td>
+                <td>子类构造函数先喊父类构造函数：把字符串 <code>"Crassostrea"</code> 交给 <code>Oyster</code>。</td>
+                <td><span class="output-line no-output">无输出</span></td>
+                <td>构造函数里只是传值，没有打印语句。</td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td><code>Oyster(string genusString) { genus = genusString; }</code></td>
+                <td>父类私有成员 <code>genus</code> 被存成 <code>Crassostrea</code>。这就是后面 <code>getGenus()</code> 能拿到的值。</td>
+                <td><span class="output-line no-output">无输出</span></td>
+                <td><code>genus</code> 变了，但屏幕不会自动显示变量变化。</td>
+              </tr>
+              <tr>
+                <td>4</td>
+                <td><code>Oyster *baseClassPtr;</code></td>
+                <td>声明一个父类指针。现在它只是一个“能指向 Oyster 或子类对象的遥控器”，还没有指向任何对象。</td>
+                <td><span class="output-line no-output">无输出</span></td>
+                <td>声明变量不会输出。</td>
+              </tr>
+              <tr>
+                <td>5</td>
+                <td><code>baseClassPtr = &amp;oyster;</code></td>
+                <td><code>&amp;oyster</code> 是取地址。父类指针现在指向这个 <code>VirginiaOyster</code> 对象的父类部分，但真实对象仍然是完整的子类对象。</td>
+                <td><span class="output-line no-output">无输出</span></td>
+                <td>赋值只是让指针“指过去”，没有 <code>cout</code>。</td>
+              </tr>
+              <tr>
+                <td>6</td>
+                <td><code>baseClassPtr-&gt;print();</code></td>
+                <td><code>-&gt;</code> 表示“通过指针调用成员函数”。因为 <code>print</code> 前面有 <code>virtual</code>，C++ 不只看指针类型 <code>Oyster*</code>，还会看真实对象是 <code>VirginiaOyster</code>。</td>
+                <td><span class="output-line no-output">先不急，进入子类 print</span></td>
+                <td>虚函数的核心：父类指针调用，实际跑子类版本。</td>
+              </tr>
+              <tr>
+                <td>7</td>
+                <td><code>cout &lt;&lt; "Phylum:" &lt;&lt; getPhylum().c_str()</code></td>
+                <td><code>getPhylum()</code> 是父类普通函数，固定返回 <code>"Mollusca"</code>。<code>.c_str()</code> 是把 C++ 的 <code>string</code> 转成 C 风格字符串，方便输出。</td>
+                <td><span class="output-line">Phylum:Mollusca</span></td>
+                <td>这里第一次真正遇到 <code>cout</code>，所以屏幕开始出现内容。</td>
+              </tr>
+              <tr>
+                <td>8</td>
+                <td><code>&lt;&lt; "\tGenus: " &lt;&lt; getGenus().c_str()</code></td>
+                <td><code>\t</code> 是制表符，作用像按一下 Tab。<code>getGenus()</code> 取出第 3 步存进去的 <code>Crassostrea</code>。</td>
+                <td><span class="output-line">Genus: Crassostrea</span></td>
+                <td>这不是新算出来的，是前面构造对象时已经存好的。</td>
+              </tr>
+              <tr>
+                <td>9</td>
+                <td><code>&lt;&lt; "\tName: " &lt;&lt; getName().c_str()</code></td>
+                <td><code>getName()</code> 也是虚函数。真实对象是 <code>VirginiaOyster</code>，所以调用子类版本，返回 <code>"VirginiaOyster class"</code>。</td>
+                <td><span class="output-line">Name: VirginiaOyster class</span></td>
+                <td>如果没有子类重写，才会用父类的 <code>"Oyster class"</code>。</td>
+              </tr>
+              <tr>
+                <td>10</td>
+                <td><code>cout &lt;&lt; endl;</code></td>
+                <td>前面输出都在同一行，最后这里换行。</td>
+                <td><span class="output-line">换行</span></td>
+                <td><code>endl</code> 可以理解为“按回车”。</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <section class="question-card" id="q35">
+          <div class="question-title">
+            <span class="pill red">第35题</span>
+            <span class="pill yellow">异常处理</span>
+            <h2>try / throw / catch 输出题</h2>
+          </div>
+          <pre><code>class DivideZero {
+public:
+    DivideZero() : out("EXCEPTION: Division by zero attempted.") {}
+    string display() const {
+        return out;
+    }
+private:
+    string out;
+};
+
+double arithmetic(int n, int d) {
+    if (d == 0)
+        throw DivideZero();       // 遇到除数为 0，扔异常
+    return static_cast&lt;double&gt;(n) / d;
+}
+
+int main() {
+    try {
+        cout &lt;&lt; arithmetic(24, 6) &lt;&lt; endl;
+        cout &lt;&lt; arithmetic(1, 3) &lt;&lt; endl;
+        cout &lt;&lt; arithmetic(9, 0.0) &lt;&lt; endl;
+    }
+    catch (DivideZero &amp;e) {
+        cout &lt;&lt; e.display() &lt;&lt; endl;
+    }
+    return 0;
+}</code></pre>
+          <div class="answer-box">
+            <div class="label">✅ 输出</div>
+            <div class="content"><pre><code>4
+0.333333
+EXCEPTION: Division by zero attempted.</code></pre></div>
+          </div>
+          <table class="output-table">
+            <thead><tr><th>步</th><th>代码正在做什么</th><th>此刻输出</th><th>为什么</th></tr></thead>
+            <tbody>
+              <tr><td>1</td><td><code>arithmetic(24, 6)</code></td><td><span class="output-line">4</span></td><td>6 不是 0，正常返回 24 / 6。</td></tr>
+              <tr><td>2</td><td><code>arithmetic(1, 3)</code></td><td><span class="output-line">0.333333</span></td><td>强转成 double，所以不是整数除法。具体小数位看环境，写 0.333333 通常够用。</td></tr>
+              <tr><td>3</td><td><code>arithmetic(9, 0)</code></td><td><span class="output-line no-output">先不输出除法</span></td><td>d 是 0，直接 throw DivideZero，后面的 return 不执行。</td></tr>
+              <tr><td>4</td><td><code>catch (DivideZero&amp; e)</code></td><td><span class="output-line">EXCEPTION...</span></td><td>catch 接住异常，输出 e.display()。</td></tr>
+            </tbody>
+          </table>
+        </section>
+      </div>
+
+      <aside class="sticky-note">
+        <h3>🧭 输出题固定流程</h3>
+        <ol>
+          <li>先找 `main()`。</li>
+          <li>遇到对象声明，写“出生”。</li>
+          <li>遇到 `=`，判断拷贝还是赋值。</li>
+          <li>遇到函数，判断值传递还是引用传递。</li>
+          <li>函数结束、main 结束，倒着析构。</li>
+        </ol>
+        <div class="callout blue" style="margin-bottom:0;">
+          <strong>一句话</strong>
+          输出题就是“谁先来、谁说话、谁先走”。
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="site-shell">
+      本页覆盖样题里的主要运行过程题：第2、5、6、31、32、34、35题。
+    </div>
+  </footer>
+</body>
+</html>

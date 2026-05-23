@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=700, initial-scale=0.55, minimum-scale=0.35, maximum-scale=5, user-scalable=yes">
+  <title>01 考前必背｜C++ 期末救命讲义</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="./index.html">
+        <span class="brand-mark">C++</span>
+        <span>期末救命讲义 <small>按样题考点整理</small></span>
+      </a>
+      <nav class="nav" aria-label="主导航">
+        <a href="./index.html">首页</a>
+        <a href="./01-考前必背.html" aria-current="page">01 考前必背</a>
+        <a href="./02-运行结果题.html">02 运行结果题</a>
+        <a href="./03-选择填空题.html">03 选择填空</a>
+        <a href="./04-编程题模板.html">04 编程模板</a>
+        <a href="./05-易错陷阱.html">05 易错陷阱</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="site-shell">
+    <section class="chapter-hero">
+      <span class="eyebrow">🧃 考前先拿操作步骤</span>
+      <h1>01 考前必备：看到题，手先动起来</h1>
+      <p class="lead">
+        这一页不讲大道理。它只回答一个问题：卷子发下来后，我第一眼该圈什么、第二步该写什么、卡住了该怎么救。
+      </p>
+    </section>
+
+    <div class="study-layout">
+      <div>
+        <section class="question-card">
+          <div class="question-title">
+            <span class="pill red">输出题</span>
+            <h2>一、运行结果题：先在代码旁边打标记</h2>
+          </div>
+
+          <div class="do-list">
+            <div class="do-item">
+              <div class="do-mark">1</div>
+              <div>
+                <h3>先找 <code>main()</code>，别从 class 开始硬读</h3>
+                <p>类定义像演员名单，真正演出从 <code>main()</code> 开始。先看谁被创建、谁被调用、谁被 delete。</p>
+              </div>
+            </div>
+            <div class="do-item">
+              <div class="do-mark">2</div>
+              <div>
+                <h3>看到对象声明，就在旁边写“出生”</h3>
+                <p>比如 <code>Dog d;</code>。如果 Dog 继承 Animal，就先写父类输出，再写子类输出：先父后子。</p>
+              </div>
+            </div>
+            <div class="do-item">
+              <div class="do-mark">3</div>
+              <div>
+                <h3>看到 <code>=</code>，马上问：这是造新对象还是给旧对象赋值？</h3>
+                <p><code>Animal a = d;</code> 是“用 d 造一个新 a”，走拷贝构造；不是普通赋值。派生类塞进基类对象，还会对象切片。</p>
+              </div>
+            </div>
+            <div class="do-item">
+              <div class="do-mark">4</div>
+              <div>
+                <h3>看到函数参数，先看有没有 <code>&amp;</code></h3>
+                <p>有 <code>&amp;</code> 通常不拷贝，像给原对象起外号；没有 <code>&amp;</code>，按值传参，可能多一次拷贝构造。</p>
+              </div>
+            </div>
+            <div class="do-item">
+              <div class="do-mark">5</div>
+              <div>
+                <h3>看到函数调用，先看前面有没有 <code>virtual</code></h3>
+                <p>虚函数看真实对象，非虚函数看声明类型。简单记：虚函数看“身份证”，非虚函数看“工作牌”。</p>
+              </div>
+            </div>
+            <div class="do-item">
+              <div class="do-mark">6</div>
+              <div>
+                <h3>最后统一处理析构：函数结束、main 结束、delete</h3>
+                <p>局部变量退场是倒序；继承析构是先子后父。别一边读一边乱写，最后集中收尾更不容易漏。</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="callout yellow">
+            <strong>考场动作</strong>
+            输出题不是“看懂整份代码再写答案”。是先把每个会输出的点圈出来，然后按时间顺序排队。
+          </div>
+        </section>
+
+        <section class="question-card">
+          <div class="question-title">
+            <span class="pill blue">第7-33题</span>
+            <h2>二、选择题：先找关键词，再排除废话</h2>
+          </div>
+
+          <div class="callout blue">
+            <strong>做选择题时脑子里这样念</strong>
+            题目问“哪个正确”，先圈关键词；题目问“哪个不能”，先找特殊例外。不要一上来读四个选项读到失忆。
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>题号</th>
+                <th>看到关键词</th>
+                <th>立刻想什么</th>
+                <th>答案</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>第7题</td>
+                <td>构造函数 / 什么时候调用</td>
+                <td>对象一声明，它就“出生”，构造函数马上响。</td>
+                <td><strong>A</strong></td>
+              </tr>
+              <tr>
+                <td>第8题</td>
+                <td>const 函数 / 正确声明</td>
+                <td>保护对象不被改，<code>const</code> 放在函数括号后面。</td>
+                <td><strong>C</strong></td>
+              </tr>
+              <tr>
+                <td>第9题</td>
+                <td>this 访问成员</td>
+                <td><code>this</code> 是指针，指针访问成员用箭头 <code>-&gt;</code>。</td>
+                <td><strong>A</strong></td>
+              </tr>
+              <tr>
+                <td>第10题</td>
+                <td>不能重载</td>
+                <td>三目运算符 <code>?:</code> 很特殊，别碰它。</td>
+                <td><strong>C</strong></td>
+              </tr>
+              <tr>
+                <td>第11题</td>
+                <td>new 返回什么</td>
+                <td><code>new</code> 做两件事：开内存 + 创建对象；最后给你一个指针。</td>
+                <td><strong>A</strong></td>
+              </tr>
+              <tr><td>第12题</td><td>什么时候拷贝构造</td><td>用旧对象造新对象、按值传参、按值返回，都可能拷贝。</td><td><strong>D</strong></td></tr>
+              <tr><td>第13题</td><td>不是成员函数</td><td>友元函数像“拿了通行证的外人”，不是类成员。</td><td><strong>C</strong></td></tr>
+              <tr><td>第14题</td><td>inline</td><td>内联像把小函数复制到调用处，可能更快，也可能让代码变大。</td><td><strong>D</strong></td></tr>
+              <tr><td>第15-16题</td><td>抽象类 / 纯虚函数</td><td>有纯虚函数就是抽象类；纯虚函数写法是 <code>virtual ... = 0;</code>。</td><td><strong>D / C</strong></td></tr>
+              <tr><td>第18题</td><td>拷贝构造参数</td><td>必须用引用，不然传参又要拷贝，会无限套娃。</td><td><strong>C</strong></td></tr>
+              <tr><td>第19题</td><td>运行时决定调用谁</td><td>看到“运行时决定”，选 Dynamic binding。</td><td><strong>C</strong></td></tr>
+              <tr><td>第21题</td><td>指针赋值</td><td>子类地址可以给父类指针；父类地址不能硬塞给子类指针。</td><td><strong>B</strong></td></tr>
+              <tr><td>第29题</td><td>引用 vs 指针</td><td>引用不能为空，绑上不能换，不用写 <code>*</code> 解引用。</td><td><strong>D</strong></td></tr>
+              <tr><td>第31-33题</td><td>静态成员 / 引用返回 / 模板</td><td>静态成员全班共享；引用返回能当左值；模板自动推类型。</td><td><strong>B / D / B</strong></td></tr>
+            </tbody>
+          </table>
+
+          <div class="callout blue">
+            <strong>实操规则</strong>
+            选择题别只记字母。至少要知道题干在问哪个概念、正确选项为什么对。完整第7-33题见 03 页。
+          </div>
+        </section>
+
+      </div>
+
+      <aside class="sticky-note">
+        <h3>📍这页怎么用</h3>
+        <ol>
+          <li>输出题：先找 <code>main()</code>，再标输出点。</li>
+          <li>选择题：先圈关键词，再看选项。</li>
+          <li>编程题：先写骨架，再补细节。</li>
+        </ol>
+        <div class="callout red" style="margin-bottom:0;">
+          <strong>不要做的事</strong>
+          不要从头学 C++。期末前，先拿分。
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="site-shell">
+      下一步建议：先看 02 的输出题，再用 03 刷选择题，最后背 04 的编程模板。
+    </div>
+  </footer>
+</body>
+</html>
