@@ -1,13 +1,32 @@
 [
   {
-    "slug": "index",
-    "title": "C++ 期末速成教材 — 继承·多态·三大函数·编程实战",
-    "description": "",
-    "tags": [],
-    "order": 999,
+    "slug": "cpp-inheritance-visualizer",
+    "title": "C++ 继承与虚函数可视化 Demo",
+    "description": "用一张交互式对象布局图解释继承、虚函数表和动态绑定的核心关系。",
+    "tags": [
+      "C++",
+      "可视化",
+      "课堂演示"
+    ],
+    "order": 10,
+    "updated": "2026-05-23",
+    "source": "cpp-inheritance-visualizer",
+    "path": "/webs/cpp-inheritance-visualizer/",
+    "output": "blog-pub/source/webs/cpp-inheritance-visualizer"
+  },
+  {
+    "slug": "cpp-final-crash-course",
+    "title": "C++ 期末速成教材",
+    "description": "围绕继承、多态、三大函数和编程实战整理的静态速查教程。",
+    "tags": [
+      "C++",
+      "教程",
+      "期末复习"
+    ],
+    "order": 20,
     "updated": "2026-05-22",
-    "source": "index.html",
-    "path": "/webs/index.html",
-    "output": "blog-pub/source/webs/index.html"
+    "source": "cpp-final-crash-course",
+    "path": "/webs/cpp-final-crash-course/",
+    "output": "blog-pub/source/webs/cpp-final-crash-course"
   }
 ]

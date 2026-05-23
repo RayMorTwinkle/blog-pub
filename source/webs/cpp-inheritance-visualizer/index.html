@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>C++ 继承与虚函数可视化 Demo</title>
+  <style>
+    :root {
+      --bg: #f7f2e8;
+      --paper: #fffdf7;
+      --paper-soft: #f0f9f5;
+      --ink: #5d5142;
+      --muted: #92836f;
+      --line: #ddcfb6;
+      --teal: #1b9a8f;
+      --teal-soft: #dff6f1;
+      --amber: #ffd166;
+      --rose: #ff8a80;
+      --blue: #78b7ff;
+      --shadow: 0 22px 60px rgba(84, 69, 49, 0.16);
+      --radius: 28px;
+      font-family: "LXGW WenKai", "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      background:
+        radial-gradient(circle at top left, rgba(255, 209, 102, 0.26), transparent 32rem),
+        radial-gradient(circle at bottom right, rgba(27, 154, 143, 0.22), transparent 28rem),
+        var(--bg);
+      color: var(--ink);
+      line-height: 1.7;
+    }
+
+    .page {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 38px 0 56px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 24px;
+      align-items: end;
+      padding: clamp(24px, 5vw, 48px);
+      border: 1px solid var(--line);
+      border-top: 8px solid var(--teal);
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, rgba(255, 253, 247, 0.96), rgba(225, 248, 243, 0.76));
+      box-shadow: var(--shadow);
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--teal);
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 760px;
+      margin: 0;
+      font-size: clamp(34px, 7vw, 72px);
+      line-height: 1.02;
+      letter-spacing: -0.05em;
+    }
+
+    .hero p {
+      max-width: 680px;
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 19px;
+    }
+
+    .hero-badge {
+      display: grid;
+      place-items: center;
+      width: 116px;
+      height: 116px;
+      border: 1px solid rgba(27, 154, 143, 0.22);
+      border-radius: 36px;
+      background: var(--paper);
+      color: var(--teal);
+      font-size: 52px;
+      box-shadow: inset 0 -10px 0 rgba(27, 154, 143, 0.1);
+      transform: rotate(4deg);
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 28px 0;
+    }
+
+    button {
+      appearance: none;
+      border: 1px solid rgba(27, 154, 143, 0.24);
+      border-radius: 999px;
+      background: var(--paper);
+      color: var(--teal);
+      cursor: pointer;
+      font: inherit;
+      font-weight: 800;
+      padding: 11px 18px;
+      box-shadow: 0 10px 24px rgba(84, 69, 49, 0.09);
+      transition: transform 0.16s ease, background 0.16s ease;
+    }
+
+    button:hover,
+    button.active {
+      background: var(--teal-soft);
+      transform: translateY(-2px);
+    }
+
+    .board {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: rgba(255, 253, 247, 0.9);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .card h2 {
+      margin: 0;
+      padding: 20px 24px 14px;
+      border-bottom: 1px solid var(--line);
+      font-size: 24px;
+    }
+
+    .canvas {
+      position: relative;
+      min-height: 540px;
+      padding: 28px;
+      background:
+        linear-gradient(rgba(221, 207, 182, 0.24) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(221, 207, 182, 0.24) 1px, transparent 1px),
+        var(--paper-soft);
+      background-size: 28px 28px;
+    }
+
+    .class-box,
+    .memory-box,
+    .vtable-box,
+    .call-box {
+      position: absolute;
+      border: 2px solid var(--line);
+      border-radius: 22px;
+      background: var(--paper);
+      padding: 16px;
+      box-shadow: 0 12px 28px rgba(84, 69, 49, 0.12);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .class-box strong,
+    .memory-box strong,
+    .vtable-box strong,
+    .call-box strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--teal);
+      font-size: 18px;
+    }
+
+    .class-box span,
+    .memory-box span,
+    .vtable-box span,
+    .call-box span {
+      display: block;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .base {
+      left: 42px;
+      top: 42px;
+      width: 210px;
+      border-top-color: var(--blue);
+    }
+
+    .derived {
+      left: 42px;
+      top: 196px;
+      width: 252px;
+      border-top-color: var(--amber);
+    }
+
+    .memory-box {
+      right: 42px;
+      top: 76px;
+      width: 260px;
+      border-top-color: var(--rose);
+    }
+
+    .vtable-box {
+      right: 48px;
+      top: 280px;
+      width: 250px;
+      border-top-color: var(--teal);
+    }
+
+    .call-box {
+      left: 92px;
+      bottom: 44px;
+      width: 360px;
+      border-top-color: var(--teal);
+      background: linear-gradient(135deg, #fffdf7, #e8fbf7);
+    }
+
+    .slot {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      margin-top: 8px;
+      padding: 8px 10px;
+      border-radius: 12px;
+      background: #f7f1e4;
+      font-size: 14px;
+    }
+
+    .slot em {
+      color: var(--teal);
+      font-style: normal;
+      font-weight: 800;
+    }
+
+    .arrow {
+      position: absolute;
+      height: 3px;
+      border-radius: 999px;
+      background: var(--teal);
+      transform-origin: left center;
+      opacity: 0.65;
+    }
+
+    .arrow::after {
+      content: "";
+      position: absolute;
+      right: -2px;
+      top: 50%;
+      width: 10px;
+      height: 10px;
+      border-top: 3px solid var(--teal);
+      border-right: 3px solid var(--teal);
+      transform: translateY(-50%) rotate(45deg);
+    }
+
+    .arrow.inherit {
+      left: 152px;
+      top: 178px;
+      width: 80px;
+      transform: rotate(90deg);
+      background: var(--amber);
+    }
+
+    .arrow.inherit::after {
+      border-color: var(--amber);
+    }
+
+    .arrow.pointer {
+      left: 304px;
+      top: 139px;
+      width: 160px;
+    }
+
+    .arrow.dispatch {
+      left: 362px;
+      top: 344px;
+      width: 110px;
+      transform: rotate(-8deg);
+    }
+
+    .explain {
+      padding: 22px 24px 26px;
+    }
+
+    .explain p {
+      margin: 0 0 16px;
+      color: var(--muted);
+      font-size: 17px;
+    }
+
+    pre {
+      overflow-x: auto;
+      margin: 0;
+      padding: 18px;
+      border-radius: 18px;
+      background: #2f3647;
+      color: #f7f2e8;
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 14px;
+      line-height: 1.75;
+    }
+
+    code .accent {
+      color: #7ee787;
+    }
+
+    .fact-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .fact {
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255, 253, 247, 0.82);
+    }
+
+    .fact strong {
+      color: var(--teal);
+    }
+
+    .highlight .class-box,
+    .highlight .memory-box,
+    .highlight .vtable-box,
+    .highlight .call-box {
+      transform: translateY(-4px);
+      border-color: var(--teal);
+    }
+
+    @media (max-width: 860px) {
+      .hero,
+      .board {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-badge {
+        width: 88px;
+        height: 88px;
+        font-size: 42px;
+      }
+
+      .canvas {
+        min-height: 760px;
+      }
+
+      .class-box,
+      .memory-box,
+      .vtable-box,
+      .call-box {
+        position: relative;
+        inset: auto;
+        width: 100%;
+        margin-bottom: 16px;
+      }
+
+      .arrow {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Interactive C++ Note</p>
+        <h1>继承、虚函数与动态绑定</h1>
+        <p>这是一个单文件静态网页 demo，用对象布局图把 “Base 指针为什么能调用 Derived 实现” 这件事讲清楚。</p>
+      </div>
+      <div class="hero-badge" aria-hidden="true">C++</div>
+    </section>
+
+    <nav class="toolbar" aria-label="演示步骤">
+      <button class="active" data-step="0">1. 类关系</button>
+      <button data-step="1">2. 对象内存</button>
+      <button data-step="2">3. 虚表分发</button>
+      <button data-step="3">4. 一句话总结</button>
+    </nav>
+
+    <section class="board">
+      <article class="card">
+        <h2>对象布局图</h2>
+        <div class="canvas" id="canvas">
+          <div class="class-box base">
+            <strong>Base</strong>
+            <span>virtual speak()</span>
+            <span>int baseValue</span>
+          </div>
+          <div class="arrow inherit"></div>
+          <div class="class-box derived">
+            <strong>Derived : Base</strong>
+            <span>override speak()</span>
+            <span>int derivedValue</span>
+          </div>
+          <div class="arrow pointer"></div>
+          <div class="memory-box">
+            <strong>Derived 对象</strong>
+            <div class="slot"><span>vptr</span><em>指向 Derived vtable</em></div>
+            <div class="slot"><span>baseValue</span><em>Base 部分</em></div>
+            <div class="slot"><span>derivedValue</span><em>Derived 部分</em></div>
+          </div>
+          <div class="arrow dispatch"></div>
+          <div class="vtable-box">
+            <strong>Derived vtable</strong>
+            <div class="slot"><span>speak()</span><em>Derived::speak</em></div>
+            <div class="slot"><span>析构函数</span><em>Derived::~Derived</em></div>
+          </div>
+          <div class="call-box">
+            <strong>Base* p = new Derived()</strong>
+            <span>p->speak() 会沿着 vptr 找到 Derived 的虚表条目。</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <h2 id="step-title">1. 类关系</h2>
+        <div class="explain">
+          <p id="step-copy">继承让 Derived 对象天然包含一个 Base 子对象，所以 Base 指针可以指向 Derived 对象的 Base 那一部分。</p>
+          <pre><code>struct Base {
+  virtual void speak();
+  int baseValue;
+};
+
+struct Derived : Base {
+  void speak() override;
+  int derivedValue;
+};</code></pre>
+
+          <div class="fact-list">
+            <div class="fact"><strong>继承</strong> 解决“能不能当成 Base 使用”。</div>
+            <div class="fact"><strong>虚函数</strong> 解决“运行时到底调用谁”。</div>
+            <div class="fact"><strong>vptr / vtable</strong> 是编译器常见的实现方式，不是 C++ 标准强制的语法概念。</div>
+          </div>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <script>
+    const steps = [
+      {
+        title: "1. 类关系",
+        copy: "继承让 Derived 对象天然包含一个 Base 子对象，所以 Base 指针可以指向 Derived 对象的 Base 那一部分。",
+        code: `struct Base {\n  virtual void speak();\n  int baseValue;\n};\n\nstruct Derived : Base {\n  void speak() override;\n  int derivedValue;\n};`
+      },
+      {
+        title: "2. 对象内存",
+        copy: "当类里有虚函数时，对象通常会多一个隐藏指针 vptr。它指向当前真实类型对应的虚函数表。",
+        code: `Derived d;\nBase* p = &d;\n\n// p 只知道自己是 Base*\n// 但 d 的 vptr 仍然指向 Derived vtable`
+      },
+      {
+        title: "3. 虚表分发",
+        copy: "执行 p->speak() 时，程序不是看指针类型 Base*，而是沿着对象里的 vptr 去虚表查真正该调用的函数。",
+        code: `Base* p = new Derived();\np->speak();\n\n// 动态绑定结果：Derived::speak()`
+      },
+      {
+        title: "4. 一句话总结",
+        copy: "普通成员函数看左边的静态类型，虚函数看右边对象的动态类型。这就是多态最容易抓住的直觉。",
+        code: `Base* p = new Derived();\n\np->normal(); // Base::normal，静态绑定\np->speak();  // Derived::speak，动态绑定`
+      }
+    ];
+
+    const title = document.querySelector("#step-title");
+    const copy = document.querySelector("#step-copy");
+    const code = document.querySelector("pre code");
+    const canvas = document.querySelector("#canvas");
+    const buttons = document.querySelectorAll("button[data-step]");
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const step = steps[Number(button.dataset.step)];
+        buttons.forEach((item) => item.classList.remove("active"));
+        button.classList.add("active");
+        title.textContent = step.title;
+        copy.textContent = step.copy;
+        code.textContent = step.code;
+        canvas.classList.remove("highlight");
+        requestAnimationFrame(() => canvas.classList.add("highlight"));
+      });
+    });
+  </script>
+</body>
+</html>
