@@ -1,0 +1,4 @@
+# Cloudflare Pages builds from the domain root, unlike GitHub Pages which
+# serves this repository under /blog-pub/.
+url: https://blog-pub.pages.dev
+root: /
