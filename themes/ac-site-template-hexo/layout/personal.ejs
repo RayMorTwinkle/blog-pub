@@ -32,6 +32,9 @@
 <% if (cv.intro || (cv.experience && cv.experience.length) || (cv.education && cv.education.length) || (cv.certifications && cv.certifications.length)) { %>
   <section class="ac-cv-section ac-personal-resume">
     <h2 class="ac-cv-section-title">履历速览</h2>
+    <% if (cv.notice) { %>
+      <p class="ac-resume-notice"><%= cv.notice %></p>
+    <% } %>
     <% if (cv.intro) { %>
       <p class="ac-resume-intro"><%= cv.intro %></p>
     <% } %>
