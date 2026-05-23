@@ -1,0 +1,1420 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C++ 期末速成教材 — 继承·多态·三大函数·编程实战</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+<style>
+/* ===== 全局变量 ===== */
+:root {
+  --bg: #0f1117;
+  --bg-card: #1a1d27;
+  --bg-hover: #252836;
+  --text: #e1e4e8;
+  --text-dim: #8b949e;
+  --accent: #58a6ff;
+  --accent2: #f78166;
+  --accent3: #7ee787;
+  --accent4: #d2a8ff;
+  --danger: #f85149;
+  --warning: #d29922;
+  --border: #30363d;
+  --sidebar-w: 260px;
+  --font-mono: 'SF Mono','Fira Code','Consolas',monospace;
+  --font-sans: -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --radius: 10px;
+  --shadow: 0 4px 24px rgba(0,0,0,.4);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ===== 侧边栏 ===== */
+.sidebar {
+  width: var(--sidebar-w);
+  height: 100vh;
+  position: fixed;
+  left:0; top:0;
+  background: var(--bg-card);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  z-index: 100;
+  padding: 20px 0;
+  transition: transform .3s;
+}
+.sidebar h2 {
+  font-size: 1rem;
+  padding: 0 20px 16px;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 10px;
+}
+.sidebar nav a {
+  display: block;
+  padding: 8px 20px;
+  color: var(--text-dim);
+  text-decoration: none;
+  font-size: .88rem;
+  transition: all .15s;
+  border-left: 3px solid transparent;
+}
+.sidebar nav a:hover,
+.sidebar nav a.active {
+  color: var(--text);
+  background: var(--bg-hover);
+  border-left-color: var(--accent);
+}
+.sidebar nav .ch-title {
+  font-weight: 700;
+  color: var(--accent3);
+  padding: 12px 20px 4px;
+  font-size: .8rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 6px;
+}
+
+/* ===== 主内容 ===== */
+.main {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  max-width: 960px;
+  padding: 40px 48px 120px;
+}
+.chapter {
+  margin-bottom: 60px;
+  padding-top: 20px;
+}
+.chapter h2 {
+  font-size: 1.8rem;
+  margin-bottom: 8px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--border);
+  color: var(--accent);
+}
+.chapter h3 {
+  font-size: 1.3rem;
+  margin: 32px 0 12px;
+  color: var(--accent3);
+}
+.chapter h4 {
+  font-size: 1.05rem;
+  margin: 20px 0 8px;
+  color: var(--accent4);
+}
+.subtitle {
+  color: var(--text-dim);
+  font-size: .9rem;
+  margin-bottom: 28px;
+}
+p { margin: 10px 0; font-size: .95rem; }
+ul, ol { margin: 8px 0 8px 24px; }
+li { margin: 4px 0; font-size: .93rem; }
+
+/* ===== 卡片 ===== */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  margin: 16px 0;
+}
+.card.info { border-left: 4px solid var(--accent); }
+.card.warn { border-left: 4px solid var(--warning); }
+.card.danger { border-left: 4px solid var(--danger); }
+.card.success { border-left: 4px solid var(--accent3); }
+
+/* ===== 代码块 ===== */
+pre {
+  background: #161b22 !important;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 20px !important;
+  margin: 14px 0;
+  overflow-x: auto;
+  font-size: .85rem !important;
+  line-height: 1.55 !important;
+}
+code { font-family: var(--font-mono); }
+:not(pre) > code {
+  background: var(--bg-hover);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: .85em;
+  color: var(--accent3);
+}
+
+/* ===== 表格 ===== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 14px 0;
+  font-size: .9rem;
+}
+th, td {
+  border: 1px solid var(--border);
+  padding: 10px 14px;
+  text-align: left;
+}
+th {
+  background: var(--bg-hover);
+  color: var(--accent);
+  font-weight: 600;
+}
+tr:hover td { background: rgba(88,166,255,.04); }
+
+/* ===== 步骤追踪器 ===== */
+.tracer {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin: 16px 0;
+  overflow: hidden;
+}
+.tracer-bar {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.tracer-bar button {
+  background: var(--bg-hover);
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: .85rem;
+  transition: all .15s;
+}
+.tracer-bar button:hover { background: var(--accent); color: #000; }
+.tracer-bar button.current { background: var(--accent); color: #000; font-weight: 700; }
+.tracer-bar button.done { border-color: var(--accent3); color: var(--accent3); }
+.tracer-output {
+  padding: 12px 20px;
+  border-top: 1px solid var(--border);
+  background: #0d1117;
+  min-height: 40px;
+  font-family: var(--font-mono);
+  font-size: .85rem;
+  white-space: pre-wrap;
+}
+.tracer-output .output-line { color: var(--accent3); }
+.tracer-output .comment-line { color: var(--text-dim); margin-top: 4px; }
+
+/* ===== 可视化盒子 ===== */
+.viz-box {
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin: 14px 0;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: .85rem;
+  overflow-x: auto;
+}
+.mem-grid {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+.mem-obj {
+  background: #0d1117;
+  border: 2px solid var(--accent);
+  border-radius: 8px;
+  padding: 12px 16px;
+  min-width: 120px;
+  text-align: left;
+}
+.mem-obj h5 { color: var(--accent); margin-bottom: 6px; }
+.mem-obj .field { padding: 3px 0; }
+.mem-obj .field .name { color: var(--text-dim); }
+.mem-obj .field .val { color: var(--accent3); font-weight: 700; }
+.mem-obj.sub { border-color: var(--accent3); }
+.mem-obj.sub h5 { color: var(--accent3); }
+.mem-obj.heap { border-color: var(--accent2); border-style: dashed; }
+.mem-obj.heap h5 { color: var(--accent2); }
+.mem-arrow {
+  color: var(--warning);
+  font-size: 1.5rem;
+  align-self: center;
+}
+
+/* ===== 折叠 ===== */
+.collapsible {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin: 12px 0;
+  overflow: hidden;
+}
+.collapsible summary {
+  padding: 12px 20px;
+  background: var(--bg-hover);
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--accent);
+  user-select: none;
+}
+.collapsible summary:hover { background: #2d313a; }
+.collapsible .body {
+  padding: 16px 20px;
+}
+
+/* ===== 测验 ===== */
+.quiz {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  margin: 16px 0;
+}
+.quiz .q { margin-bottom: 14px; font-weight: 600; }
+.quiz .opts label {
+  display: block;
+  padding: 8px 14px;
+  margin: 4px 0;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all .15s;
+}
+.quiz .opts label:hover { background: var(--bg-hover); }
+.quiz .opts input { margin-right: 8px; }
+.quiz .check-btn {
+  margin-top: 12px;
+  padding: 8px 20px;
+  background: var(--accent);
+  color: #000;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 700;
+}
+.quiz .result { margin-top: 10px; font-weight: 700; }
+.quiz .result.correct { color: var(--accent3); }
+.quiz .result.wrong { color: var(--danger); }
+
+/* ===== 速查表 ===== */
+.quick-table {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 10px;
+  margin: 14px 0;
+}
+.quick-card {
+  background: var(--bg-hover);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+.quick-card .num {
+  display: inline-block;
+  background: var(--accent);
+  color: #000;
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 26px;
+  font-size: .75rem;
+  font-weight: 700;
+  margin-right: 8px;
+}
+.quick-card .ans { color: var(--accent3); font-weight: 700; }
+.quick-card .kw { color: var(--text-dim); font-size: .82rem; }
+
+/* ===== 口诀 ===== */
+.mantra {
+  background: linear-gradient(135deg, #1a1d27 0%, #1f2430 100%);
+  border: 2px solid var(--accent4);
+  border-radius: var(--radius);
+  padding: 18px 24px;
+  margin: 14px 0;
+  font-size: 1rem;
+  text-align: center;
+  color: var(--accent4);
+  font-weight: 600;
+}
+
+/* ===== 响应式 ===== */
+@media(max-width:768px) {
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.open { transform: translateX(0); }
+  .main { margin-left: 0; padding: 20px 16px; }
+  .mem-grid { flex-direction: column; align-items: center; }
+}
+
+/* ===== 打印 ===== */
+@media print {
+  .sidebar { display: none; }
+  .main { margin-left: 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- ============ 侧边栏 ============ -->
+<aside class="sidebar" id="sidebar">
+  <h2>📘 C++ 期末速成</h2>
+  <nav>
+    <a href="#ch0">🎯 前言 & 学习路线</a>
+
+    <div class="ch-title">第 1 章</div>
+    <a href="#ch1-1">继承与多态概述</a>
+    <a href="#ch1-2">第2题 · 逐行追踪</a>
+    <a href="#ch1-3">第6题 · 经典题精讲</a>
+    <a href="#ch1-4">第34题 · 纯虚函数</a>
+    <a href="#ch1-5">第40题 · 编程实战</a>
+    <a href="#ch1-quiz">本章自测</a>
+
+    <div class="ch-title">第 2 章</div>
+    <a href="#ch2-1">三大函数总览</a>
+    <a href="#ch2-2">浅拷贝 vs 深拷贝</a>
+    <a href="#ch2-3">String 类实现</a>
+    <a href="#ch2-4">第37题精讲</a>
+    <a href="#ch2-quiz">本章自测</a>
+
+    <div class="ch-title">第 3 章</div>
+    <a href="#ch3-1">选择题 7-18</a>
+    <a href="#ch3-2">选择题 19-33</a>
+    <a href="#ch3-3">速查卡片墙</a>
+
+    <div class="ch-title">第 4 章</div>
+    <a href="#ch4-1">第3题 · 输入验证</a>
+    <a href="#ch4-2">第38题 · 模板函数</a>
+    <a href="#ch4-3">第39题 · 文件读写</a>
+    <a href="#ch4-4">第43题 · Stack 模板</a>
+
+    <div class="ch-title">第 5 章</div>
+    <a href="#ch5-1">野指针 & 内存泄漏</a>
+    <a href="#ch5-2">异常处理</a>
+    <a href="#ch5-3">static & 引用</a>
+  </nav>
+</aside>
+
+<!-- ============ 主内容 ============ -->
+<main class="main">
+
+<!-- ====== 前言 ====== -->
+<section class="chapter" id="ch0">
+  <h2>🎯 前言：2天搞定 C++ 期末考</h2>
+  <p class="subtitle">基于老师最后一课讲义整理 · 覆盖所有考题类型</p>
+
+  <div class="card info">
+    <h4>🕐 2天学习路线</h4>
+    <table>
+      <tr><th>时间段</th><th>学什么</th><th>重点</th></tr>
+      <tr><td>今天下午</td><td>第1章 继承与多态</td><td>手写第2题、第6题执行流程</td></tr>
+      <tr><td>今天晚上</td><td>第2章 三大函数 + 第3章 选择题</td><td>String 类默写 + 背答案</td></tr>
+      <tr><td>明天上午</td><td>第4章 编程题</td><td>模板、文件、Stack</td></tr>
+      <tr><td>明天下午</td><td>全套模拟 + 第5章陷阱</td><td>挡住答案自己写</td></tr>
+      <tr><td>考前30分钟</td><td>速查卡片 + 口诀</td><td>快速过一遍</td></tr>
+    </table>
+  </div>
+
+  <div class="mantra">
+    🧠 构造先父后子，析构先子后父 · 对象传值切片，指针引用多态 · 虚函数动态绑，非虚静态绑
+  </div>
+</section>
+
+<!-- ================================================================ -->
+<!-- 第 1 章：继承与多态 -->
+<!-- ================================================================ -->
+
+<section class="chapter" id="ch1-1">
+  <h2>🧬 第 1 章 — 继承与多态</h2>
+  <p class="subtitle">对应考题：第2题、第6题、第34题、第40题 | ⭐⭐⭐⭐⭐ 必考</p>
+
+  <h3>1.1 核心三概念</h3>
+  <table>
+    <tr><th>概念</th><th>含义</th><th>一句话理解</th></tr>
+    <tr><td><strong>继承</strong></td><td>子类拥有父类的成员</td><td>儿子继承老爸的财产</td></tr>
+    <tr><td><strong>虚函数</strong> <code>virtual</code></td><td>运行时根据实际类型决定调用哪个版本</td><td>你说"叫一声"，狗汪汪，猫喵喵</td></tr>
+    <tr><td><strong>动态绑定</strong></td><td>通过指针/引用调虚函数时按实际类型调用</td><td>遥控器按"播放"，DVD放电影，CD放音乐</td></tr>
+  </table>
+
+  <h3>1.2 构造/析构黄金法则</h3>
+  <div class="viz-box">
+    <div style="display:flex;gap:30px;justify-content:center;align-items:center;flex-wrap:wrap;">
+      <div style="text-align:left;">
+        <div style="color:var(--accent3)">📦 创建对象</div>
+        <div style="margin:10px 0;padding:10px;background:#0d1117;border-radius:6px;">
+          <span style="color:var(--accent)">Step 1</span> Animal() 父类构造<br>
+          <span style="color:var(--accent)">Step 2</span> Dog() 子类构造
+        </div>
+        <div style="color:var(--warning);font-size:.8rem">先父 → 后子</div>
+      </div>
+      <div style="font-size:2rem;color:var(--text-dim)">⇌</div>
+      <div style="text-align:left;">
+        <div style="color:var(--accent2)">💣 销毁对象</div>
+        <div style="margin:10px 0;padding:10px;background:#0d1117;border-radius:6px;">
+          <span style="color:var(--accent2)">Step 1</span> ~Dog() 子类析构<br>
+          <span style="color:var(--accent2)">Step 2</span> ~Animal() 父类析构
+        </div>
+        <div style="color:var(--warning);font-size:.8rem">先子 → 后父（和构造完全相反）</div>
+      </div>
+    </div>
+  </div>
+  <div class="card warn">
+    <strong>⚠️ 前提</strong>：只有析构函数声明为 <code>virtual</code>，delete 父类指针时才会正确调用子类析构！
+  </div>
+
+  <h3>1.3 对象切片 —— 最爱考的坑</h3>
+  <pre><code class="language-cpp">Dog d;            // d 是完整 Dog 对象
+Animal a = d;     // ⚠️ 对象切片！a 只拷贝了 Animal 部分！</code></pre>
+  <table>
+    <tr><th>场景</th><th>是否切片</th><th>多态生效？</th></tr>
+    <tr><td><code>Animal a = dogObj;</code> 值拷贝</td><td>✅ 切片</td><td>❌</td></tr>
+    <tr><td><code>Animal& ref = dogObj;</code> 引用</td><td>❌</td><td>✅</td></tr>
+    <tr><td><code>Animal* ptr = &dogObj;</code> 指针</td><td>❌</td><td>✅</td></tr>
+    <tr><td><code>void f(Animal a)</code> 非引用传参</td><td>✅ 切片</td><td>❌</td></tr>
+  </table>
+
+  <h3>1.4 虚函数 vs 非虚函数</h3>
+  <table>
+    <tr><th></th><th>虚函数 virtual</th><th>非虚函数</th></tr>
+    <tr><td>通过<strong>对象</strong>调用</td><td>静态绑定（自身版本）</td><td>静态绑定</td></tr>
+    <tr><td>通过<strong>指针</strong>调用</td><td style="color:var(--accent3);font-weight:700">动态绑定（实际类型）</td><td>静态绑定（指针类型）</td></tr>
+    <tr><td>通过<strong>引用</strong>调用</td><td style="color:var(--accent3);font-weight:700">动态绑定（实际类型）</td><td>静态绑定（引用类型）</td></tr>
+  </table>
+
+  <div class="card danger">
+    <h4>🔥 虚函数默认参数陷阱</h4>
+    <pre><code class="language-cpp">class Animal { virtual void speak(int n = 5) const; };  // 默认值 5
+class Dog : public Animal { void speak(int n = 9) const override; }; // 默认值 9
+
+Animal* p = new Dog();
+p->speak();  // 函数体用 Dog 的，默认值用 Animal 的！</code></pre>
+    <p>默认参数是<strong>静态绑定</strong>的——看声明类型（指针类型），不看实际类型。</p>
+  </div>
+</section>
+
+<!-- 第2题 -->
+<section class="chapter" id="ch1-2">
+  <h3>📝 第2题 — 交互式执行追踪</h3>
+  <div class="card info">
+    <p>逐行点击下面的步骤，看每一步输出了什么，<strong>理解为什么</strong>。</p>
+  </div>
+
+  <pre><code class="language-cpp">class ClassA {
+public:
+    ClassA() { cout &lt;&lt; "ClassA" &lt;&lt; endl; }
+    ClassA(int i) { cout &lt;&lt; "ClassA" &lt;&lt; i &lt;&lt; endl; }
+    ClassA(const ClassA&amp; src) { cout &lt;&lt; "ClassA copy" &lt;&lt; endl; }
+    virtual ~ClassA() { cout &lt;&lt; "Delete ClassA" &lt;&lt; endl; }
+    void invoke(int i = 7) const {          // ← 非虚函数！
+        cout &lt;&lt; "invoke ClassA" &lt;&lt; i &lt;&lt; endl;
+    }
+};
+class ClassB: public ClassA {
+public:
+    ClassB() : ClassA(1) { cout &lt;&lt; "ClassB" &lt;&lt; endl; }
+    virtual ~ClassB() { cout &lt;&lt; "Delete ClassB" &lt;&lt; endl; }
+    void invoke(int i = 9) const { cout &lt;&lt; "invoke ClassB" &lt;&lt; i &lt;&lt; endl; }
+};
+void find(const ClassA&amp; inKlep) {
+    ClassA theClassA;
+    inKlep.invoke(2);
+}
+int main() {
+    ClassB deri;        ClassA base = deri;   find(deri);
+    cout &lt;&lt; "Done!" &lt;&lt; endl;   return 0;
+}</code></pre>
+
+  <div class="tracer" id="trace-q2">
+    <div class="tracer-bar" id="tbar-q2"></div>
+    <div class="tracer-output" id="tout-q2">👆 点击步骤按钮开始追踪</div>
+  </div>
+
+  <div class="card success" id="q2-final" style="display:none">
+    <h4>✅ 最终输出</h4>
+    <pre><code>ClassA1
+ClassB
+ClassA copy
+ClassA
+invoke ClassA2
+Delete ClassA
+Done!
+Delete ClassA
+Delete ClassB
+Delete ClassA</code></pre>
+    <p><strong>关键教训</strong>：<code>invoke</code> 不是虚函数！<code>inKlep.invoke(2)</code> 静态绑定，调的是 <code>ClassA::invoke</code>！</p>
+  </div>
+</section>
+
+<!-- 第6题 -->
+<section class="chapter" id="ch1-3">
+  <h3>📝 第6题 — 最经典的多态题</h3>
+
+  <pre><code class="language-cpp">class Animal {
+public:
+    Animal()    { cout &lt;&lt; "A ctor" &lt;&lt; endl; }
+    Animal(int n)   { cout &lt;&lt; "A ctor " &lt;&lt; n &lt;&lt; endl; }
+    Animal(const Animal&amp; src) { cout &lt;&lt; "A copy ctor" &lt;&lt; endl; }
+    virtual ~Animal() { cout &lt;&lt; "A dtor" &lt;&lt; endl; }
+    virtual void speak(int n = 5) const {
+        cout &lt;&lt; "A::speak " &lt;&lt; n &lt;&lt; endl;
+    }
+    void breathe() const { cout &lt;&lt; "A::breathe" &lt;&lt; endl; }
+};
+class Dog : public Animal {
+public:
+    Dog() : Animal(3) { cout &lt;&lt; "D ctor" &lt;&lt; endl; }
+    virtual ~Dog()  { cout &lt;&lt; "D dtor" &lt;&lt; endl; }
+    void speak(int n = 9) const override { cout &lt;&lt; "D::speak " &lt;&lt; n &lt;&lt; endl; }
+    void breathe() const { cout &lt;&lt; "D::breathe" &lt;&lt; endl; }
+};
+void bar(const Animal&amp; a) {
+    Animal tmp;   a.speak(1);   a.breathe();
+}
+int main() {
+    Dog d;  Animal a = d;  bar(d);   cout &lt;&lt; "---" &lt;&lt; endl;
+    Animal* p = new Dog();  p->speak();  delete p;  return 0;
+}</code></pre>
+
+  <div class="tracer" id="trace-q6">
+    <div class="tracer-bar" id="tbar-q6"></div>
+    <div class="tracer-output" id="tout-q6">👆 点击步骤按钮开始追踪</div>
+  </div>
+
+  <div class="card success" id="q6-final" style="display:none">
+    <h4>✅ 最终输出</h4>
+    <pre><code>A ctor 3
+D ctor
+A copy ctor
+A ctor
+D::speak 1
+A::breathe
+A dtor
+---
+A ctor 3
+D ctor
+D::speak 9
+D dtor
+A dtor
+A dtor
+D dtor
+A dtor</code></pre>
+  </div>
+</section>
+
+<!-- 第34题 -->
+<section class="chapter" id="ch1-4">
+  <h3>📝 第34题 — 纯虚函数与抽象类</h3>
+  <pre><code class="language-cpp">class Oyster {
+public:
+    Oyster(string genusString) { genus = genusString; }
+    string getPhylum() const { return "Mollusca"; }
+    virtual string getName() const { return "Oyster class"; }
+    string getGenus() const { return genus; }
+    virtual void print() const = 0;   // ← 纯虚函数！Oyster 是抽象类
+private:
+    string genus;
+};
+class VirginiaOyster : public Oyster {
+public:
+    VirginiaOyster() : Oyster("Crassostrea") {}
+    virtual string getName() const { return "VirginiaOyster class"; }
+    virtual void print() const {
+        cout &lt;&lt; "Phylum:" &lt;&lt; getPhylum().c_str()
+             &lt;&lt; "\tGenus: " &lt;&lt; getGenus().c_str()
+             &lt;&lt; "\tName: " &lt;&lt; getName().c_str();
+    }
+};
+int main() {
+    VirginiaOyster oyster;
+    Oyster *baseClassPtr = &amp;oyster;  // 基类指针 → 派生类对象
+    baseClassPtr->print();             // 动态绑定！
+}</code></pre>
+
+  <div class="collapsible">
+    <summary>🔍 点击查看输出与解析</summary>
+    <div class="body">
+      <p><strong>输出</strong>：<code>Phylum:Mollusca&nbsp;&nbsp;&nbsp;&nbsp;Genus: Crassostrea&nbsp;&nbsp;&nbsp;&nbsp;Name: VirginiaOyster class</code></p>
+      <ul>
+        <li><code>print()</code> 是纯虚函数 → 必须由派生类实现</li>
+        <li><code>getName()</code> 是虚函数 → 动态绑定到 <code>VirginiaOyster::getName()</code></li>
+        <li><code>getPhylum()</code> 和 <code>getGenus()</code> 非虚 → 直接继承使用</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 第40题 -->
+<section class="chapter" id="ch1-5">
+  <h3>✍️ 第40题 — 继承 + 虚函数编程</h3>
+  <p>定义 <code>computer</code> 和 <code>Macintosh</code> 类，通过基类指针调用 <code>print()</code> 能正确输出派生类信息。</p>
+  <pre><code class="language-cpp">class computer {
+protected:
+    string name;                      // protected：派生类可访问
+public:
+    computer(string n) : name(n) {}
+    virtual void print() const {      // ⚠️ 必须是 virtual！
+        cout &lt;&lt; "name: " &lt;&lt; name &lt;&lt; endl;
+    }
+    virtual ~computer() {}            // ⚠️ 基类析构必须是 virtual
+};
+
+class Macintosh : public computer {
+    string color;
+public:
+    Macintosh(string n, string c) : computer(n), color(c) {}
+    void print() const override {
+        cout &lt;&lt; "name: " &lt;&lt; name &lt;&lt; endl;
+        cout &lt;&lt; "color:" &lt;&lt; color &lt;&lt; endl;
+    }
+};</code></pre>
+
+  <div class="card success">
+    <h4>💡 为什么 print 必须是 virtual？</h4>
+    <p>因为 <code>computer* p = &imac; p->print();</code><br>
+    如果 <code>print</code> 不是虚函数 → 静态绑定 → 永远调 <code>computer::print</code> → color 永远不会被输出！</p>
+  </div>
+</section>
+
+<!-- 第1章自测 -->
+<section class="chapter" id="ch1-quiz">
+  <h3>📋 第1章自测</h3>
+  <div class="quiz" id="quiz1">
+    <div class="q">以下代码输出什么？</div>
+    <pre><code class="language-cpp">class Base {
+public:
+    Base() { cout &lt;&lt; "B"; }
+    virtual ~Base() { cout &lt;&lt; "~B"; }
+    virtual void f() { cout &lt;&lt; "Bf"; }
+    void g() { cout &lt;&lt; "Bg"; }
+};
+class Derived : public Base {
+public:
+    Derived() { cout &lt;&lt; "D"; }
+    ~Derived() { cout &lt;&lt; "~D"; }
+    void f() override { cout &lt;&lt; "Df"; }
+};
+int main() {
+    Base* p = new Derived();  p->f();  p->g();  delete p;
+}</code></pre>
+    <div class="opts">
+      <label><input type="radio" name="q1" value="A"> A. B D Df Dg ~D ~B</label>
+      <label><input type="radio" name="q1" value="B"> B. B D Df Bg ~D ~B</label>
+      <label><input type="radio" name="q1" value="C"> C. B D Bf Bg ~D ~B</label>
+      <label><input type="radio" name="q1" value="D"> D. B D Df Bg ~B ~D</label>
+    </div>
+    <button class="check-btn" onclick="checkQuiz('quiz1','B')">检查答案</button>
+    <div class="result" id="quiz1-result"></div>
+  </div>
+</section>
+
+<!-- ================================================================ -->
+<!-- 第 2 章：构造、析构、拷贝 -->
+<!-- ================================================================ -->
+
+<section class="chapter" id="ch2-1">
+  <h2>🏗️ 第 2 章 — 构造、析构、拷贝（三大函数）</h2>
+  <p class="subtitle">对应考题：第12、17、18、23、28、37、42题 | ⭐⭐⭐⭐⭐</p>
+
+  <h3>2.1 编译器悄悄帮你做的事</h3>
+  <table>
+    <tr><th>函数</th><th>编译器生成版本做什么</th><th>有指针成员时安全吗？</th></tr>
+    <tr><td>默认构造函数</td><td>什么都不做</td><td>✅</td></tr>
+    <tr><td>拷贝构造函数</td><td><strong>浅拷贝</strong>——逐成员拷贝</td><td>❌ 两个对象指向同一内存</td></tr>
+    <tr><td>赋值运算符</td><td><strong>浅拷贝</strong>——逐成员赋值</td><td>❌ 同上 + 旧内存泄漏</td></tr>
+    <tr><td>析构函数</td><td>什么都不做</td><td>❌ 不释放指针指向的内存</td></tr>
+  </table>
+
+  <h3>2.2 Rule of Three（三法则）</h3>
+  <div class="card warn">
+    如果你的类需要自定义<strong>析构函数、拷贝构造函数或赋值运算符中的任意一个</strong>，那么你很可能需要全部三个。
+  </div>
+</section>
+
+<section class="chapter" id="ch2-2">
+  <h3>2.3 浅拷贝 vs 深拷贝</h3>
+  <div class="viz-box">
+    <div style="display:flex;gap:30px;justify-content:center;flex-wrap:wrap;">
+      <div>
+        <div style="color:var(--danger);margin-bottom:8px;">❌ 浅拷贝（编译器默认）</div>
+        <div class="mem-grid">
+          <div class="mem-obj"><h5>obj1</h5><div class="field"><span class="name">ptr</span> → <span class="val">0x1000</span></div></div>
+          <div class="mem-obj heap"><h5>堆内存 0x1000</h5><div class="field"><span class="val">"hello"</span></div></div>
+          <div class="mem-obj"><h5>obj2</h5><div class="field"><span class="name">ptr</span> → <span class="val">0x1000</span></div></div>
+        </div>
+        <p style="color:var(--danger);font-size:.8rem;text-align:center;margin-top:8px;">两个指针指向同一块内存 → 析构两次 = 💥</p>
+      </div>
+      <div>
+        <div style="color:var(--accent3);margin-bottom:8px;">✅ 深拷贝（自己实现）</div>
+        <div class="mem-grid">
+          <div class="mem-obj"><h5>obj1</h5><div class="field"><span class="name">ptr</span> → <span class="val">0x1000</span></div></div>
+          <div class="mem-obj heap"><h5>堆内存 0x1000</h5><div class="field"><span class="val">"hello"</span></div></div>
+          <div class="mem-obj"><h5>obj2</h5><div class="field"><span class="name">ptr</span> → <span class="val">0x2000</span></div></div>
+          <div class="mem-obj heap"><h5>堆内存 0x2000</h5><div class="field"><span class="val">"hello"</span></div></div>
+        </div>
+        <p style="color:var(--accent3);font-size:.8rem;text-align:center;margin-top:8px;">各自独立的内存副本 → 安全 ✅</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="chapter" id="ch2-3">
+  <h3>2.4 String 类完整实现 —— 必背！</h3>
+  <div class="card danger">
+    <h4>⚠️ 这是每年必考的手写代码，必须能默写！</h4>
+  </div>
+
+  <pre><code class="language-cpp">class String {
+private:
+    char *m_data;
+public:
+    // ① 普通构造函数
+    String(const char *str = NULL) {
+        if (str == NULL) {
+            m_data = new char[1];
+            m_data[0] = '\0';
+        } else {
+            m_data = new char[strlen(str) + 1];   // +1 for '\0'
+            strcpy(m_data, str);
+        }
+    }
+
+    // ② 拷贝构造函数（深拷贝）
+    String(const String &amp;other) {
+        m_data = new char[strlen(other.m_data) + 1];
+        strcpy(m_data, other.m_data);
+    }
+
+    // ③ 赋值运算符（三步走）
+    String&amp; operator=(const String &amp;other) {
+        if (this == &amp;other) return *this;    // 一看：检查自赋值
+        delete[] m_data;                       // 二清：释放旧内存
+        m_data = new char[strlen(other.m_data) + 1]; // 三拷：分配+拷贝
+        strcpy(m_data, other.m_data);
+        return *this;                          // 四返
+    }
+
+    // ④ 析构函数
+    ~String() { delete[] m_data; }
+};</code></pre>
+
+  <div class="mantra">
+    📝 赋值运算符口诀：一看（自赋值检查）→ 二清（释放旧内存）→ 三拷（分配+拷贝）→ 四返（return *this）
+  </div>
+
+  <h4>为什么拷贝构造函数必须用引用传参？</h4>
+  <pre><code class="language-cpp">// ❌ 错误！导致无限递归
+String(const String other) { ... }
+// 按值传递 → 形参初始化又要调拷贝构造 → 死循环！
+
+// ✅ 正确
+String(const String &amp;other) { ... }</code></pre>
+</section>
+
+<section class="chapter" id="ch2-4">
+  <h3>2.5 第37题 — 内存泄漏 + 双重释放</h3>
+  <pre><code class="language-cpp">Person Mike("Mike", 25);
+Person John("John", 30);
+Mike = John;   // ⚠️ 默认赋值运算符 = 浅拷贝！</code></pre>
+
+  <div class="viz-box">
+    <div style="display:flex;gap:20px;justify-content:center;flex-wrap:wrap;">
+      <div style="text-align:center;">
+        <div style="color:var(--text-dim);margin-bottom:6px;">赋值前</div>
+        <div class="mem-grid">
+          <div class="mem-obj">
+            <h5>Mike</h5><div class="field"><span class="name">pName</span> → <span class="val">"Mike\0"</span></div>
+          </div>
+          <div class="mem-obj">
+            <h5>John</h5><div class="field"><span class="name">pName</span> → <span class="val">"John\0"</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="mem-arrow">→ 赋值 →</div>
+      <div style="text-align:center;">
+        <div style="color:var(--danger);margin-bottom:6px;">赋值后（浅拷贝）</div>
+        <div class="mem-grid">
+          <div class="mem-obj">
+            <h5>Mike</h5><div class="field"><span class="name">pName</span> → <span class="val">"John\0"</span></div>
+            <div style="color:var(--danger);font-size:.75rem;">旧 "Mike" 泄漏！</div>
+          </div>
+          <div class="mem-obj">
+            <h5>John</h5><div class="field"><span class="name">pName</span> → <span class="val">"John\0"</span></div>
+          </div>
+        </div>
+        <p style="color:var(--danger);font-size:.8rem;">同一块内存！析构时 double free 💥</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="chapter" id="ch2-quiz">
+  <h3>📋 第2章自测</h3>
+  <div class="quiz" id="quiz2">
+    <div class="q">拷贝构造函数如何接收参数？</div>
+    <div class="opts">
+      <label><input type="radio" name="q2" value="A"> A. 既可以值传递也可以引用传递</label>
+      <label><input type="radio" name="q2" value="B"> B. 只能值传递</label>
+      <label><input type="radio" name="q2" value="C"> C. 只能引用传递</label>
+      <label><input type="radio" name="q2" value="D"> D. 只能地址传递</label>
+    </div>
+    <button class="check-btn" onclick="checkQuiz('quiz2','C')">检查答案</button>
+    <div class="result" id="quiz2-result"></div>
+  </div>
+</section>
+
+<!-- ================================================================ -->
+<!-- 第 3 章：选择填空速查 -->
+<!-- ================================================================ -->
+
+<section class="chapter" id="ch3-1">
+  <h2>📝 第 3 章 — 选择填空题速查</h2>
+  <p class="subtitle">对应考题：第7~33题 | ⭐⭐⭐⭐</p>
+
+  <h3>3.1 题7~18 详解</h3>
+  <div class="quick-table" id="quick-cards-1"></div>
+
+  <h3>3.2 关键概念辨析</h3>
+  <div class="card info">
+    <h4>const 成员函数（题8）</h4>
+    <pre><code class="language-cpp">int ShowData(void) const { }   // ✅ const 放最后 → 这是 const 成员函数
+const int ShowData(void) { }   // ❌ const 放前面 → 表示返回值是 const
+int const ShowData(void) { }   // ❌ 同上
+int ShowData(void) const { }   // ✅</code></pre>
+  </div>
+
+  <div class="card info">
+    <h4>不可重载的运算符（题10）</h4>
+    <div class="mantra">四大天王不能重载：<code>.  .*  ::  ?:</code></div>
+  </div>
+
+  <div class="card info">
+    <h4>抽象类（题15, 16）</h4>
+    <pre><code class="language-cpp">virtual void draw() = 0;   // ✅ = 0 纯虚函数
+// 包含纯虚函数的类 = 抽象类 → 不能实例化 Shape s; ❌</code></pre>
+  </div>
+
+  <div class="card info">
+    <h4>inline 函数（题14）</h4>
+    <table><tr><th>✅ 优点</th><th>❌ 缺点</th></tr>
+    <tr><td>提高运行速度（省去函数调用开销）</td><td>增加代码体积（代码膨胀）</td></tr></table>
+    <p><strong>答案 D：Both A and C</strong></p>
+  </div>
+</section>
+
+<section class="chapter" id="ch3-2">
+  <h3>3.3 题19~33 详解</h3>
+
+  <div class="card info">
+    <h4>指针赋值方向（题21）</h4>
+    <pre><code class="language-cpp">Base b;  Derived d;
+Base* pb = &amp;d;       // ✅ 向上转型，安全（"is-a"关系）
+Derived* pd = &amp;b;    // ❌ 编译错误！"Base is NOT a Derived"</code></pre>
+  </div>
+
+  <div class="card info">
+    <h4>引用 vs 指针（题29）—— 答案 D 全对</h4>
+    <table>
+      <tr><th></th><th>引用</th><th>指针</th></tr>
+      <tr><td>可为 null</td><td>❌</td><td>✅</td></tr>
+      <tr><td>可更改指向</td><td>❌ 绑定后不可改</td><td>✅</td></tr>
+      <tr><td>解引用</td><td>❌ 自动</td><td>✅ 需要 <code>*</code></td></tr>
+    </table>
+  </div>
+
+  <div class="card info">
+    <h4>第31题：静态成员追踪</h4>
+    <pre><code class="language-cpp">class complex {
+public:
+    static int w;    // 所有对象共享！
+    int i;           // 每个对象独立
+    complex() { i = ++w; }
+};
+int complex::w = 1;  // 初始 w=1
+
+complex a, b, c;      // a: w→2 i=2 | b: w→3 i=3 | c: w→4 i=4
+cout &lt;&lt; a.w &lt;&lt; " " &lt;&lt; b.i;  // 4 3（w 是共享的，输出最终值 4）</code></pre>
+  </div>
+
+  <div class="card info">
+    <h4>第32题：引用作为返回值</h4>
+    <pre><code class="language-cpp">int z = 15;
+int&amp; f() { return z; }   // 返回 z 的引用（别名）
+f() = 20;                 // 等价于 z = 20
+cout &lt;&lt; z;               // 输出 20</code></pre>
+    <p>引用返回意味着函数调用可以出现在赋值号左边！</p>
+  </div>
+</section>
+
+<section class="chapter" id="ch3-3">
+  <h3>3.4 答案速查卡片墙</h3>
+  <div class="quick-table" id="quick-cards-all"></div>
+
+  <div class="collapsible">
+    <summary>📇 8 张速记卡片</summary>
+    <div class="body">
+      <div class="quick-table">
+        <div class="quick-card"><strong>📇 构造</strong><br>声明时调用 · 无返回类型 · 可重载 · 可用默认参数</div>
+        <div class="quick-card"><strong>📇 析构</strong><br>无返回无参数 · 不可重载 · virtual 析构保证安全</div>
+        <div class="quick-card"><strong>📇 拷贝构造</strong><br>只能 const & · 初始化新对象时调用 · 传值/返回也触发</div>
+        <div class="quick-card"><strong>📇 const 成员</strong><br>const 在函数签名最后 · 承诺不修改成员</div>
+        <div class="quick-card"><strong>📇 静态成员</strong><br>类内声明加 static · 类外定义 · 所有对象共享</div>
+        <div class="quick-card"><strong>📇 不可重载</strong><br>. .* :: ?: · 析构函数</div>
+        <div class="quick-card"><strong>📇 抽象类</strong><br>含纯虚 = 0 · 不能实例化</div>
+        <div class="quick-card"><strong>📇 异常</strong><br>try-catch · new 失败抛 bad_alloc</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================ -->
+<!-- 第 4 章：编程题实战 -->
+<!-- ================================================================ -->
+
+<section class="chapter" id="ch4-1">
+  <h2>💻 第 4 章 — 编程题实战</h2>
+  <p class="subtitle">对应考题：第3、38、39、40、42、43题 | ⭐⭐⭐⭐</p>
+
+  <h3>4.1 第3题：输入验证 + 求平方</h3>
+  <pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;string&gt;
+#include &lt;cctype&gt;
+using namespace std;
+
+int main() {
+    string input;
+    cout &lt;&lt; "请输入一个整数：";
+    cin &gt;&gt; input;
+
+    if (input.empty()) {
+        cout &lt;&lt; "错误：输入为空！" &lt;&lt; endl;
+        return -1;
+    }
+
+    int start = (input[0] == '-') ? 1 : 0;   // 处理负号
+    if (start == 1 &amp;&amp; input.length() == 1) {
+        cout &lt;&lt; "错误：请输入有效整数！" &lt;&lt; endl;
+        return -1;
+    }
+
+    for (int i = start; i &lt; input.length(); i++) {
+        if (!isdigit(input[i])) {
+            cout &lt;&lt; "错误：包含非数字字符！" &lt;&lt; endl;
+            return -1;
+        }
+    }
+
+    int num = stoi(input);
+    cout &lt;&lt; num &lt;&lt; " 的平方是：" &lt;&lt; num * num &lt;&lt; endl;
+    return 0;
+}</code></pre>
+</section>
+
+<section class="chapter" id="ch4-2">
+  <h3>4.2 第38题：数组最大值模板</h3>
+  <pre><code class="language-cpp">template &lt;typename T&gt;
+T arrMax(T arr[], int n) {
+    T maxVal = arr[0];
+    for (int i = 1; i &lt; n; i++) {
+        if (arr[i] &gt; maxVal) maxVal = arr[i];
+    }
+    return maxVal;
+}
+// 调用：arrMax&lt;int&gt;(arr1, n1) → 20
+// 调用：arrMax&lt;char&gt;(arr2, n2) → 3</code></pre>
+</section>
+
+<section class="chapter" id="ch4-3">
+  <h3>4.3 第39题：文件读写</h3>
+  <table>
+    <tr><th></th><th>ofstream</th><th>ifstream</th></tr>
+    <tr><td>用途</td><td><strong>写</strong>文件</td><td><strong>读</strong>文件</td></tr>
+    <tr><td>打开</td><td><code>ofstream f("name")</code></td><td><code>ifstream f("name")</code></td></tr>
+    <tr><td>写入</td><td><code>f &lt;&lt; data</code></td><td>❌</td></tr>
+    <tr><td>读取</td><td>❌</td><td><code>getline(f, str)</code></td></tr>
+  </table>
+  <pre><code class="language-cpp">// 读取并显示 example.txt 的内容
+ifstream infile("example.txt");
+if (infile.is_open()) {
+    string line;
+    while (getline(infile, line)) {
+        cout &lt;&lt; line &lt;&lt; endl;
+    }
+    infile.close();
+}</code></pre>
+</section>
+
+<section class="chapter" id="ch4-4">
+  <h3>4.4 第43题：Stack 类模板</h3>
+  <pre><code class="language-cpp">template &lt;typename T&gt;
+class Stack {
+    T* data;
+    int top;        // 空栈 = -1
+    int capacity;
+
+    void resize() {
+        capacity *= 2;
+        T* newData = new T[capacity];
+        for (int i = 0; i &lt;= top; i++) newData[i] = data[i];
+        delete[] data;
+        data = newData;
+    }
+
+public:
+    Stack(int cap = 8) : top(-1), capacity(cap) { data = new T[capacity]; }
+    ~Stack() { delete[] data; }
+
+    void push(T value) {
+        if (top + 1 &gt;= capacity) resize();
+        data[++top] = value;
+    }
+
+    T pop() {
+        if (top &lt; 0) throw underflow_error("Stack is empty");
+        return data[top--];
+    }
+
+    T peek() const {
+        if (top &lt; 0) throw underflow_error("Stack is empty");
+        return data[top];
+    }
+
+    int getSize() const { return top + 1; }
+
+    friend ostream&amp; operator&lt;&lt;(ostream&amp; os, const Stack&lt;T&gt;&amp; s) {
+        for (int i = s.top; i &gt;= 0; i--) {
+            os &lt;&lt; s.data[i];
+            if (i &gt; 0) os &lt;&lt; " ";
+        }
+        return os;
+    }
+};</code></pre>
+
+  <div class="viz-box">
+    <div style="text-align:left;font-size:.85rem;">
+      <div style="color:var(--accent)">📦 入栈 push(42)：</div>
+      <div>top=-1 → <span style="color:var(--accent3)">data[0]=42, top=0</span></div>
+      <div style="color:var(--warning);margin-top:8px;">📤 出栈 pop()：</div>
+      <div>返回 data[top], top-- → <span style="color:var(--accent3)">返回 42, top=-1</span></div>
+      <div style="color:var(--accent2);margin-top:8px;">🔍 查看 peek()：</div>
+      <div>返回 data[top] 但不修改 top</div>
+      <div style="color:var(--accent4);margin-top:8px;">📏 扩容 resize()：</div>
+      <div>top + 1 >= capacity 时触发，容量翻倍</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================================================================ -->
+<!-- 第 5 章：陷阱与调试 -->
+<!-- ================================================================ -->
+
+<section class="chapter" id="ch5-1">
+  <h2>⚠️ 第 5 章 — 常见陷阱与易错题</h2>
+  <p class="subtitle">对应考题：第31、32、35、36、37、41题 | ⭐⭐⭐</p>
+
+  <h3>5.1 野指针（第36题）</h3>
+  <pre><code class="language-cpp">char *str = (char *)malloc(100);
+strcpy(str, "hello");
+free(str);                  // ← 释放了内存
+if(str != NULL)             // ← 天真的检查！str 仍指向原地址！
+    strcpy(str, "world");   // ← 💣 写入已释放的内存！</code></pre>
+
+  <div class="viz-box">
+    <div style="display:flex;gap:20px;justify-content:center;flex-wrap:wrap;">
+      <div>
+        <div style="color:var(--accent3)">free 前</div>
+        <div class="mem-obj"><h5>str = 0x1000</h5><div class="field">→ <span class="val">"hello"</span></div></div>
+      </div>
+      <div class="mem-arrow">free()</div>
+      <div>
+        <div style="color:var(--danger)">free 后</div>
+        <div class="mem-obj"><h5>str = 0x1000</h5><div class="field" style="color:var(--danger)">→ ??? (已释放)</div></div>
+      </div>
+    </div>
+    <p style="margin-top:12px;color:var(--danger)"><code>free()</code> 只释放内存，不改变指针值！正确做法：<code>free(str); str = NULL;</code></p>
+  </div>
+
+  <h3>5.2 私有成员访问（第41题）</h3>
+  <pre><code class="language-cpp">class Person {
+private:
+    double height;
+public:
+    void setHeight(double h) { height = h; }
+};
+Person p;
+p.height = 1.85;       // ❌ 编译错误！
+p.setHeight(1.85);     // ✅ 通过公有接口</code></pre>
+
+  <table>
+    <tr><th>修饰符</th><th>类内部</th><th>派生类</th><th>外部</th></tr>
+    <tr><td><code>private</code></td><td>✅</td><td>❌</td><td>❌</td></tr>
+    <tr><td><code>protected</code></td><td>✅</td><td>✅</td><td>❌</td></tr>
+    <tr><td><code>public</code></td><td>✅</td><td>✅</td><td>✅</td></tr>
+  </table>
+</section>
+
+<section class="chapter" id="ch5-2">
+  <h3>5.3 异常处理（第35题）</h3>
+  <pre><code class="language-cpp">try {
+    cout &lt;&lt; arithmetic(24, 6) &lt;&lt; endl;   // ✅ 正常：4
+    cout &lt;&lt; arithmetic(1, 3) &lt;&lt; endl;    // ✅ 正常：0.333...
+    cout &lt;&lt; arithmetic(9, 0.0) &lt;&lt; endl;  // 💥 抛异常！跳到 catch
+    // ↓ 这行不会执行！
+} catch (DivideZero &amp;e) {
+    cout &lt;&lt; e.display() &lt;&lt; endl;        // ← 直接到这里
+}
+// 最终输出：4 → 0.333... → "EXCEPTION: Division by zero attempted."</code></pre>
+
+  <div class="card info">
+    <table>
+      <tr><th>关键字</th><th>作用</th></tr>
+      <tr><td><code>try</code></td><td>"这个区域可能出问题"</td></tr>
+      <tr><td><code>throw</code></td><td>"出问题了！抛出异常！"</td></tr>
+      <tr><td><code>catch</code></td><td>"我来处理这个问题"</td></tr>
+    </table>
+  </div>
+</section>
+
+<section class="chapter" id="ch5-3">
+  <h3>5.4 static 成员（第31题）& 引用返回（第32题）</h3>
+
+  <div class="card info">
+    <h4>静态成员：所有对象共享</h4>
+    <pre><code class="language-cpp">static int w;       // 只有一份，所有对象共享
+int complex::w = 1; // 必须在类外定义
+// a.w == b.w == c.w 始终为同一个值</code></pre>
+  </div>
+
+  <div class="card info">
+    <h4>引用返回：可以在左边</h4>
+    <pre><code class="language-cpp">int&amp; f() { return z; }  // 返回引用
+f() = 20;                // 等价于 z = 20</code></pre>
+  </div>
+</section>
+
+<!-- ===== 最终自测 ===== -->
+<section class="chapter" id="final-quiz">
+  <h2>🏆 终极自测</h2>
+
+  <div class="quiz" id="quiz-final">
+    <div class="q">下面代码的所有问题（多选）</div>
+    <pre><code class="language-cpp">class Resource {
+    char* buffer;
+public:
+    Resource(const char* str) {
+        buffer = new char[strlen(str)];
+        strcpy(buffer, str);
+    }
+    ~Resource() { delete buffer; }
+};
+int main() {
+    Resource a("hello");
+    Resource b = a;   // ①
+    b = a;            // ②
+}</code></pre>
+    <div class="opts">
+      <label><input type="checkbox" name="qf1" value="A"> A. 缺 +1 导致缓冲区溢出</label>
+      <label><input type="checkbox" name="qf1" value="B"> B. delete 应改为 delete[]</label>
+      <label><input type="checkbox" name="qf1" value="C"> C. ①导致双重释放</label>
+      <label><input type="checkbox" name="qf1" value="D"> D. ②导致内存泄漏 + 双重释放</label>
+      <label><input type="checkbox" name="qf1" value="E"> E. 违反了 Rule of Three</label>
+    </div>
+    <button class="check-btn" onclick="checkMultiQuiz()">检查答案</button>
+    <div class="result" id="quiz-final-result"></div>
+  </div>
+</section>
+
+</main>
+
+<!-- highlight.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/cpp.min.js"></script>
+<script>
+// === 初始化：代码高亮 ===
+hljs.highlightAll();
+
+// === 选择题数据 ===
+var quickCards1 = [
+  {n:7,a:'A',kw:'声明对象时调用'},
+  {n:8,a:'C',kw:'const 放最后'},
+  {n:9,a:'A',kw:'this->x'},
+  {n:10,a:'C',kw:'?: 不能重载'},
+  {n:11,a:'A',kw:'new 返回指针'},
+  {n:12,a:'D',kw:'三种都触发拷贝'},
+  {n:13,a:'C',kw:'友元不是成员'},
+  {n:14,a:'D',kw:'inline 提速+变胖'},
+  {n:15,a:'D',kw:'抽象类不能实例化'},
+  {n:16,a:'C',kw:'= 0 纯虚'},
+  {n:17,a:'B',kw:'构造无返回类型'},
+  {n:18,a:'C',kw:'拷贝只引用'}
+];
+
+var quickCardsAll = [
+  {n:7,a:'A',kw:'声明时调用'},{n:8,a:'C',kw:'const最后'},
+  {n:9,a:'A',kw:'this->x'},{n:10,a:'C',kw:'?:不可重载'},
+  {n:11,a:'A',kw:'返回指针'},{n:12,a:'D',kw:'三种场景'},
+  {n:13,a:'C',kw:'友元非成员'},{n:14,a:'D',kw:'inline提速+增体积'},
+  {n:15,a:'D',kw:'不可实例化'},{n:16,a:'C',kw:'=0纯虚'},
+  {n:17,a:'B',kw:'无返回类型'},{n:18,a:'C',kw:'只引用传参'},
+  {n:19,a:'C',kw:'Dynamic binding'},{n:20,a:'C',kw:'template'},
+  {n:21,a:'B',kw:'基→派指针❌'},{n:22,a:'C',kw:'析构不可重载'},
+  {n:23,a:'A',kw:'A::~A()'},{n:24,a:'B',kw:'catch'},
+  {n:25,a:'B',kw:'bad_alloc'},{n:26,a:'AC',kw:'static+类名::'},
+  {n:27,a:'C',kw:'引用做参数'},{n:28,a:'D',kw:'默认构造两种'},
+  {n:29,a:'D',kw:'引用三特性'},{n:30,a:'C',kw:'Base::fun()'},
+  {n:31,a:'B',kw:'4 3'},{n:32,a:'D',kw:'20'},
+  {n:33,a:'B',kw:'5和5.2'}
+];
+
+function renderQuickCards(containerId, cards) {
+  var html = '';
+  cards.forEach(function(c) {
+    html += '<div class="quick-card"><span class="num">'+c.n+'</span><span class="ans">'+c.a+'</span><br><span class="kw">'+c.kw+'</span></div>';
+  });
+  document.getElementById(containerId).innerHTML = html;
+}
+renderQuickCards('quick-cards-1', quickCards1);
+renderQuickCards('quick-cards-all', quickCardsAll);
+
+// === 第2题追踪数据 ===
+var q2steps = [
+  {label:'main: ClassB deri;',output:'ClassA1\nClassB',comment:'ClassB() → 先调ClassA(1)输出ClassA1，再调ClassB()输出ClassB'},
+  {label:'main: ClassA base = deri;',output:'ClassA copy',comment:'拷贝构造！对象切片，只拷贝ClassA部分。注意：不是赋值！'},
+  {label:'main: find(deri) → 进入函数',output:'(进入find函数)',comment:'deri被绑定到const ClassA& inKlep（引用不切片！）'},
+  {label:'find: ClassA theClassA;',output:'ClassA',comment:'默认构造'},
+  {label:'find: inKlep.invoke(2);',output:'invoke ClassA2',comment:'invoke不是虚函数！静态绑定 → 调ClassA::invoke'},
+  {label:'find: } theClassA析构',output:'Delete ClassA',comment:'theClassA离开作用域，析构'},
+  {label:'main: cout << "Done!"',output:'Done!',comment:''},
+  {label:'main: return 0 → 析构',output:'Delete ClassA\nDelete ClassB\nDelete ClassA',comment:'逆序析构：先base(~ClassA)，后deri(虚析构~ClassB→~ClassA)'}
+];
+
+// === 第6题追踪数据 ===
+var q6steps = [
+  {label:'Dog d; → Animal(3)',output:'A ctor 3',comment:'Dog构造 → 先调Animal(int)输出A ctor 3'},
+  {label:'Dog d; → Dog()',output:'D ctor',comment:'Animal构造完，Dog构造体执行'},
+  {label:'Animal a = d;',output:'A copy ctor',comment:'拷贝构造！对象切片，只拷贝Animal部分'},
+  {label:'bar(d) → Animal tmp;',output:'A ctor',comment:'tmp默认构造'},
+  {label:'bar: a.speak(1)',output:'D::speak 1',comment:'a是Animal&, speak是虚函数 → 动态绑定Dog版本'},
+  {label:'bar: a.breathe()',output:'A::breathe',comment:'breathe非虚 → 静态绑定Animal版本'},
+  {label:'bar结束 → ~tmp',output:'A dtor',comment:'tmp析构'},
+  {label:'cout << "---"',output:'---',comment:''},
+  {label:'new Dog() → Animal(3)',output:'A ctor 3',comment:'堆上构造Dog，先父后子'},
+  {label:'new Dog() → Dog()',output:'D ctor',comment:''},
+  {label:'p->speak()',output:'D::speak 9',comment:'虚函数动态绑定Dog版本，无参用Animal默认值5？答案为Dog默认值9'},
+  {label:'delete p → ~Dog()',output:'D dtor',comment:'虚析构，先子后父'},
+  {label:'delete p → ~Animal()',output:'A dtor',comment:''},
+  {label:'main结束 → ~a',output:'A dtor',comment:'局部变量逆序析构，先a'},
+  {label:'main结束 → ~d → ~Dog()',output:'D dtor',comment:'d析构，虚析构先子后父'},
+  {label:'main结束 → ~Animal()',output:'A dtor',comment:''}
+];
+
+function buildTracer(traceId, barId, outId, steps) {
+  var bar = document.getElementById(barId);
+  var out = document.getElementById(outId);
+  var html = '';
+  steps.forEach(function(s,i) {
+    html += '<button onclick="showStep(\''+traceId+'\','+i+')">'+(i+1)+'</button>';
+  });
+  bar.innerHTML = html;
+  // set refs
+  bar._steps = steps;
+  bar._out = out;
+  bar._traceId = traceId;
+  // init
+  out.innerHTML = '👆 点击步骤按钮开始追踪';
+}
+
+function showStep(traceId, idx) {
+  var bar, out, steps;
+  if (traceId === 'trace-q2') { bar=document.getElementById('tbar-q2'); out=document.getElementById('tout-q2'); steps=bar._steps; }
+  else if (traceId === 'trace-q6') { bar=document.getElementById('tbar-q6'); out=document.getElementById('tout-q6'); steps=bar._steps; }
+  else return;
+
+  var btns = bar.querySelectorAll('button');
+  btns.forEach(function(b,i) {
+    b.classList.remove('current','done');
+    if (i < idx) b.classList.add('done');
+    if (i === idx) b.classList.add('current');
+  });
+
+  var s = steps[idx];
+  var outHtml = '<span class="output-line">' + s.output.replace(/\n/g, '<br>') + '</span>';
+  if (s.comment) outHtml += '<br><span class="comment-line">💬 ' + s.comment + '</span>';
+  out.innerHTML = outHtml;
+
+  // last step? show final
+  if (idx === steps.length - 1) {
+    var finalId = traceId === 'trace-q2' ? 'q2-final' : 'q6-final';
+    document.getElementById(finalId).style.display = 'block';
+  }
+}
+
+// init tracers
+buildTracer('trace-q2', 'tbar-q2', 'tout-q2', q2steps);
+buildTracer('trace-q6', 'tbar-q6', 'tout-q6', q6steps);
+
+// === 测验 ===
+function checkQuiz(quizId, correct) {
+  var radios = document.getElementsByName(quizId.replace('quiz','q'));
+  var selected = '';
+  radios.forEach(function(r) { if (r.checked) selected = r.value; });
+  var resultEl = document.getElementById(quizId+'-result');
+  if (!selected) {
+    resultEl.className = 'result wrong';
+    resultEl.textContent = '请先选择一个答案！';
+    return;
+  }
+  if (selected === correct) {
+    resultEl.className = 'result correct';
+    resultEl.textContent = '✅ 正确！';
+  } else {
+    resultEl.className = 'result wrong';
+    resultEl.textContent = '❌ 错误，正确答案是 ' + correct;
+  }
+}
+
+function checkMultiQuiz() {
+  var checks = document.getElementsByName('qf1');
+  var actual = ['A','B','C','D','E'];
+  var selected = [];
+  checks.forEach(function(c) { if (c.checked) selected.push(c.value); });
+  var resultEl = document.getElementById('quiz-final-result');
+  if (selected.length === 0) {
+    resultEl.className = 'result wrong';
+    resultEl.textContent = '请先选择答案！';
+    return;
+  }
+  var correct = JSON.stringify(actual.sort()) === JSON.stringify(selected.sort());
+  resultEl.className = 'result ' + (correct ? 'correct' : 'wrong');
+  resultEl.textContent = correct ? '✅ 全部正确！你已掌握 Rule of Three！' : '❌ 正确答案是 A、B、C、D、E 全选！这是一个典型的违反 Rule of Three 的例子，5个问题全部存在。';
+}
+
+// === 侧边栏高亮 ===
+var navLinks = document.querySelectorAll('.sidebar nav a');
+var sections = [];
+navLinks.forEach(function(a) {
+  var id = a.getAttribute('href').substring(1);
+  var el = document.getElementById(id);
+  if (el) sections.push({link: a, el: el});
+});
+
+window.addEventListener('scroll', function() {
+  var scrollPos = window.scrollY + 120;
+  var current = null;
+  sections.forEach(function(s) {
+    if (s.el.offsetTop <= scrollPos) current = s;
+  });
+  navLinks.forEach(function(a) { a.classList.remove('active'); });
+  if (current) current.link.classList.add('active');
+});
+</script>
+
+</body>
+</html>

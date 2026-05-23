@@ -9,6 +9,18 @@
 <% if (projects.length) { %>
   <section class="ac-project-list">
     <% projects.forEach(function(project){ %>
+      <%
+        function projectHref(value) {
+          if (!value) return '';
+          if (/^(https?:)?\/\//i.test(value) || /^mailto:/i.test(value)) return value;
+          return url_for(value);
+        }
+        function isExternal(value) {
+          return /^(https?:)?\/\//i.test(value);
+        }
+        var projectLiveUrl = projectHref(project.liveUrl);
+        var projectGithubUrl = projectHref(project.github);
+      %>
       <article class="ac-project-card">
         <% if (project.heroImage) { %>
           <div class="ac-project-media">
@@ -18,8 +30,8 @@
         <div class="ac-project-body">
           <div class="ac-project-head">
             <h3>
-              <% if (project.liveUrl) { %>
-                <a href="<%= project.liveUrl %>" target="_blank" rel="noopener noreferrer"><%= project.title %></a>
+              <% if (projectLiveUrl) { %>
+                <a href="<%- projectLiveUrl %>" <%- isExternal(projectLiveUrl) ? 'target="_blank" rel="noopener noreferrer"' : '' %>><%= project.title %></a>
               <% } else { %>
                 <%= project.title %>
               <% } %>
@@ -40,11 +52,11 @@
             </div>
           <% } %>
           <div class="ac-project-actions">
-            <% if (project.github) { %>
-              <a class="ac-card-link" href="<%= project.github %>" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <% if (projectGithubUrl) { %>
+              <a class="ac-card-link" href="<%- projectGithubUrl %>" <%- isExternal(projectGithubUrl) ? 'target="_blank" rel="noopener noreferrer"' : '' %>>GitHub</a>
             <% } %>
-            <% if (project.liveUrl) { %>
-              <a class="ac-card-link" href="<%= project.liveUrl %>" target="_blank" rel="noopener noreferrer">访问站点</a>
+            <% if (projectLiveUrl) { %>
+              <a class="ac-card-link" href="<%- projectLiveUrl %>" <%- isExternal(projectLiveUrl) ? 'target="_blank" rel="noopener noreferrer"' : '' %>>访问站点</a>
             <% } %>
           </div>
         </div>

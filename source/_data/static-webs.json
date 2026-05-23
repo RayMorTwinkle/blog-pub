@@ -1,0 +1,13 @@
+[
+  {
+    "slug": "index",
+    "title": "C++ 期末速成教材 — 继承·多态·三大函数·编程实战",
+    "description": "",
+    "tags": [],
+    "order": 999,
+    "updated": "2026-05-22",
+    "source": "index.html",
+    "path": "/webs/index.html",
+    "output": "blog-pub/source/webs/index.html"
+  }
+]

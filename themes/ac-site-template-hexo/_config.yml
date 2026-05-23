@@ -68,6 +68,16 @@ assets:
   favicon: ac-assets/favicon.svg
 
 projects:
+  - title: "静态网页项目合集"
+    description: "收集课堂演示、可视化教程和临时写给同学看的单页项目，文件来自 Obsidian 的 pub/webs。"
+    date: "持续更新"
+    heroImage: "ac-assets/post_img.png"
+    badge: "合集"
+    liveUrl: "/projects/static-webs/"
+    tags:
+      - 静态网页
+      - 教程
+      - 可视化
   - title: "Demo Project"
     description: "这是一个示例项目，展示 Hexo 主题中的项目卡片布局。"
     date: "2026-05-28"

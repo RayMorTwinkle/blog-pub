@@ -1,0 +1,47 @@
+<%
+  var webProjects = site.data && site.data['static-webs'] ? site.data['static-webs'] : [];
+%>
+
+<section class="ac-webs-hero">
+  <div>
+    <p class="ac-eyebrow">Static Web Projects</p>
+    <h1>静态网页项目合集</h1>
+    <p>这里放课堂演示、可视化教程和临时写给同学看的 HTML 小项目。源文件来自 Obsidian 的 <code>pub/webs</code>，同步后会原样部署到 GitHub Pages。</p>
+  </div>
+  <span class="ac-blog-count">共 <%= webProjects.length %> 个</span>
+</section>
+
+<% if (page.content && page.content.trim()) { %>
+  <div class="ac-prose ac-webs-note">
+    <%- page.content %>
+  </div>
+<% } %>
+
+<% if (webProjects.length) { %>
+  <section class="ac-webs-grid">
+    <% webProjects.forEach(function(item){ %>
+      <article class="ac-web-card">
+        <div class="ac-web-card-top">
+          <span class="ac-web-card-badge"><%= item.updated || '静态网页' %></span>
+          <% if (item.tags && item.tags.length) { %>
+            <div class="ac-project-tags">
+              <% item.tags.forEach(function(tag){ %>
+                <span class="ac-tag-chip"><%= tag %></span>
+              <% }) %>
+            </div>
+          <% } %>
+        </div>
+        <h2><a href="<%- url_for(item.path) %>" target="_blank" rel="noopener noreferrer"><%= item.title || item.slug %></a></h2>
+        <p><%= item.description || '一个从 Obsidian 工作区同步过来的静态 HTML 项目。' %></p>
+        <div class="ac-web-card-meta">
+          <span><%= item.source || '' %></span>
+        </div>
+        <a class="ac-card-link" href="<%- url_for(item.path) %>" target="_blank" rel="noopener noreferrer">打开网页</a>
+      </article>
+    <% }) %>
+  </section>
+<% } else { %>
+  <div class="ac-empty-state">
+    还没有发现静态网页项目。把 HTML 放到 <code>pub/webs</code> 后运行同步即可。
+  </div>
+<% } %>

@@ -573,6 +573,132 @@ samp {
   aspect-ratio: 16 / 8.5;
 }
 
+.ac-webs-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 1.4rem;
+  align-items: end;
+  margin-bottom: 1.2rem;
+  padding: clamp(1.45rem, 3vw, 2.4rem);
+  overflow: hidden;
+  border: 1px solid var(--ac-border);
+  border-radius: var(--ac-radius-lg);
+  background:
+    radial-gradient(circle at 10% 14%, rgba(255, 214, 102, 0.26), transparent 25%),
+    radial-gradient(circle at 92% 20%, rgba(42, 186, 170, 0.24), transparent 30%),
+    linear-gradient(135deg, rgba(255, 253, 248, 0.94), rgba(232, 251, 247, 0.74));
+  box-shadow: var(--ac-shadow-card);
+}
+
+.ac-webs-hero::after {
+  content: "</>";
+  position: absolute;
+  right: 2rem;
+  bottom: -0.35rem;
+  color: rgba(42, 186, 170, 0.12);
+  font-family: var(--ac-font-display);
+  font-size: clamp(4rem, 12vw, 8rem);
+  font-weight: 900;
+  pointer-events: none;
+}
+
+.ac-webs-hero h1 {
+  margin: 0.15rem 0 0.7rem;
+  font-size: clamp(2rem, 5vw, 4rem);
+  line-height: 1;
+}
+
+.ac-webs-hero p:not(.ac-eyebrow) {
+  max-width: 44rem;
+  margin: 0;
+  color: var(--ac-text-muted);
+  font-size: 1.04rem;
+  line-height: 1.85;
+}
+
+.ac-webs-hero code,
+.ac-webs-note code,
+.ac-empty-state code {
+  padding: 0.12rem 0.38rem;
+  border-radius: 999px;
+  background: rgba(42, 186, 170, 0.12);
+  color: var(--ac-primary-dark);
+  font-family: var(--ac-font-mono);
+  font-size: 0.9em;
+}
+
+.ac-webs-note {
+  margin-bottom: 1.2rem;
+}
+
+.ac-webs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.ac-web-card {
+  position: relative;
+  display: flex;
+  min-height: 18rem;
+  flex-direction: column;
+  gap: 0.85rem;
+  overflow: hidden;
+  padding: 1.35rem;
+  border: 1px solid var(--ac-border);
+  border-top: 4px solid var(--ac-primary);
+  border-radius: var(--ac-radius-lg);
+  background:
+    radial-gradient(circle at 100% 100%, rgba(42, 186, 170, 0.13), transparent 32%),
+    var(--ac-surface);
+  box-shadow: var(--ac-shadow-card);
+  transition: transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.ac-web-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--ac-shadow-hover);
+}
+
+.ac-web-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.ac-web-card-badge {
+  color: var(--ac-primary-dark);
+  font-size: 0.85rem;
+  font-weight: 900;
+}
+
+.ac-web-card h2 {
+  margin: 0;
+  color: var(--ac-text-strong);
+  font-size: 1.3rem;
+  line-height: 1.35;
+}
+
+.ac-web-card h2 a:hover {
+  color: var(--ac-primary-dark);
+}
+
+.ac-web-card p {
+  margin: 0;
+  color: var(--ac-text-muted);
+  line-height: 1.8;
+}
+
+.ac-web-card-meta {
+  margin-top: auto;
+  color: var(--ac-text-muted);
+  font-size: 0.82rem;
+  overflow-wrap: anywhere;
+}
+
 .ac-post-card::after {
   content: "";
   position: absolute;
@@ -1219,6 +1345,13 @@ html[data-theme="night"] .ac-blog-board {
   background:
     radial-gradient(circle at 88% 20%, rgba(42, 186, 170, 0.2), transparent 28%),
     radial-gradient(circle at 8% 96%, rgba(255, 214, 102, 0.14), transparent 26%),
+    linear-gradient(135deg, rgba(45, 53, 84, 0.95), rgba(29, 39, 62, 0.86));
+}
+
+html[data-theme="night"] .ac-webs-hero {
+  background:
+    radial-gradient(circle at 10% 14%, rgba(255, 214, 102, 0.14), transparent 25%),
+    radial-gradient(circle at 92% 20%, rgba(42, 186, 170, 0.18), transparent 30%),
     linear-gradient(135deg, rgba(45, 53, 84, 0.95), rgba(29, 39, 62, 0.86));
 }
 
@@ -1890,6 +2023,11 @@ html[data-theme="night"] .ac-code-copy.is-copied {
 
 @media (max-width: 900px) {
   .ac-blog-board {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .ac-webs-hero {
     grid-template-columns: 1fr;
     align-items: start;
   }
