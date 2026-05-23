@@ -1,6 +1,6 @@
 ---
 title: Ghostty终端配置指南
-date: 2026-04-10 11:16:48
+date: 2026-05-23 08:27:59
 tags:
   - 工具
   - 教程
@@ -166,7 +166,7 @@ j = { k = "normal_mode" }
 
 # 🤗 总结归纳
 
-[终端工具配置指南.md](%E6%9B%B4%E6%8D%A2ghostty%E9%85%8D%E7%BD%AE%E6%AD%A5%E9%AA%A4/%E7%BB%88%E7%AB%AF%E5%B7%A5%E5%85%B7%E9%85%8D%E7%BD%AE%E6%8C%87%E5%8D%97.md)
+[终端工具配置指南.md](终端工具配置指南.md)
 
 [fresh-config.json](%E6%9B%B4%E6%8D%A2ghostty%E9%85%8D%E7%BD%AE%E6%AD%A5%E9%AA%A4/fresh-config.json)
 
