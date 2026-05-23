@@ -863,10 +863,27 @@ samp {
   --ac-callout-bg: rgba(42, 186, 170, 0.1);
 }
 
+.ac-prose blockquote.ac-callout-info {
+  --ac-callout-color: #4f9ed8;
+  --ac-callout-bg: rgba(79, 158, 216, 0.1);
+}
+
+.ac-prose blockquote.ac-callout-abstract,
+.ac-prose blockquote.ac-callout-quote {
+  --ac-callout-color: #8d7a5f;
+  --ac-callout-bg: rgba(141, 122, 95, 0.1);
+}
+
 .ac-prose blockquote.ac-callout-warning,
 .ac-prose blockquote.ac-callout-question {
   --ac-callout-color: #d59f32;
   --ac-callout-bg: rgba(213, 159, 50, 0.11);
+}
+
+.ac-prose blockquote.ac-callout-todo,
+.ac-prose blockquote.ac-callout-example {
+  --ac-callout-color: #9b79d9;
+  --ac-callout-bg: rgba(155, 121, 217, 0.11);
 }
 
 .ac-prose blockquote.ac-callout-danger {

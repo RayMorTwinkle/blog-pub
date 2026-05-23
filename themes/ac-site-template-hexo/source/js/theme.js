@@ -125,22 +125,74 @@
 
   function calloutType(type) {
     var normalized = String(type || 'note').toLowerCase();
+    if (/^(info|todo)$/.test(normalized)) return normalized;
+    if (/^(abstract|summary|tldr)$/.test(normalized)) return 'abstract';
     if (/^(tip|hint|important)$/.test(normalized)) return 'tip';
     if (/^(warning|caution|attention)$/.test(normalized)) return 'warning';
     if (/^(danger|error|bug|failure|fail|missing)$/.test(normalized)) return 'danger';
     if (/^(success|check|done)$/.test(normalized)) return 'success';
     if (/^(question|help|faq)$/.test(normalized)) return 'question';
+    if (/^(example)$/.test(normalized)) return 'example';
+    if (/^(quote|cite)$/.test(normalized)) return 'quote';
     return 'note';
+  }
+
+  function htmlToText(html) {
+    var probe = document.createElement('div');
+    probe.innerHTML = html;
+    return probe.textContent || '';
+  }
+
+  function firstCalloutLine(element) {
+    var html = element.innerHTML.trimStart();
+    var brIndex = html.search(/<br\s*\/?>/i);
+    var newlineIndex = html.search(/\r?\n/);
+    var splitIndex = -1;
+
+    if (brIndex >= 0 && newlineIndex >= 0) {
+      splitIndex = Math.min(brIndex, newlineIndex);
+    } else {
+      splitIndex = brIndex >= 0 ? brIndex : newlineIndex;
+    }
+
+    var lineHtml = splitIndex >= 0 ? html.slice(0, splitIndex) : html;
+    return htmlToText(lineHtml).trim();
+  }
+
+  function removeCalloutLine(element) {
+    var html = element.innerHTML.trimStart();
+    var brMatch = html.match(/<br\s*\/?>/i);
+    var brIndex = brMatch ? brMatch.index : -1;
+    var newlineIndex = html.search(/\r?\n/);
+    var splitIndex = -1;
+    var delimiterLength = 0;
+
+    if (brIndex >= 0 && (newlineIndex < 0 || brIndex <= newlineIndex)) {
+      splitIndex = brIndex;
+      delimiterLength = brMatch[0].length;
+    } else if (newlineIndex >= 0) {
+      splitIndex = newlineIndex;
+      delimiterLength = html.charAt(newlineIndex) === '\r' && html.charAt(newlineIndex + 1) === '\n' ? 2 : 1;
+    }
+
+    element.innerHTML = splitIndex >= 0
+      ? html.slice(splitIndex + delimiterLength).trim()
+      : '';
   }
 
   function enhanceCallouts() {
     var labels = {
-      note: 'Note',
-      tip: 'Tip',
-      warning: 'Warning',
-      danger: 'Danger',
-      success: 'Success',
-      question: 'Question'
+      note: '笔记',
+      info: '信息',
+      abstract: '摘要',
+      tip: '提示',
+      warning: '注意',
+      danger: '危险',
+      success: '完成',
+      question: '问题',
+      todo: '待办',
+      example: '示例',
+      quote: '引用'
     };
 
     document.querySelectorAll('.ac-prose blockquote').forEach(function (quote) {
@@ -149,7 +201,7 @@
       var first = quote.firstElementChild;
       if (!first || !/^(P|DIV)$/i.test(first.tagName)) return;
 
-      var firstLine = first.textContent.trim().split(/\r?\n/)[0];
+      var firstLine = firstCalloutLine(first);
       var match = firstLine.match(/^\[!([a-z-]+)\][+-]?\s*(.*)$/i);
       if (!match) return;
 
@@ -160,9 +212,8 @@
       titleElement.textContent = title;
 
       quote.classList.add('ac-callout', 'ac-callout-' + type);
-      first.innerHTML = first.innerHTML
-        .replace(/^\s*\[![^\]]+\][+-]?\s*[^\n<]*(\n|<br\s*\/?>)?/i, '')
-        .trim();
+      quote.setAttribute('data-callout', type);
+      removeCalloutLine(first);
       if (!first.textContent.trim()) {
         first.remove();
       }
