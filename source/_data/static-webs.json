@@ -1,20 +1,5 @@
 [
   {
-    "slug": "cpp-inheritance-visualizer",
-    "title": "C++ 继承与虚函数可视化 Demo",
-    "description": "用一张交互式对象布局图解释继承、虚函数表和动态绑定的核心关系。",
-    "tags": [
-      "C++",
-      "可视化",
-      "课堂演示"
-    ],
-    "order": 10,
-    "updated": "2026-05-23",
-    "source": "cpp-inheritance-visualizer",
-    "path": "/webs/cpp-inheritance-visualizer/",
-    "output": "blog-pub/source/webs/cpp-inheritance-visualizer"
-  },
-  {
     "slug": "cpp-final-crash-course",
     "title": "C++ 期末速成教材",
     "description": "围绕继承、多态、三大函数和编程实战整理的静态速查教程。",
