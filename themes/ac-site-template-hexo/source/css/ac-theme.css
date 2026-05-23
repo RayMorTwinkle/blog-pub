@@ -634,21 +634,21 @@ samp {
 
 .ac-webs-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 18rem), 24rem));
+  gap: 0.85rem;
+  justify-content: start;
 }
 
 .ac-web-card {
   position: relative;
   display: flex;
-  min-height: 18rem;
   flex-direction: column;
-  gap: 0.85rem;
+  gap: 0.55rem;
   overflow: hidden;
-  padding: 1.35rem;
+  padding: 1rem 1.05rem;
   border: 1px solid var(--ac-border);
-  border-top: 4px solid var(--ac-primary);
-  border-radius: var(--ac-radius-lg);
+  border-top: 3px solid var(--ac-primary);
+  border-radius: calc(var(--ac-radius-lg) - 0.35rem);
   background:
     radial-gradient(circle at 100% 100%, rgba(42, 186, 170, 0.13), transparent 32%),
     var(--ac-surface);
@@ -671,14 +671,14 @@ samp {
 
 .ac-web-card-badge {
   color: var(--ac-primary-dark);
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 900;
 }
 
 .ac-web-card h2 {
   margin: 0;
   color: var(--ac-text-strong);
-  font-size: 1.3rem;
+  font-size: 1.05rem;
   line-height: 1.35;
 }
 
@@ -689,13 +689,22 @@ samp {
 .ac-web-card p {
   margin: 0;
   color: var(--ac-text-muted);
-  line-height: 1.8;
+  font-size: 0.94rem;
+  line-height: 1.65;
+}
+
+.ac-web-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 0.25rem;
+  flex-wrap: wrap;
 }
 
 .ac-web-card-meta {
-  margin-top: auto;
   color: var(--ac-text-muted);
-  font-size: 0.82rem;
+  font-size: 0.78rem;
   overflow-wrap: anywhere;
 }
 

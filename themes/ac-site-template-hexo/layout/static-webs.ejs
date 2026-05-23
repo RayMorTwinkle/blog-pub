@@ -6,7 +6,7 @@
   <div>
     <p class="ac-eyebrow">Static Web Projects</p>
     <h1>静态网页项目合集</h1>
-    <p>这里放课堂演示、可视化教程和临时写给同学看的 HTML 小项目。源文件来自 Obsidian 的 <code>pub/webs</code>，同步后会原样部署到 GitHub Pages。</p>
+    <p>这里收集课堂演示、可视化教程和临时 HTML 小项目。源文件来自 Obsidian 的 <code>pub/webs</code>，同步后会原样部署到 GitHub Pages。</p>
   </div>
   <span class="ac-blog-count">共 <%= webProjects.length %> 个</span>
 </section>
@@ -32,11 +32,15 @@
           <% } %>
         </div>
         <h2><a href="<%- url_for(item.path) %>" target="_blank" rel="noopener noreferrer"><%= item.title || item.slug %></a></h2>
-        <p><%= item.description || '一个从 Obsidian 工作区同步过来的静态 HTML 项目。' %></p>
-        <div class="ac-web-card-meta">
-          <span><%= item.source || '' %></span>
+        <% if (item.description) { %>
+          <p><%= item.description %></p>
+        <% } %>
+        <div class="ac-web-card-footer">
+          <% if (item.source) { %>
+            <span class="ac-web-card-meta"><%= item.source %></span>
+          <% } %>
+          <a class="ac-card-link" href="<%- url_for(item.path) %>" target="_blank" rel="noopener noreferrer">打开网页</a>
         </div>
-        <a class="ac-card-link" href="<%- url_for(item.path) %>" target="_blank" rel="noopener noreferrer">打开网页</a>
       </article>
     <% }) %>
   </section>
