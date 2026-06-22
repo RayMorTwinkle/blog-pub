@@ -39,7 +39,7 @@ menu:
 
 sidebar:
   title: Ray's Garden
-  subtitle: Obsidian 笔记、教程与独立开发记录
+  subtitle: 全栈开发 · AI 工程化
   profile: ac-assets/profile.jpg
   social:
     github:
@@ -69,80 +69,130 @@ assets:
 
 projects:
   - title: "静态网页项目合集"
-    description: "收集课堂演示、可视化教程和临时 HTML 单页项目，文件来自 Obsidian 的 pub/webs。"
+    description: "围绕高级编程、离散数学等课程学习中的抽象概念，将算法流程、数学关系和编程概念拆成可视化页面，无私分享给同学使用。包含课堂辅助工具系列（随机答题、动态课表等），覆盖课程讲解、交互演示和学习辅助。"
     date: "持续更新"
     heroImage: "ac-assets/post_img.png"
     badge: "合集"
     liveUrl: "/projects/static-webs/"
     tags:
       - 静态网页
-      - 教程
+      - 课程教学
       - 可视化
-  - title: "Demo Project"
-    description: "这是一个示例项目，展示 Hexo 主题中的项目卡片布局。"
-    date: "2026-05-28"
-    heroImage: "ac-assets/itemPreview.png"
-    badge: "示例"
-    github: "https://github.com/yourusername"
-    liveUrl: "https://yourusername.github.io"
+      - 学习工具
+  - title: "AI 狼人杀 Agent — 多智能体自对弈 & 自进化系统"
+    description: "LLM 驱动的多智能体狼人杀自对弈平台，含 Bad Case 经验库 + Knowledge 策略库双链路自进化教练框架。通用 Agent 层与游戏逻辑完全解耦，可复用到辩论赛等多人博弈场景。3 个独立前端（对局观战 / 评测中心 / 监控大盘），已上线公网运行。"
+    date: "2026"
+    heroImage: "ac-assets/werewolf-screenshot.png"
+    badge: "全栈"
+    github: "https://github.com/oifi123666/ILoveBytedance"
+    liveUrl: "http://106.54.202.202:8080"
     tags:
-      - Hexo
-      - 主题
+      - AI Agent
+      - LLM
+      - FastAPI
+      - Vue 3
+      - 自进化
+  - title: "骗子咖啡馆 LiarsCafe — 3D 多人联机诈唬卡牌游戏"
+    description: "服务端权威架构 + Three.js 3D 沉浸式咖啡馆场景 + WebRTC P2P 实时语音 + 完整断线重连。pnpm monorepo 架构 4 子包（web / server / protocol / game-core），Playtest-Ready 阶段，已上线公网运行。"
+    date: "2026"
+    heroImage: "ac-assets/liarscafe-screenshot.png"
+    badge: "全栈"
+    github: "https://github.com/RayMorTwinkle/HacksonLiarsCafe"
+    liveUrl: "https://liars.rayan.ccwu.cc/"
+    tags:
+      - Three.js
+      - Colyseus
+      - WebRTC
+      - 3D 游戏
+      - monorepo
+  - title: "Date Match — 17w+ 用户关系匹配平台"
+    description: "面向真实用户的关系兼容性匹配平台，累计 17w+ 问卷、24w+ 匹配记录、21w+ 反馈。参与全栈开发：大规模匹配管线、LLM 心理画像、可解释匹配、配对广场、后台运营和只读 SQL 生产排查。"
+    date: "2026"
+    heroImage: "ac-assets/itemPreview.png"
+    badge: "全栈"
+    tags:
+      - Next.js
+      - Prisma
+      - PostgreSQL
+      - tRPC
+      - LLM
+  - title: "本地多端 Agent Harness 框架"
+    description: "将本地电脑改造为可远程访问、可浏览器自动化、可桌面自动化、可安卓模拟器自动化的 AI Agent 综合实验环境，用于探索 Agent 在开发、网页操作和移动端操作中的能力边界。"
+    date: "2026"
+    heroImage: "ac-assets/itemPreview.png"
+    badge: "基础建设"
+    tags:
+      - AI Agent
+      - 浏览器自动化
+      - Computer Use
+      - 安卓模拟器
 
 cv:
-  notice: "提示：当前履历速览只是主题展示用的示例内容，不代表真实个人经历或证书。"
-  intro: "全栈开发者，热爱开源与自动化工具。专注于现代 Web 技术、DevOps 和独立开发。"
-  experience:
-    - title: "高级前端工程师"
-      company: "某科技公司"
-      location: "上海"
-      period: "2022 - 至今"
-      description: "负责前端架构设计与组件库开发，推动团队工程化建设。"
-    - title: "Web 开发工程师"
-      company: "某互联网公司"
-      location: "北京"
-      period: "2019 - 2022"
-      description: "参与电商平台前后端开发，负责性能优化与用户体验改进。"
+  notice: "详细版本见简历和 GitHub。"
+  intro: "哈工大（威海）软件工程本科在读，全栈开发 / AI 工程化方向。具备从零到上线交付的真实项目经验，涵盖 AI Agent 系统、3D 多人联机应用、大规模匹配平台和自动化基础设施。个人特点是学习速度快、执行力强，擅长将复杂目标拆解为可交付的阶段成果。"
   education:
-    - title: "计算机科学与技术"
-      school: "某大学"
-      location: "上海"
-      period: "2015 - 2019"
-      description: "主修软件工程，参与多个开源项目。"
+    - title: "软件工程（卓越优才班）"
+      school: "哈尔滨工业大学（威海）计算机科学与技术学院"
+      location: "山东 · 威海"
+      period: "2025 - 至今"
+      description: "大一上专业核心课均分 82.43，《高级语言程序设计》《计算思维与人工智能》均 90 分以上。帆船队缭手，代表哈工大 2 队参加 2026 HOBIE 亚洲锦标赛。"
   skills:
-    - JavaScript
     - TypeScript
-    - React
-    - Vue
-    - Node.js
     - Python
+    - JavaScript
+    - React / Next.js
+    - Vue 3
+    - Three.js
+    - FastAPI
+    - Prisma / PostgreSQL
+    - tRPC
+    - Colyseus
+    - WebRTC
+    - LLM API
     - Docker
-    - Git
+    - Git / GitHub Actions
+    - Tailwind CSS
+    - SQLite
+    - pnpm monorepo
   certifications:
-    - name: "AWS Certified Solutions Architect"
-      url: "https://aws.amazon.com/certification"
+    - name: "全国大学生英语竞赛初赛 96 分"
+      date: "2026"
+    - name: "2026 中国威海 HOBIE 帆船公开赛暨 HOBIE16 亚洲锦标赛 竞赛第 32 名（哈工大2队 缭手）"
+      date: "2026"
+    - name: "全国英语能力竞赛 省级配音三等奖 + 单词一等奖"
+      date: "2023"
+    - name: "全国高中生科普科幻作文大赛 省级一等奖"
       date: "2023"
 
 personal:
   avatar: "ac-assets/profile.jpg"
-  about: "热爱技术、设计与动森风格的开发者。喜欢折腾工具链，记录学习过程，分享实用教程。"
+  about: "哈尔滨工业大学（威海）软件工程 2025 级在读，全栈开发 / AI 工程化方向。喜欢把想法从零推到上线，从代码写到文档。也喜欢运动、航拍和一切好玩的东西。"
   skills:
-    - 前端开发
-    - 后端架构
-    - DevOps
-    - 自动化脚本
-    - UI 设计
+    - 全栈开发
+    - AI 工程化
+    - 多智能体系统
+    - 3D Web 渲染
+    - 实时通信
+    - 产品工程
+    - 自动化测试
   interests:
-    - 独立开发
-    - 开源贡献
-    - 游戏设计
-    - 音乐制作
+    - 帆船（HOBIE 双体船）
+    - 无人机航拍
+    - 手机摄影
+    - 电子音乐
+    - 羽毛球
+    - 数码测评
+    - 视频剪辑
   links:
     - label: "GitHub"
       name: "@RayMorTwinkle"
       url: "https://github.com/RayMorTwinkle"
       description: "开源项目与代码仓库"
     - label: "Blog"
-      name: "Ray's Garden"
-      url: "/blog/"
-      description: "技术博客与教程"
+      name: "blog.raymor.top"
+      url: "https://blog.raymor.top/"
+      description: "技术博客与项目记录"
+    - label: "Email"
+      name: "raymor@raymor.top"
+      url: "mailto:raymor@raymor.top"
+      description: "欢迎邮件联系"
