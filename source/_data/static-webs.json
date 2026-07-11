@@ -1,5 +1,20 @@
 [
   {
+    "slug": "mini-tools",
+    "title": "小工具网页",
+    "description": "在线小工具合集：色盘调影、更多工具持续更新中。",
+    "tags": [
+      "小工具",
+      "前端",
+      "色彩"
+    ],
+    "order": 10,
+    "updated": "2026-07-11",
+    "source": "mini-tools",
+    "path": "/webs/mini-tools/",
+    "output": "blog-pub/source/webs/mini-tools"
+  },
+  {
     "slug": "cpp-final-crash-course",
     "title": "C++ 期末速成教材 v2",
     "description": "围绕继承、多态、三大函数和编程实战整理的静态速查教程重置版。",

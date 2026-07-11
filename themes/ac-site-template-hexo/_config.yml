@@ -68,17 +68,6 @@ assets:
   favicon: ac-assets/favicon.svg
 
 projects:
-  - title: "静态网页项目合集"
-    description: "围绕高级编程、离散数学等课程学习中的抽象概念，将算法流程、数学关系和编程概念拆成可视化页面，无私分享给同学使用。包含课堂辅助工具系列（随机答题、动态课表等），覆盖课程讲解、交互演示和学习辅助。"
-    date: "持续更新"
-    heroImage: "ac-assets/post_img.png"
-    badge: "合集"
-    liveUrl: "/projects/static-webs/"
-    tags:
-      - 静态网页
-      - 课程教学
-      - 可视化
-      - 学习工具
   - title: "AI 狼人杀 Agent — 多智能体自对弈 & 自进化系统"
     description: "LLM 驱动的多智能体狼人杀自对弈平台，含 Bad Case 经验库 + Knowledge 策略库双链路自进化教练框架。通用 Agent 层与游戏逻辑完全解耦，可复用到辩论赛等多人博弈场景。3 个独立前端（对局观战 / 评测中心 / 监控大盘），已上线公网运行。"
     date: "2026"
@@ -110,12 +99,24 @@ projects:
     date: "2026"
     heroImage: "ac-assets/itemPreview.png"
     badge: "全栈"
+    liveUrl: "https://date-match.online/"
     tags:
       - Next.js
       - Prisma
       - PostgreSQL
       - tRPC
       - LLM
+  - title: "静态网页项目合集"
+    description: "围绕高级编程、离散数学等课程学习中的抽象概念，将算法流程、数学关系和编程概念拆成可视化页面，无私分享给同学使用。包含课堂辅助工具系列（随机答题、动态课表等），覆盖课程讲解、交互演示和学习辅助。"
+    date: "持续更新"
+    heroImage: "ac-assets/post_img.png"
+    badge: "合集"
+    liveUrl: "/projects/static-webs/"
+    tags:
+      - 静态网页
+      - 课程教学
+      - 可视化
+      - 学习工具
   - title: "本地多端 Agent Harness 框架"
     description: "将本地电脑改造为可远程访问、可浏览器自动化、可桌面自动化、可安卓模拟器自动化的 AI Agent 综合实验环境，用于探索 Agent 在开发、网页操作和移动端操作中的能力边界。"
     date: "2026"

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小工具网页</title>
+    <link rel="stylesheet" href="./style.css">
+    <style>
+        .tool-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        .tool-card {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .tool-card h3 {
+            margin: 0;
+            font-size: 1.25rem;
+            color: #f1f5f9;
+        }
+        .tool-card p {
+            margin: 0;
+            color: #94a3b8;
+            flex: 1;
+        }
+        .tool-card .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .tag {
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.08);
+            color: #cbd5e1;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 背景装饰 -->
+    <div class="bg-blob blob-1"></div>
+    <div class="bg-blob blob-2"></div>
+    <div class="bg-blob blob-3"></div>
+
+    <div class="mx-auto max-w-4xl px-4 py-16" style="max-width: 56rem;">
+        <!-- 标题 -->
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-extrabold tracking-wider mb-3" style="background: linear-gradient(to right, #e2e8f0, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                小工具网页
+            </h1>
+            <p class="text-gray-400 font-medium">#前端小工具合集，即开即用</p>
+        </div>
+
+        <!-- 工具列表 -->
+        <div class="tool-list mb-12">
+            <a href="./四字色盘调影.html" class="glass tilt-card tool-card" style="text-decoration: none; color: inherit;">
+                <div class="glass-content">
+                    <h3>四字色盘调影</h3>
+                    <p>输入四个字，分别指定颜色、字号和字间距，实时预览并导出色彩配置。</p>
+                    <div class="tags">
+                        <span class="tag">🎨 色彩</span>
+                        <span class="tag">📝 文字</span>
+                        <span class="tag">📤 导出</span>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 新工具在此添加 -->
+        </div>
+
+        <!-- 底部 -->
+        <div class="text-center text-gray-500 text-sm">
+            <p>更多工具陆续添加中 🚀</p>
+        </div>
+    </div>
+
+    <!-- 3D 鼠标互动 -->
+    <script>
+        document.querySelectorAll('.tilt-card').forEach(card => {
+            card.setAttribute('data-tilt-init', 'true');
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const cx = rect.width / 2;
+                const cy = rect.height / 2;
+                card.style.setProperty('--mouse-x', x + 'px');
+                card.style.setProperty('--mouse-y', y + 'px');
+                card.style.transform = 'perspective(1000px) rotateX(' + ((y-cy)/cy*-2.5) + 'deg) rotateY(' + ((x-cx)/cx*2.5) + 'deg) scale3d(1.01,1.01,1.01)';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transition = 'transform 0.5s cubic-bezier(0.25,0.8,0.25,1)';
+                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)';
+            });
+            card.addEventListener('mouseenter', () => {
+                card.style.transition = 'transform 0.1s ease-out';
+            });
+        });
+    </script>
+
+</body>
+</html>
