@@ -97,7 +97,7 @@ projects:
   - title: "Date Match — 17w+ 用户关系匹配平台"
     description: "面向真实用户的关系兼容性匹配平台，累计 17w+ 问卷、24w+ 匹配记录、21w+ 反馈。参与全栈开发：大规模匹配管线、LLM 心理画像、可解释匹配、配对广场、后台运营和只读 SQL 生产排查。"
     date: "2026"
-    heroImage: "ac-assets/itemPreview.png"
+    heroImage: "ac-assets/datematch-screenshot.png"
     badge: "全栈"
     liveUrl: "https://date-match.online/"
     tags:
