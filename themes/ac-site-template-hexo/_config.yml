@@ -68,6 +68,18 @@ assets:
   favicon: ac-assets/favicon.svg
 
 projects:
+  - title: "Date Match — 17w+ 用户关系匹配平台"
+    description: "面向真实用户的关系兼容性匹配平台，累计 17w+ 问卷、24w+ 匹配记录、21w+ 反馈。参与全栈开发：大规模匹配管线、LLM 心理画像、可解释匹配、配对广场、后台运营和只读 SQL 生产排查。"
+    date: "2026"
+    heroImage: "ac-assets/datematch-screenshot.png"
+    badge: "全栈"
+    liveUrl: "https://date-match.online/"
+    tags:
+      - Next.js
+      - Prisma
+      - PostgreSQL
+      - tRPC
+      - LLM
   - title: "AI 狼人杀 Agent — 多智能体自对弈 & 自进化系统"
     description: "LLM 驱动的多智能体狼人杀自对弈平台，含 Bad Case 经验库 + Knowledge 策略库双链路自进化教练框架。通用 Agent 层与游戏逻辑完全解耦，可复用到辩论赛等多人博弈场景。3 个独立前端（对局观战 / 评测中心 / 监控大盘），已上线公网运行。"
     date: "2026"
@@ -94,29 +106,6 @@ projects:
       - WebRTC
       - 3D 游戏
       - monorepo
-  - title: "Date Match — 17w+ 用户关系匹配平台"
-    description: "面向真实用户的关系兼容性匹配平台，累计 17w+ 问卷、24w+ 匹配记录、21w+ 反馈。参与全栈开发：大规模匹配管线、LLM 心理画像、可解释匹配、配对广场、后台运营和只读 SQL 生产排查。"
-    date: "2026"
-    heroImage: "ac-assets/datematch-screenshot.png"
-    badge: "全栈"
-    liveUrl: "https://date-match.online/"
-    tags:
-      - Next.js
-      - Prisma
-      - PostgreSQL
-      - tRPC
-      - LLM
-  - title: "静态网页项目合集"
-    description: "围绕高级编程、离散数学等课程学习中的抽象概念，将算法流程、数学关系和编程概念拆成可视化页面，无私分享给同学使用。包含课堂辅助工具系列（随机答题、动态课表等），覆盖课程讲解、交互演示和学习辅助。"
-    date: "持续更新"
-    heroImage: "ac-assets/post_img.png"
-    badge: "合集"
-    liveUrl: "/projects/static-webs/"
-    tags:
-      - 静态网页
-      - 课程教学
-      - 可视化
-      - 学习工具
   - title: "本地多端 Agent Harness 框架"
     description: "将本地电脑改造为可远程访问、可浏览器自动化、可桌面自动化、可安卓模拟器自动化的 AI Agent 综合实验环境，用于探索 Agent 在开发、网页操作和移动端操作中的能力边界。"
     date: "2026"
@@ -127,6 +116,17 @@ projects:
       - 浏览器自动化
       - Computer Use
       - 安卓模拟器
+  - title: "静态网页项目合集"
+    description: "课件：将学习中较难的算法流程、数学关系和编程概念拆成可视化页面，无私分享给同学使用。针对性工具：解决一些小范围的针对性问题。"
+    date: "持续更新"
+    heroImage: "ac-assets/post_img.png"
+    badge: "合集"
+    liveUrl: "/projects/static-webs/"
+    tags:
+      - 静态网页
+      - 课程教学
+      - 可视化
+      - 学习工具
 
 cv:
   notice: "详细版本见简历和 GitHub。"
