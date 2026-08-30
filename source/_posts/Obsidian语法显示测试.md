@@ -1,10 +1,9 @@
 ---
-title: Obsidian Markdown 语法显示测试
+title: Obsidian Markdown语法显示测试
 date: 2026-05-23 08:44:42
 tags:
   - Obsidian
   - 教程
-  - 工具
 ---
 
 # Obsidian 语法显示测试
@@ -68,7 +67,7 @@ tags:
 
 下面使用标准 Markdown 图片语法：
 
-![HapiGo 测试图片](images/HapiGo_2026-04-08_23.11.13.png)
+![HapiGo 测试图片](/images/HapiGo_2026-04-08_23.11.13.png)
 
 ### 3.2 嵌入笔记
 
