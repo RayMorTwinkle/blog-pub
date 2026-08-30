@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Markdown → 图片 / PDF · Notion 风格</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github.min.css" id="hljs-theme">
+<style>
+  :root{
+    --bg:#f5f5f3;
+    --panel:#ffffff;
+    --border:#e9e9e7;
+    --text:#37352f;
+    --muted:#6b7280;
+    --accent:#2e75f0;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Inter","SF Pro Display","Helvetica Neue",Arial,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direction:column;overflow:hidden}
+  /* header */
+  .topbar{height:56px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 16px;flex-shrink:0;gap:12px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;letter-spacing:-.02em}
+  .brand-badge{width:28px;height:28px;border-radius:8px;background:#111;display:grid;place-items:center;color:#fff;font-size:14px}
+  .brand small{font-weight:500;color:var(--muted);font-size:12px}
+  .top-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .btn{appearance:none;border:1px solid var(--border);background:#fff;color:#111;padding:8px 14px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:.15s}
+  .btn:hover{background:#f7f7f5}
+  .btn.primary{background:#111;color:#fff;border-color:#111}
+  .btn.primary:hover{background:#000}
+  .btn.ghost{background:transparent}
+  .btn:disabled{opacity:.5;pointer-events:none}
+  /* layout */
+  .main{flex:1;display:flex;min-height:0}
+  .left{width:42%;min-width:360px;max-width:640px;background:#fff;border-right:1px solid var(--border);display:flex;flex-direction:column;min-height:0}
+  .right{flex:1;background:#f5f5f3;display:flex;flex-direction:column;min-height:0;overflow:hidden}
+  /* left */
+  .left-toolbar{padding:10px 12px;border-bottom:1px solid var(--border);display:flex;gap:8px;align-items:center;flex-wrap:wrap;background:#fbfbfa}
+  .left-toolbar .hint{margin-left:auto;font-size:11px;color:var(--muted)}
+  .dropzone{margin:0 12px 12px;border:1px dashed #d6d6d3;border-radius:12px;background:#fcfcfb}
+  .dropzone.drag{border-color:#111;background:#f0f0ef}
+  .textarea-wrap{flex:1;display:flex;flex-direction:column;padding:0 12px 12px;min-height:0}
+  textarea#mdInput{flex:1;width:100%;resize:none;border:1px solid var(--border);border-radius:12px;padding:16px 14px;font-size:13.5px;line-height:1.7;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;outline:none;background:#fff}
+  textarea#mdInput:focus{border-color:#111;box-shadow:0 0 0 3px rgba(0,0,0,.06)}
+  .stats{font-size:11px;color:var(--muted);padding:6px 2px 0;display:flex;justify-content:space-between}
+  /* controls */
+  .controls{border-top:1px solid var(--border);background:#fbfbfa;max-height:42%;overflow:auto}
+  .ctrl-group{padding:12px 14px;border-bottom:1px solid #efefed}
+  .ctrl-group:last-child{border:none}
+  .ctrl-title{font-size:11px;font-weight:700;letter-spacing:.08em;color:#8a8a87;text-transform:uppercase;margin:0 0 10px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .field label{font-size:11px;color:#6b6b6b;font-weight:600;display:block;margin-bottom:6px}
+  .field input[type="range"]{width:100%}
+  .field .val{font-size:11px;color:#111;font-weight:600;margin-left:6px}
+  select, input[type="color"], input[type="text"]{width:100%;border:1px solid var(--border);border-radius:8px;padding:7px 8px;font-size:12.5px;background:#fff}
+  .theme-pills{display:flex;gap:6px;flex-wrap:wrap}
+  .pill{padding:6px 10px;border-radius:999px;border:1px solid var(--border);background:#fff;font-size:12px;cursor:pointer;font-weight:600}
+  .pill.active{background:#111;color:#fff;border-color:#111}
+  .switch{width:36px;height:20px;background:#ddd;border-radius:999px;position:relative;cursor:pointer;transition:.2s}
+  .switch.on{background:#111}
+  .switch i{position:absolute;top:2px;left:2px;width:16px;height:16px;background:#fff;border-radius:50%;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+  .switch.on i{transform:translateX(16px)}
+  .row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:8px 0}
+  .row span{font-size:12.5px;font-weight:500}
+  /* right */
+  .preview-toolbar{height:44px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;padding:0 12px;flex-shrink:0}
+  .preview-toolbar .spacer{flex:1}
+  .zoom{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px}
+  .preview-scroll{flex:1;overflow:auto;padding:24px;display:grid;place-items:start center;background:#f5f5f3}
+  /* capture area */
+  #captureWrapper{transition:.2s; padding:20px; border-radius:16px}
+  #previewCard{background:#fff;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,.08),0 1px 3px rgba(0,0,0,.08);overflow:hidden;transition:.2s}
+  #previewCard .inner{padding:48px}
+  /* markdown content */
+  .md{color:var(--md-text);font-size:15px;line-height:1.75;word-break:break-word}
+  .md h1{font-size:1.9em;font-weight:800;letter-spacing:-.03em;margin:0 0 .4em;line-height:1.2}
+  .md h2{font-size:1.4em;font-weight:700;margin:1.6em 0 .6em;padding-bottom:.3em;border-bottom:1px solid var(--md-border)}
+  .md h3{font-size:1.15em;font-weight:700;margin:1.4em 0 .5em}
+  .md p{margin:.8em 0}
+  .md a{color:var(--md-accent);text-decoration:none;border-bottom:1px solid rgba(46,117,240,.25)}
+  .md blockquote{margin:1em 0;padding:10px 14px;border-left:3px solid var(--md-accent);background:var(--md-quote-bg);border-radius:8px;color:var(--md-muted)}
+  .md blockquote.callout{border-left-width:0;border:1px solid var(--md-border);background:var(--md-callout-bg)}
+  .md code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--md-code-bg);padding:.15em .35em;border-radius:6px}
+  .md pre{background:var(--md-pre-bg);border:1px solid var(--md-border);border-radius:10px;padding:14px;overflow:auto;margin:1em 0}
+  .md pre code{background:none;padding:0;font-size:13px;line-height:1.6}
+  .md ul,.md ol{padding-left:1.6em;margin:.8em 0}
+  .md li{margin:.25em 0}
+  .md li.task{list-style:none;margin-left:-1.2em}
+  .md li.task input{margin-right:6px}
+  .md table{width:100%;border-collapse:collapse;margin:1em 0;font-size:.92em;border:1px solid var(--md-border);border-radius:10px;overflow:hidden}
+  .md th{background:var(--md-th-bg);font-weight:700;text-align:left;padding:8px 10px;border-bottom:1px solid var(--md-border)}
+  .md td{padding:8px 10px;border-bottom:1px solid var(--md-border)}
+  .md tr:last-child td{border-bottom:none}
+  .md hr{border:none;border-top:1px solid var(--md-border);margin:1.6em 0}
+  .md img{max-width:100%;border-radius:10px;display:block;margin:12px auto;box-shadow:0 4px 20px rgba(0,0,0,.08)}
+  .md .katex-display{margin:1em 0}
+  /* mermaid */
+  .mermaid{margin:1em 0;display:flex;justify-content:center;background:var(--md-mermaid-bg);border:1px solid var(--md-border);border-radius:10px;padding:12px}
+  /* footer watermark */
+  .card-footer{border-top:1px solid var(--md-border);padding:12px 48px;font-size:11px;color:var(--md-muted);display:flex;justify-content:space-between;background:var(--md-footer-bg)}
+  /* themes via CSS vars on #previewCard */
+  #previewCard[data-theme="notion"]{
+    --md-text:#37352f;--md-muted:#6b6b6b;--md-border:#e9e9e7;--md-accent:#2e75f0;--md-code-bg:#f1f1ef;--md-pre-bg:#f7f7f5;--md-th-bg:#fbfbfa;--md-quote-bg:#f7f7f5;--md-callout-bg:#f0f7ff;--md-mermaid-bg:#fff;--md-footer-bg:#fbfbfa;
+  }
+  #previewCard[data-theme="warm"]{
+    --md-text:#3d3d3d;--md-muted:#8a7f75;--md-border:#e8e0d6;--md-accent:#c04a1a;--md-code-bg:#f5ece3;--md-pre-bg:#fdf6ee;--md-th-bg:#fdf6ee;--md-quote-bg:#fdf6ee;--md-callout-bg:#fff6e9;--md-mermaid-bg:#fffdf8;--md-footer-bg:#fdf6ee;
+    font-family:"Source Serif Pro",Georgia,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",serif;
+  }
+  #previewCard[data-theme="warm"] .md h1,#previewCard[data-theme="warm"] .md h2{font-family:Georgia,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",serif}
+  #previewCard[data-theme="dark"]{
+    --md-text:#e6e6e6;--md-muted:#9a9a9a;--md-border:#2a2a2a;--md-accent:#6aa6ff;--md-code-bg:#222;--md-pre-bg:#1a1a1a;--md-th-bg:#222;--md-quote-bg:#1e1e1e;--md-callout-bg:#1e232e;--md-mermaid-bg:#1a1a1a;--md-footer-bg:#1a1a1a;
+    background:#1e1e1e!important;color:var(--md-text)
+  }
+  #previewCard[data-theme="dark"] .md a{color:#6aa6ff}
+  #previewCard[data-theme="academic"]{
+    --md-text:#111;--md-muted:#555;--md-border:#111;--md-accent:#111;--md-code-bg:#f2f2f2;--md-pre-bg:#f7f7f7;--md-th-bg:#f2f2f2;--md-quote-bg:#f7f7f7;--md-callout-bg:#f7f7f7;--md-mermaid-bg:#fff;--md-footer-bg:#f7f7f7;
+  }
+  #previewCard[data-theme="academic"] .md{font-family:"Times New Roman",Georgia,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",serif}
+  #previewCard[data-theme="academic"] .md h1,#previewCard[data-theme="academic"] .md h2{letter-spacing:-.01em;border-bottom-width:2px}
+  #previewCard[data-theme="gradient"]{
+    --md-text:#37352f;--md-muted:#6b6b6b;--md-border:#e9e9e7;--md-accent:#7c3aed;--md-code-bg:#f3f0ff;--md-pre-bg:#f7f5ff;--md-th-bg:#fbfbff;--md-quote-bg:#f7f5ff;--md-callout-bg:#f3f0ff;--md-mermaid-bg:#fff;--md-footer-bg:#fbfbfa;
+  }
+  /* outer gradient */
+  #captureWrapper.gradient-outer{background:linear-gradient(135deg,#a78bfa 0%,#60a5fa 50%,#34d399 100%)}
+  #captureWrapper.solid-outer{background:var(--outer-bg)}
+  /* responsive */
+  @media(max-width:900px){
+    body{height:auto;overflow:auto}
+    .main{flex-direction:column}
+    .left{width:100%;max-width:none;min-width:0}
+    .right{min-height:520px}
+    .textarea-wrap{height:340px}
+  }
+  /* toast */
+  #toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:10px 16px;border-radius:999px;font-size:13px;display:none;z-index:99}
+  /* loader */
+  .loading{position:relative;pointer-events:none;opacity:.6}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="brand">
+    <div class="brand-badge">M</div>
+    <div>Markdown → 图片 / PDF <small>· Notion 风格 · 本地渲染</small></div>
+  </div>
+  <div class="top-actions">
+    <button class="btn" id="btnCopy">⧉ 复制图片</button>
+    <button class="btn" id="btnPng">⬇ PNG</button>
+    <button class="btn" id="btnJpg">⬇ JPG</button>
+    <button class="btn" id="btnTextPdf">⬇ 文字PDF</button>
+    <button class="btn primary" id="btnPdf">⬇ 图片PDF</button>
+  </div>
+</div>
+
+<div class="main">
+  <!-- LEFT -->
+  <div class="left">
+    <div class="left-toolbar">
+      <label class="btn" style="padding:6px 10px;font-size:12px;cursor:pointer">
+        📄 上传 .md <input id="fileInput" type="file" accept=".md,.markdown,.txt" hidden>
+      </label>
+      <button class="btn ghost" id="btnExample" style="font-size:12px">✨ 载入示例</button>
+      <button class="btn ghost" id="btnClear" style="font-size:12px">清空</button>
+      <span class="hint">支持拖拽文件到左侧</span>
+    </div>
+
+    <div class="textarea-wrap">
+      <div class="dropzone" id="dropzone" style="display:none;padding:10px 12px;font-size:12px;color:#6b6b6b;text-align:center">松开以上传文件</div>
+      <textarea id="mdInput" placeholder="在此粘贴 Markdown，或拖拽 .md 文件到此处...
+
+支持：
+- 表格、任务列表、代码高亮
+- Mermaid 流程图 ```mermaid
+- LaTeX 公式 $E=mc^2$  $$\\sum$$
+- Callout > [!TIP] / [!WARNING]
+- 图片 ![alt](url)
+"></textarea>
+      <div class="stats"><span id="charCount">0 字符</span><span id="wordCount">0 词</span></div>
+    </div>
+
+    <div class="controls" id="controls">
+      <div class="ctrl-group">
+        <p class="ctrl-title">排版 Layout</p>
+        <div class="grid2">
+          <div class="field"><label>卡片宽度 <span class="val" id="vWidth">680px</span></label><input type="range" id="cWidth" min="480" max="900" value="680"></div>
+          <div class="field"><label>内边距 <span class="val" id="vPad">48px</span></label><input type="range" id="cPad" min="16" max="80" value="48"></div>
+          <div class="field"><label>字体大小 <span class="val" id="vFs">15px</span></label><input type="range" id="cFs" min="12" max="20" value="15"></div>
+          <div class="field"><label>行高 <span class="val" id="vLh">1.75</span></label><input type="range" id="cLh" min="14" max="22" value="17.5" step="0.5"></div>
+          <div class="field"><label>圆角</label><input type="range" id="cRadius" min="0" max="24" value="12"></div>
+          <div class="field"><label>字体</label>
+            <select id="cFont">
+              <option value="sans">无衬线 Sans（Notion）</option>
+              <option value="serif">衬线 Serif（学术）</option>
+              <option value="mono">等宽 Mono</option>
+            </select>
+          </div>
+        </div>
+        <div class="row"><span>卡片阴影</span><div class="switch on" id="sShadow"><i></i></div></div>
+        <div class="row"><span>显示页脚水印</span><div class="switch on" id="sFooter"><i></i></div></div>
+      </div>
+
+      <div class="ctrl-group">
+        <p class="ctrl-title">主题 Theme</p>
+        <div class="theme-pills" id="themePills">
+          <button class="pill active" data-theme="notion">Notion 白</button>
+          <button class="pill" data-theme="warm">暖纸 Warm</button>
+          <button class="pill" data-theme="dark">深色 Dark</button>
+          <button class="pill" data-theme="academic">学术 Academic</button>
+          <button class="pill" data-theme="gradient">渐变卡片</button>
+        </div>
+        <div class="grid2" style="margin-top:10px">
+          <div class="field"><label>外背景</label><input type="color" id="cBg" value="#f5f5f3"><select id="cBgPreset" style="margin-top:6px"><option value="">纯色</option><option value="gradient">渐变（推荐渐变主题）</option><option value="#f5f5f3">Notion 灰</option><option value="#fdfbf7">暖纸</option><option value="#0f172a">深蓝</option></select></div>
+          <div class="field"><label>导出清晰度</label><select id="cScale"><option value="2">2x 高清（默认）</option><option value="3">3x 超清</option><option value="1">1x 标准</option></select></div>
+        </div>
+      </div>
+
+      <div class="ctrl-group">
+        <p class="ctrl-title">页脚 Footer</p>
+        <input type="text" id="cFooterText" placeholder="例如：哈工大威海 · 2026秋季选课通知  ·  2026-08-25" value="">
+        <div style="font-size:11px;color:#8a8a87;margin-top:6px">导出图片/PDF时显示在卡片底部，留空则显示“Generated by Markdown to Image”</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT -->
+  <div class="right">
+    <div class="preview-toolbar">
+      <span style="font-size:12px;font-weight:700;color:#6b6b6b">预览 Preview</span>
+      <span style="font-size:11px;color:#9a9a9a">滚动查看长图 · 实时渲染 Mermaid / LaTeX / 代码高亮</span>
+      <div class="spacer"></div>
+      <div class="zoom">
+        <button class="btn ghost" id="btnZoomOut" style="padding:4px 8px">−</button>
+        <span id="zoomVal">100%</span>
+        <button class="btn ghost" id="btnZoomIn" style="padding:4px 8px">+</button>
+        <button class="btn ghost" id="btnFit" style="padding:4px 8px">适应</button>
+      </div>
+    </div>
+    <div class="preview-scroll" id="previewScroll">
+      <div id="captureWrapper" class="solid-outer" style="--outer-bg:#f5f5f3">
+        <div id="previewCard" data-theme="notion" style="width:680px">
+          <div class="inner md" id="mdOutput"></div>
+          <div class="card-footer" id="cardFooter"><span id="footerLeft">Generated by Markdown to Image</span><span id="footerRight"></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<!-- libs -->
+<script src="https://cdn.jsdelivr.net/npm/markdown-it@14.1.0/dist/markdown-it.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.3/dist/mermaid.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+
+<script>
+// ---------- markdown setup ----------
+window.__lastError=null;
+window.addEventListener('error', e=>{ window.__lastError=e.message; console.error(e); });
+const md = window.markdownit({
+  html:true, linkify:true, typographer:true, breaks:false,
+  highlight: function(str, lang){
+    try{
+      if(lang && typeof hljs!=='undefined' && hljs.getLanguage && hljs.getLanguage(lang)){
+        return '<pre><code class="hljs language-'+lang+'">'+hljs.highlight(str,{language:lang}).value+'</code></pre>';
+      }
+    }catch(e){ console.warn(e); }
+    try{ return '<pre><code class="hljs">'+md.utils.escapeHtml(str)+'</code></pre>'; }catch(e){ return '<pre><code>'+md.utils.escapeHtml(str)+'</code></pre>';}
+  }
+});
+
+// custom: callout > [!TIP] / [!WARNING] / [!NOTE]
+function enhanceCallouts(html){
+  return html.replace(/<blockquote>\s*<p>\s*\[!(TIP|NOTE|WARNING|IMPORTANT|CAUTION)\]\s*/g, (m,type)=>{
+    const map={TIP:'💡 TIP',NOTE:'📝 NOTE',WARNING:'⚠️ WARNING',IMPORTANT:'❗ IMPORTANT',CAUTION:'🚧 CAUTION'};
+    return `<blockquote class="callout"><p><strong>${map[type]||type}</strong> `;
+  });
+}
+
+// ---------- DOM ----------
+const $input = document.getElementById('mdInput');
+const $output = document.getElementById('mdOutput');
+const $card = document.getElementById('previewCard');
+const $wrapper = document.getElementById('captureWrapper');
+const $footer = document.getElementById('cardFooter');
+const $footerLeft = document.getElementById('footerLeft');
+const $footerRight = document.getElementById('footerRight');
+const $charCount = document.getElementById('charCount');
+const $wordCount = document.getElementById('wordCount');
+
+const exampleMd = `# 2026年秋季学期 2025级选课通知 · 摘要
+
+> [!TIP] 本卡片由 Markdown 一键导出为图片/PDF，Notion 风格，支持 Mermaid / LaTeX / 表格 / 代码高亮。
+
+## 1. 关键时间轴
+
+| 日期时间 | 课程类别 | 操作 |
+| :--- | :--- | :--- |
+| **8-27 前** | — | **缴清学费** |
+| **8-29 08:30-11:00** | 创新研修课 / 创新实验课 | 选课 |
+| **8-29 10:30 — 8-30 17:00** | **大学体育** | **选课** |
+| **8-29 14:30-16:30** | **文化素质教育课** | **选课（2025级专属）** |
+
+- [x] 已缴学费
+- [ ] 已收藏选课网址 \`http://jwts.hitwh.edu.cn\`
+- [ ] 已准备备选课程
+
+## 2. 代码与公式
+
+\`\`\`js
+// 先到先得，首轮分年级投放容量
+if (now >= "08-29 14:30" && now <= "08-29 16:30" && grade === "2025") {
+  select("文化素质");
+}
+\`\`\`
+
+行内公式 $E=mc^2$ ，块级公式：
+
+$$
+\\sum_{i=1}^{n} x_i = \\frac{n(n+1)}{2}
+$$
+
+## 3. 流程图 Mermaid
+
+\`\`\`mermaid
+flowchart LR
+  A[8-27 缴费] --> B[8-29 创新选课]
+  B --> C[8-29 体育开抢]
+  C --> D[8-29 14:30 文化素质]
+  D --> E[8-30 二次选/退]
+\`\`\`
+
+## 4. 引用与分割
+
+> 有身体原因的同学建议选择定向运动、乒乓球、太极拳等，课后提交医疗证明。
+
+---
+
+> [!WARNING] 非规定时间操作无效，请勿同一浏览器多账号登录。
+
+![示例图片](https://picsum.photos/seed/notion/800/260)
+`;
+
+// init
+let zoom = 1;
+mermaid.initialize({startOnLoad:false, theme:'default', securityLevel:'loose', fontFamily:'Inter, sans-serif'});
+let renderTimer=null;
+
+function updateStats(){
+  const t=$input.value;
+  $charCount.textContent = t.length + ' 字符';
+  $wordCount.textContent = (t.trim()? t.trim().split(/\s+/).length:0) + ' 词';
+  localStorage.setItem('md2img:content', t);
+}
+
+function render(){
+  updateStats();
+  const src = $input.value.trim() || '*在此输入 Markdown，右侧实时预览。点击左侧“载入示例”查看完整能力。*';
+  // Separate mermaid blocks: replace ```mermaid ...``` with placeholders before md render
+  const mermaidBlocks=[];
+  let placeholderSrc = src.replace(/```mermaid([\s\S]*?)```/g, (m,code)=>{
+    const idx=mermaidBlocks.length;
+    mermaidBlocks.push(code);
+    return `<div class="mermaid-placeholder" data-idx="${idx}"></div>`;
+  });
+  let html = md.render(placeholderSrc);
+  html = enhanceCallouts(html);
+  // task list enhance
+  html = html.replace(/<li>\s*<input[^>]*type="checkbox"[^>]*>/g, m=> m.replace('<li>','<li class="task">'));
+  // restore mermaid placeholders
+  html = html.replace(/<div class="mermaid-placeholder" data-idx="(\d+)"><\/div>/g, (m,idx)=>{
+    const code = mermaidBlocks[Number(idx)] || '';
+    // escape? mermaid will render raw
+    return `<div class="mermaid">${code}</div>`;
+  });
+  $output.innerHTML = html;
+
+  // after inject, render mermaid
+  const mNodes = $output.querySelectorAll('.mermaid');
+  if(mNodes.length){
+    // mermaid v10: use mermaid.run
+    try{
+      // need to ensure ids unique
+      mNodes.forEach((el,i)=>{ el.id='mmd-'+Date.now()+'-'+i; });
+      mermaid.run({nodes: mNodes});
+    }catch(e){ console.warn(e); }
+  }
+  // katex auto render
+  try{
+    renderMathInElement($output, {
+      delimiters:[
+        {left:'$$', right:'$$', display:true},
+        {left:'$', right:'$', display:false},
+        {left:'\\(', right:'\\)', display:false},
+        {left:'\\[', right:'\\]', display:true}
+      ],
+      throwOnError:false
+    });
+  }catch(e){}
+  // footer date
+  $footerRight.textContent = new Date().toLocaleDateString('zh-CN');
+}
+
+function scheduleRender(){
+  clearTimeout(renderTimer);
+  renderTimer=setTimeout(render, 180);
+}
+
+// events: input
+$input.addEventListener('input', scheduleRender);
+$input.addEventListener('paste', ()=> setTimeout(scheduleRender,0));
+
+// load saved
+const saved = localStorage.getItem('md2img:content');
+$input.value = saved || exampleMd;
+render();
+
+// file upload
+const $fileInput=document.getElementById('fileInput');
+$fileInput.addEventListener('change', e=>{
+  const f=e.target.files[0];
+  if(!f) return;
+  const reader=new FileReader();
+  reader.onload=()=>{ $input.value=reader.result; render(); toast('已载入 '+f.name); };
+  reader.readAsText(f);
+  e.target.value='';
+});
+const $dropzone=document.getElementById('dropzone');
+['dragenter','dragover'].forEach(ev=>{
+  $input.addEventListener(ev, e=>{ e.preventDefault(); $dropzone.style.display='block'; $dropzone.classList.add('drag'); });
+});
+['dragleave','drop'].forEach(ev=>{
+  document.addEventListener(ev, e=>{
+    if(ev==='drop'){
+      const f=e.dataTransfer?.files?.[0];
+      if(f){ e.preventDefault(); const reader=new FileReader(); reader.onload=()=>{ $input.value=reader.result; render(); toast('已载入 '+f.name)}; reader.readAsText(f); }
+    }
+    $dropzone.style.display='none'; $dropzone.classList.remove('drag');
+  });
+});
+
+document.getElementById('btnClear').onclick=()=>{ $input.value=''; render(); };
+document.getElementById('btnExample').onclick=()=>{ $input.value=exampleMd; render(); toast('已载入示例'); };
+
+// controls
+const $cWidth=document.getElementById('cWidth'), $vWidth=document.getElementById('vWidth');
+const $cPad=document.getElementById('cPad'), $vPad=document.getElementById('vPad');
+const $cFs=document.getElementById('cFs'), $vFs=document.getElementById('vFs');
+const $cLh=document.getElementById('cLh'), $vLh=document.getElementById('vLh');
+const $cRadius=document.getElementById('cRadius');
+const $cFont=document.getElementById('cFont');
+const $cBg=document.getElementById('cBg'), $cBgPreset=document.getElementById('cBgPreset'), $cScale=document.getElementById('cScale');
+
+function applyLayout(){
+  const w=$cWidth.value+'px';
+  $card.style.width=w;
+  $vWidth.textContent=w;
+  const pad=$cPad.value+'px';
+  $card.querySelector('.inner').style.padding=pad;
+  // footer padding sync
+  $footer.style.padding='12px '+pad;
+  $vPad.textContent=pad;
+  const fs=$cFs.value+'px';
+  $output.style.fontSize=fs; $vFs.textContent=fs;
+  const lh=(Number($cLh.value)/10).toFixed(2);
+  $output.style.lineHeight=lh; $vLh.textContent=lh;
+  $card.style.borderRadius=$cRadius.value+'px';
+  const font=$cFont.value;
+  if(font==='sans') $output.style.fontFamily='-apple-system,BlinkMacSystemFont,"Inter","SF Pro Display","Helvetica Neue",Arial,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif';
+  if(font==='serif') $output.style.fontFamily='"Source Serif Pro",Georgia,"Times New Roman",serif';
+  if(font==='mono') $output.style.fontFamily='ui-monospace,SFMono-Regular,Menlo,Consolas,monospace';
+  localStorage.setItem('md2img:layout', JSON.stringify({w:$cWidth.value,pad:$cPad.value,fs:$cFs.value,lh:$cLh.value,r:$cRadius.value,font}));
+}
+[$cWidth,$cPad,$cFs,$cLh,$cRadius].forEach(el=> el.addEventListener('input', applyLayout));
+$cFont.addEventListener('change', applyLayout);
+applyLayout();
+
+// theme
+const $pills=document.querySelectorAll('.pill');
+let currentTheme='notion';
+function applyTheme(theme){
+  $pills.forEach(x=>x.classList.toggle('active', x.dataset.theme===theme));
+  currentTheme=theme;
+  $card.setAttribute('data-theme', currentTheme);
+  const hljsLink=document.getElementById('hljs-theme');
+  if(currentTheme==='dark'){
+    hljsLink.href='https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github-dark.min.css';
+    if($cBgPreset.value!=='gradient'){ $wrapper.className='solid-outer'; $wrapper.style.background='#0f172a'; document.getElementById('cBg').value='#0f172a'; }
+  } else if(currentTheme==='warm'){
+    hljsLink.href='https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/atom-one-light.min.css';
+    $wrapper.className='solid-outer';
+    $wrapper.style.background='#fdfbf7';
+    document.getElementById('cBg').value='#fdfbf7';
+    $cBgPreset.value='';
+  } else if(currentTheme==='gradient'){
+    hljsLink.href='https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github.min.css';
+    $wrapper.className='gradient-outer';
+    $wrapper.style.background='';
+    $cBgPreset.value='gradient';
+  } else if(currentTheme==='academic'){
+    hljsLink.href='https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github.min.css';
+    $wrapper.className='solid-outer';
+    $wrapper.style.background='#ffffff';
+    document.getElementById('cBg').value='#ffffff'; $cBgPreset.value='';
+  } else { // notion
+    hljsLink.href='https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/styles/github.min.css';
+    $wrapper.className='solid-outer';
+    $wrapper.style.background='#f5f5f3';
+    document.getElementById('cBg').value='#f5f5f3';
+    $cBgPreset.value='';
+  }
+  localStorage.setItem('md2img:theme', currentTheme);
+}
+$pills.forEach(p=> p.addEventListener('click', ()=> applyTheme(p.dataset.theme)));
+
+$cBg.addEventListener('input', ()=>{
+  $wrapper.style.setProperty('--outer-bg', $cBg.value);
+  $wrapper.style.background=$cBg.value;
+  $wrapper.className='solid-outer';
+  $cBgPreset.value='';
+});
+$cBgPreset.addEventListener('change', ()=>{
+  if($cBgPreset.value==='gradient'){
+    $wrapper.className='gradient-outer';
+    $wrapper.style.background='';
+  } else if($cBgPreset.value){
+    $wrapper.className='solid-outer';
+    $wrapper.style.background=$cBgPreset.value;
+    $cBg.value=$cBgPreset.value;
+  } else {
+    $wrapper.className='solid-outer';
+  }
+});
+
+// shadow / footer
+document.getElementById('sShadow').addEventListener('click', function(){
+  this.classList.toggle('on');
+  const on=this.classList.contains('on');
+  $card.style.boxShadow= on ? '0 10px 40px rgba(0,0,0,.08),0 1px 3px rgba(0,0,0,.08)' : 'none';
+});
+document.getElementById('sFooter').addEventListener('click', function(){
+  this.classList.toggle('on');
+  $footer.style.display=this.classList.contains('on') ? 'flex':'none';
+});
+const $cFooterText=document.getElementById('cFooterText');
+$cFooterText.addEventListener('input', ()=>{
+  $footerLeft.textContent = $cFooterText.value.trim() || 'Generated by Markdown to Image';
+});
+
+// zoom
+const $zoomVal=document.getElementById('zoomVal');
+document.getElementById('btnZoomIn').onclick=()=>{ zoom=Math.min(1.5, zoom+0.1); $wrapper.style.transform=`scale(${zoom})`; $wrapper.style.transformOrigin='top center'; $zoomVal.textContent=Math.round(zoom*100)+'%'; };
+document.getElementById('btnZoomOut').onclick=()=>{ zoom=Math.max(0.6, zoom-0.1); $wrapper.style.transform=`scale(${zoom})`; $wrapper.style.transformOrigin='top center'; $zoomVal.textContent=Math.round(zoom*100)+'%'; };
+document.getElementById('btnFit').onclick=()=>{ zoom=1; $wrapper.style.transform='scale(1)'; $zoomVal.textContent='100%'; };
+
+// toast
+function toast(msg, ms=2200){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.style.display='block';
+  clearTimeout(t._timer); t._timer=setTimeout(()=> t.style.display='none', ms);
+}
+
+// ---------- 文字PDF（可复制，矢量） via iframe print ----------
+async function doTextPdf(){
+  try{
+    // Use window.print with print stylesheet - prints the already-rendered previewCard (which already shows Chinese correctly)
+    // This avoids iframe font issues in Edge file:// print
+    let style=document.getElementById('print-style');
+    if(style) style.remove();
+    style=document.createElement('style');
+    style.id='print-style';
+    style.media='print';
+    style.textContent = `
+      @page { size: A4; margin: 15mm; }
+      html,body{margin:0;padding:0;background:#fff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact;}
+      .topbar, .left, .preview-toolbar, #toast { display:none !important; }
+      .main{ display:block !important; }
+      .right{ display:block !important; width:100% !important; background:#fff !important; }
+      .preview-scroll{ display:block !important; overflow:visible !important; padding:0 !important; background:#fff !important; }
+      #captureWrapper{ display:block !important; width:100% !important; padding:0 !important; margin:0 auto !important; background:#fff !important; box-shadow:none !important; transform:none !important; }
+      #previewCard{ display:block !important; width:100% !important; max-width:680px !important; margin:0 auto !important; box-shadow:none !important; border:1px solid #e9e9e7 !important; float:none !important; position:static !important; }
+      *{ -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+      pre, blockquote, table, .mermaid, h1, h2, h3 { break-inside: avoid; page-break-inside: avoid; }
+      h1,h2,h3 { break-after: avoid; page-break-after: avoid; }
+    `;
+    document.head.appendChild(style);
+    // Trigger print - use setTimeout to ensure styles applied
+    await new Promise(r=> setTimeout(r, 100));
+    window.print();
+    toast('已打开系统打印预览，请选择“另存为PDF”即可得到可复制文字的PDF（记得勾选“背景图形”）');
+    // cleanup after print dialog closes
+    window.addEventListener('afterprint', function handler(){
+      const s=document.getElementById('print-style');
+      if(s) s.remove();
+      window.removeEventListener('afterprint', handler);
+    });
+    // fallback cleanup
+    setTimeout(()=>{ const s=document.getElementById('print-style'); if(s) s.remove(); }, 5000);
+  }catch(e){
+    console.error(e);
+    toast('文字PDF失败：'+e.message);
+  }
+}
+
+async function captureCanvas(scale){
+  // ensure scroll top
+  const opts={scale: Number(scale)||2, useCORS:true, allowTaint:true, backgroundColor: null, logging:false};
+  // If wrapper has gradient, html2canvas handles it. Use wrapper as target to include outer bg
+  const target = document.getElementById('captureWrapper');
+  // temporarily remove transform for capture
+  const prevTransform = target.style.transform;
+  target.style.transform='none';
+  const canvas = await html2canvas(target, opts);
+  target.style.transform=prevTransform;
+  return canvas;
+}
+
+async function doPng(type){
+  try{
+    const scale=document.getElementById('cScale').value;
+    const btn = type==='jpg' ? document.getElementById('btnJpg') : document.getElementById('btnPng');
+    btn.classList.add('loading'); btn.textContent='生成中…';
+    const canvas=await captureCanvas(scale);
+    const url = canvas.toDataURL(type==='jpg' ? 'image/jpeg' : 'image/png', 0.92);
+    const a=document.createElement('a');
+    a.href=url; a.download=`md-${Date.now()}.${type==='jpg'?'jpg':'png'}`;
+    a.click();
+    toast('已导出 '+type.toUpperCase());
+  }catch(e){ console.error(e); toast('导出失败：'+e.message); }
+  finally{
+    document.getElementById('btnPng').classList.remove('loading'); document.getElementById('btnPng').textContent='⬇ PNG';
+    document.getElementById('btnJpg').classList.remove('loading'); document.getElementById('btnJpg').textContent='⬇ JPG';
+  }
+}
+
+async function doCopy(){
+  try{
+    const scale=document.getElementById('cScale').value;
+    const canvas=await captureCanvas(scale);
+    canvas.toBlob(async blob=>{
+      try{
+        await navigator.clipboard.write([new ClipboardItem({'image/png': blob})]);
+        toast('已复制到剪贴板');
+      }catch(err){
+        // fallback download
+        const url=canvas.toDataURL('image/png');
+        const a=document.createElement('a'); a.href=url; a.download=`md-${Date.now()}.png`; a.click();
+        toast('浏览器不支持直接复制，已改为下载');
+      }
+    }, 'image/png');
+  }catch(e){ toast('复制失败：'+e.message); }
+}
+
+async function doPdf(){
+  const btn=document.getElementById('btnPdf');
+  btn.classList.add('loading'); const old=btn.textContent; btn.textContent='生成 PDF…';
+  try{
+    const scale=document.getElementById('cScale').value;
+    const canvas=await captureCanvas(scale);
+    const {jsPDF}=window.jspdf;
+    const pdf = new jsPDF({orientation: canvas.width > canvas.height ? 'l' : 'p', unit:'pt', format:'a4'});
+    const pageW = pdf.internal.pageSize.getWidth();
+    const pageH = pdf.internal.pageSize.getHeight();
+    const imgW = pageW - 40; // margin 20
+    const imgH = canvas.height * imgW / canvas.width;
+    let y=20;
+    let remaining=imgH;
+    let position=0;
+    const imgData=canvas.toDataURL('image/jpeg',0.92);
+    // simple paginate: slice canvas via addImage with offset
+    // For simplicity, if single page fits, add one image; else add multiple by shifting
+    if(imgH <= pageH-40){
+      pdf.addImage(imgData,'JPEG',20,y,imgW,imgH);
+    } else {
+      // split canvas into pages using temporary canvases
+      const pageCanvasH = (pageH-40) * canvas.width / imgW;
+      let offset=0;
+      let first=true;
+      while(offset < canvas.height){
+        const h=Math.min(pageCanvasH, canvas.height-offset);
+        const tmp=document.createElement('canvas');
+        tmp.width=canvas.width; tmp.height=h;
+        tmp.getContext('2d').drawImage(canvas,0,offset,canvas.width,h,0,0,canvas.width,h);
+        const tmpData=tmp.toDataURL('image/jpeg',0.92);
+        const tmpH = h * imgW / canvas.width;
+        if(!first) pdf.addPage();
+        pdf.addImage(tmpData,'JPEG',20,20,imgW,tmpH);
+        first=false;
+        offset+=h;
+      }
+    }
+    pdf.save(`md-${Date.now()}.pdf`);
+    toast('已导出 PDF（A4分页）');
+  }catch(e){ console.error(e); toast('PDF 导出失败：'+e.message); }
+  finally{ btn.classList.remove('loading'); btn.textContent=old; }
+}
+
+document.getElementById('btnPng').onclick=()=> doPng('png');
+document.getElementById('btnJpg').onclick=()=> doPng('jpg');
+document.getElementById('btnCopy').onclick=doCopy;
+document.getElementById('btnPdf').onclick=doPdf;
+document.getElementById('btnTextPdf').onclick=doTextPdf;
+
+// restore layout/theme from storage
+try{
+  const layout=JSON.parse(localStorage.getItem('md2img:layout')||'null');
+  if(layout){
+    $cWidth.value=layout.w; $cPad.value=layout.pad; $cFs.value=layout.fs; $cLh.value=layout.lh; $cRadius.value=layout.r; $cFont.value=layout.font;
+    applyLayout();
+  }
+  const th=localStorage.getItem('md2img:theme');
+  if(th){ document.querySelector(`.pill[data-theme="${th}"]`)?.click(); }
+}catch(e){}
+
+// keyboard shortcut
+document.addEventListener('keydown', e=>{
+  if((e.metaKey||e.ctrlKey) && e.key==='Enter'){ doPng('png'); }
+});
+</script>
+</body>
+</html>
