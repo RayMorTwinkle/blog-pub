@@ -1,0 +1,44 @@
+<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <title>Ray's Garden — blog-pub</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0.6" y2="1">
+      <stop offset="0%" stop-color="#41CBBE"/>
+      <stop offset="55%" stop-color="#2AB3A4"/>
+      <stop offset="100%" stop-color="#177E71"/>
+    </linearGradient>
+    <linearGradient id="gloss" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.22"/>
+      <stop offset="45%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </linearGradient>
+    <!-- Cut the signature leaf notch out of the leaf body -->
+    <mask id="leaf-mask">
+      <rect width="512" height="512" fill="#FFFFFF"/>
+      <circle cx="372" cy="318" r="36" fill="#000000"/>
+    </mask>
+  </defs>
+
+  <!-- Rounded app-icon base -->
+  <rect width="512" height="512" rx="116" fill="url(#bg)"/>
+  <rect width="512" height="512" rx="116" fill="url(#gloss)"/>
+  <rect x="6" y="6" width="500" height="500" rx="110" fill="none" stroke="#FFFFFF" stroke-opacity="0.10" stroke-width="4"/>
+
+  <!-- Stem: drawn first so the leaf body overlaps its root -->
+  <path d="M338 344 C356 372 374 398 392 424" fill="none" stroke="#FFF3D6" stroke-width="26" stroke-linecap="round"/>
+
+  <!-- Leaf body (AC-style: broad oval leaf, tip upper-left, notch on lower-right edge) -->
+  <g mask="url(#leaf-mask)">
+    <path d="M132 292
+             C112 196 176 118 292 108
+             C350 103 394 128 408 172
+             C420 246 372 322 286 350
+             C224 370 150 346 132 292 Z"
+          fill="#FFF3D6"/>
+    <!-- Midrib vein -->
+    <path d="M170 292 C224 252 300 200 366 158" fill="none" stroke="#1E8F80" stroke-width="14" stroke-linecap="round" opacity="0.9"/>
+    <!-- Side veins -->
+    <path d="M226 250 L240 208" fill="none" stroke="#1E8F80" stroke-width="10" stroke-linecap="round" opacity="0.55"/>
+    <path d="M282 210 L298 168" fill="none" stroke="#1E8F80" stroke-width="10" stroke-linecap="round" opacity="0.55"/>
+    <path d="M212 268 L176 254" fill="none" stroke="#1E8F80" stroke-width="10" stroke-linecap="round" opacity="0.45"/>
+    <path d="M270 226 L238 208" fill="none" stroke="#1E8F80" stroke-width="10" stroke-linecap="round" opacity="0.45"/>
+  </g>
+</svg>
